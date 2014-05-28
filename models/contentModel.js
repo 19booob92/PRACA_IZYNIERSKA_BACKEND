@@ -11,10 +11,10 @@ define([
 ) {
 	var ContentModel = Backbone.Model.extend({
 
-		var sendTrigger = function() {
-			alert('wysylam');
-			ContentModel.trigger("viewContent:change");
+		sendTrigger : function() {
+			this.trigger("viewContent:change");
 		}
+
 	});
 	return new ContentModel();
 });

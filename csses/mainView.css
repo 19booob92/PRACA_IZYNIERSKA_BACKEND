@@ -1,0 +1,10 @@
+#contentDiv {
+	position:absolute;
+	left:100px;
+	top:150px;
+}
+
+p {
+	display:inline;
+}
+

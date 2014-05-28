@@ -6,7 +6,9 @@ define([
 	'marionette',
 	'templates/loginLayout',
 	'templates/contentLayout',
-	'models/contentModel'
+	'templates/formLayout',
+	'models/contentModel',
+	'models/loginModel'
 ], function(
         $,
         _,
@@ -15,30 +17,38 @@ define([
 	Marionette,
 	LoginLayout,
 	ContentLayout,
-	mod
+	FormLayout,
+	ContentModel,
+	LoginModel
 ) {
 	var MainPage  = new Marionette.Application();
-       	var a = mod;
+	var accountType = "aaa";
+
 	MainPage.addRegions({
 		loginRegion: "#loginDiv",
 		contentRegion: "#contentDiv"
 	});
         
 	MainPage.on("initialize:after", function() {
-	       var loginView = LoginLayout;
-	       var contentView = ContentLayout;		
-	mod.sendTrigger();
-
-
-	       MainPage.loginRegion.show(loginView);
-	       MainPage.contentRegion.show(contentView);
+		
+		if (accountType === "aaaa") {
+			this.contentRegion.show(ContentLayout);
+		} else {
+			this.contentRegion.show(FormLayout);
+		}
+	       this.loginRegion.show(LoginLayout);
         });
 	
-	MainPage.on("viewContent:change", function(){
-		alert("asd");
-		MainPage.contentRegion.show(LoginLayout);
+	ContentModel.on("viewContent:change", function(){
+		alert('kliknieto przycisk');
 	});        
-	// obsłużyć zdarzeenie wysłąne z contentLayout i przeładować
-	// widok
+	
+	LoginModel.on("loginView:logOut", function(){
+		LoginLayout.setViewAsUnlogged();
+	});        
+
+	LoginModel.on("loginView:logged", function() {
+		LoginLayout.setViewAsLogged();
+	});
 	return MainPage;
 });
