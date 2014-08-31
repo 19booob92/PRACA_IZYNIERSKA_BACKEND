@@ -20,7 +20,7 @@ public class Test implements Serializable {
 
     private String name;
 
-    @OneToMany
+//    @OneToMany
     Question question;    
 
     private int semester;

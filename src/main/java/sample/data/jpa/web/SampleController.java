@@ -3,6 +3,7 @@ package sample.data.jpa.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -24,14 +25,14 @@ public class SampleController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public @ResponseBody String createMsg(Question question) {
+    public @ResponseBody String createMsg(@RequestBody Question question) {
         questService.addQuestion(question);
-        return "Created";
+        return question.getContent();
     }
  
-    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
-    public @ResponseBody String deleteMsg(Question question) {
-        questService.addQuestion(question);
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+    public @ResponseBody String deleteMsg(@PathVariable Long id) {
+        questService.deleteQuestion(id);
         return "Deleted";
     }
        

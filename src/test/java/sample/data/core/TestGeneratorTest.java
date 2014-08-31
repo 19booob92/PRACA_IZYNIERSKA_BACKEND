@@ -6,7 +6,7 @@ public class TestGeneratorTest {
 	
 	@Test
 	public void shouldReturnGeneratedTest() {
-
+	    
 	}
 
 	@Test

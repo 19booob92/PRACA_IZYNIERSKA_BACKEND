@@ -3,16 +3,21 @@ package sample.data.jpa;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
+import net.wimpi.telnetd.io.terminal.ansi;
+
 import org.hamcrest.core.AnyOf;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,6 +35,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -49,7 +55,8 @@ public class JpaTest {
     @PersistenceContext
     EntityManager em;
 
-    QuestionService questionService = mock(QuestionService.class);
+    @Autowired
+    QuestionService questionService;
 
     @Autowired 
     private WebApplicationContext ctx;
@@ -69,7 +76,6 @@ public class JpaTest {
     @Test
     public void shouldSaveDataToDataBase() {
         // given
-        Mockito.doCallRealMethod().when(questionService).addQuestion(Mockito.any(Question.class));
         Question quest = new Question();
         quest.setContent("Glupie pytanie");
         // when
@@ -84,7 +90,6 @@ public class JpaTest {
     @Test
     public void shouldGetOneRowWithPropertlyData() throws InterruptedException {
         // given
-        Mockito.doCallRealMethod().when(questionService).addQuestion(Mockito.any(Question.class));
         Question quest;
         // when
         quest = questionService.getOneQuestion(4L);
@@ -92,21 +97,40 @@ public class JpaTest {
         assertTrue("Pobrano odpowiednie dane",
                 quest.getContent().equals("asd"));
     }
+    
   @Test
-  public void shouldSaveToDBNewQuestion() throws Exception {
+  public void shouldSaveObjectToDB() throws Exception {
       // given
-      Mockito.doCallRealMethod().when(questionService).addQuestion(Mockito.any(Question.class));
       Question quest = new Question(); // FIXME zrobić buildery
-      quest.setId(5);
       quest.setContent("Pytanie");
 
       // then
-      mockMvc.perform(post("/quest/create")
+      MvcResult result = mockMvc.perform(post("/quest/create")
               .content(new ObjectMapper().writeValueAsString(quest))
               .contentType(MediaType.APPLICATION_JSON))
-
-              .andExpect(status().isOk());
-      verify(questionService, times(1)).addQuestion(Mockito.any(Question.class));
+              .andExpect(status().isOk())
+              .andReturn();
+      
+      Question questFromDB = (Question) em.createQuery("select c from Question c where c.content = 'Pytanie'").getSingleResult();
+      
+      assertTrue(questFromDB.getContent().equals("Pytanie"));
   }
+  
+
+  @Test(expected = NoResultException.class)
+  public void shouldDeleteObjectFromDB() throws Exception {
+      // given
+      Question questFromDB = (Question) em.createQuery("select c from Question c where c.id = 4").getSingleResult();
+      // then
+      MvcResult result = mockMvc.perform(delete("/quest/delete/4")
+              .contentType(MediaType.APPLICATION_JSON))
+              .andExpect(status().isOk())
+              .andReturn();
+      
+      assertTrue(questFromDB != null);
+      
+      questFromDB = (Question) em.createQuery("select c from Question c where c.id = 4").getSingleResult();
+  }
+  
 
 }

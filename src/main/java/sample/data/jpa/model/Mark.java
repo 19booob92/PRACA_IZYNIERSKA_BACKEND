@@ -20,7 +20,7 @@ public class Mark implements Serializable {
     
     private String value;
 
-    @OneToOne
+//    @OneToOne
     private Test test;
 
     private User user;

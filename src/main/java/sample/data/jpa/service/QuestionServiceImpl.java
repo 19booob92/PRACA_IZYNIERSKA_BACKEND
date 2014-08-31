@@ -24,12 +24,9 @@ public class QuestionServiceImpl implements QuestionService {
         return questionRepo.findOne(id);
     }
     
-    public QuestionRepo getQuestionRepo() {
-        return questionRepo;
-    }
-
-    public void setQuestionRepo(QuestionRepo questionRepo) {
-        this.questionRepo = questionRepo;
+    @Override
+    public void deleteQuestion(Long id) {
+        questionRepo.delete(id);
     }
 
 }
