@@ -1,4 +1,4 @@
-spring-boot-data-jpa-mysql
+Praca Inzynierska
 ==========================
 
-Sandbox for testing Spring Boot + JPA + MySQL configuration
+
