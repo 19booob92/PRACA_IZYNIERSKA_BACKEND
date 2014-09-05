@@ -41,16 +41,12 @@ import org.springframework.web.context.WebApplicationContext;
 
 import sample.data.jpa.model.Question;
 import sample.data.jpa.service.QuestionService;
+import sample.data.jpa.utils.IntegrationTest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
  
 
-@WebAppConfiguration
-@ContextConfiguration(classes = { SampleDataJpaApplication.class })
-@RunWith(SpringJUnit4ClassRunner.class)
-@Transactional
-@PropertySource({ "classpath:application.properties" })
-public class JpaTest {
+public class JpaTest extends IntegrationTest {
 
     @PersistenceContext
     EntityManager em;

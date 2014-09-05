@@ -1,0 +1,17 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Webowa Aplikacja Do Przeprowadzania Testow</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" media="all"
+	href="../../views/style.css" th:href="@{/views/style.css}" />
+</head>
+<body>
+	<form th:action="@{/quest/create}" method="post">
+		<input type="text" th:value="${id}" />
+		<input type="text" th:value="${content}" />
+		<button type="submit">Dodaj</button>
+	</form>
+</body>
+</html>

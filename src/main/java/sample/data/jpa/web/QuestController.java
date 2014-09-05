@@ -2,6 +2,8 @@ package sample.data.jpa.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +16,7 @@ import sample.data.jpa.service.QuestionService;
 
 @Controller
 @RequestMapping(value = "/quest")
-public class SampleController {
+public class QuestController {
 
     @Autowired
     QuestionService questService;
@@ -25,7 +27,7 @@ public class SampleController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public @ResponseBody String createMsg(@RequestBody Question question) {
+    public @ResponseBody String createMsg(final Question question, Model model) {
         questService.addQuestion(question);
         return question.getContent();
     }
@@ -35,5 +37,5 @@ public class SampleController {
         questService.deleteQuestion(id);
         return "Deleted";
     }
-       
+    
 }

@@ -7,6 +7,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * @author booob
+ *
+ */
 @Entity
 @Table(name="questions")
 public class Question implements Serializable {
@@ -35,4 +39,10 @@ public class Question implements Serializable {
     public void setId(long id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "[id=" + id + ", content=" + content + "]";
+    }
+   
 }
