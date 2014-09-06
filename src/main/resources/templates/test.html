@@ -15,8 +15,9 @@
         <th>Treść</th>
     </tr>
     <tr th:each="quest : ${test}">
-        <td th:text="${quest.id}">The first name</td>
-        <td th:text="${quest.content}">The last name</td>
+        <td th:text="${quest.id}">ID</td>
+        <td th:text="${quest.content}"> </td> 
+        <td> <input type="checkbox"/></td>
     </tr>
 </table>
 </body>
