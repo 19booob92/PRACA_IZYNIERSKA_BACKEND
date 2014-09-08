@@ -21,6 +21,7 @@ import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.thymeleaf.spring3.SpringTemplateEngine;
@@ -96,5 +97,10 @@ public class SampleDataJpaApplication extends WebMvcConfigurerAdapter {
 
     public static void main(String[] args) throws Exception {
         SpringApplication.run(SampleDataJpaApplication.class, args);
+    }
+    
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    registry.addResourceHandler("/**").addResourceLocations("/resources/");
     }
 }

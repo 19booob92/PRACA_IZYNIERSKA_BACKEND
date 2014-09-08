@@ -44,5 +44,10 @@ public class TestControllerTest extends IntegrationTest {
                 .isEqualTo(
                         "[{\"id\":4,\"content\":\"asd\"},{\"id\":4,\"content\":\"asd\"},{\"id\":4,\"content\":\"asd\"},{\"id\":4,\"content\":\"asd\"},{\"id\":4,\"content\":\"asd\"}]");
     }
+    
+    @Test
+    public void shouldReturnTrueWhenAnswerIsCorrect() {
+        
+    }
 
 }

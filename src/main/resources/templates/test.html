@@ -2,6 +2,34 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
 <head>
+
+<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+<script>
+i = 0;
+$(document).ready(function() {
+	
+	$("#send").click(function() {
+		var array = [];
+		$("div").each(function() {
+		    array.push({
+		        id: $(this).find("#id").val(),
+		        tick: $(this).find("input").val(),
+		        name : $(this).attr("name")
+		    });
+		});
+		console.log(array);
+	}); 
+});
+
+function increment() {
+	i++;
+}
+
+function addRadioButton() {
+	alert(i + "dupa");
+};
+
+</script>
 <title>Webowa Aplikacja Do Przeprowadzania Testow</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" type="text/css" media="all"
@@ -9,16 +37,44 @@
 </head>
 <body>
 
+<form id="testForm" action="#" method="post">
 <table>
-    <tr>
-        <th>Id</th>
-        <th>Treść</th>
-    </tr>
     <tr th:each="quest : ${test}">
-        <td th:text="${quest.id}">ID</td>
-        <td th:text="${quest.content}"> </td> 
-        <td> <input type="checkbox"/></td>
+    <div>
+    <script>
+    increment();
+    </script>
+    <tr>
+        <th>Pytanie:</th>
+        <td id="id" th:hidden="${quest.id}"> </td>
+        <td th:text="${quest.content}"> </td>
+    </tr>
+    <tr>
+        <td th:text="${quest.answerA}"> </td> 
+        <td> <input type="radio" name="tick" value=""/></td>
+        <script>
+        addRadioButton();
+        </script>
+    </tr>
+    <tr>
+        <td th:text="${quest.answerB}"> </td> 
+        <td> <input type="radio" name="tick" value=""/></td>
+        <script>
+        addRadioButton();
+        </script>
+    </tr>
+    <tr>
+        <td th:text="${quest.answerC}"> </td> 
+        <td> <input type="radio" name="tick" value=""/></td>
+    </tr>
+    <tr>
+        <td th:text="${quest.answerD}"> </td> 
+        <td> <input type="radio" name="tick" value=""/></td>
+        </div>
+    </tr>
     </tr>
 </table>
+<button id="send" type="button">Wyślij</button>
+</form>
 </body>
 </html>
