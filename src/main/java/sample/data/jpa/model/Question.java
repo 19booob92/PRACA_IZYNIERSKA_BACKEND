@@ -32,6 +32,8 @@ public class Question implements Serializable {
 
     private String correctAnswer;
     
+    private int points;
+    
     @ManyToOne
     @JoinColumn(name = "test")
     private Test test;
@@ -105,6 +107,16 @@ public class Question implements Serializable {
     
     public void setCorrectAnswer(String correctAnswer) {
         this.correctAnswer = correctAnswer;
+    }
+
+    
+    public int getPoints() {
+        return points;
+    }
+
+    
+    public void setPoints(int points) {
+        this.points = points;
     }
 
 }

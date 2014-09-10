@@ -8,7 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
+import static org.assertj.core.api.Assert.*;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -126,6 +126,10 @@ public class JpaTest extends IntegrationTest {
       assertTrue(questFromDB != null);
       
       questFromDB = (Question) em.createQuery("select c from Question c where c.id = 4").getSingleResult();
+  }
+  
+  @Test
+  public void shouldAddPointsForQuestion() {
   }
   
 

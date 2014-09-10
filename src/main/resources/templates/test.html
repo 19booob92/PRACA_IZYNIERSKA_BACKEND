@@ -5,30 +5,43 @@
 
 <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
 <script>
-i = 0;
-$(document).ready(function() {
-	
-	$("#send").click(function() {
-		var array = [];
-		$("div").each(function() {
-		    array.push({
-		        id: $(this).find("#id").val(),
-		        tick: $(this).find("input").val(),
-		        name : $(this).attr("name")
-		    });
+
+	function send(data) {
+		$.ajax({
+			url: "/checkTest",
+			type: "POST",
+	        contentType: "application/json",
+			data: JSON.stringify(data),
+			success: function() {
+			}
 		});
-		console.log(array);
-	}); 
-});
+	}
 
-function increment() {
-	i++;
-}
+	$(document).ready(function() {
+		$("#send").click(function() {
+			var array = [];
+			$('div').each(function() {
+				
+				   var radioButtons = document.getElementsByName($(this).attr("id"));
+				   var ans = '';
+					if (radioButtons[0].checked) {
+						ans = 'answerA';
+					} else if (radioButtons[1].checked) {
+						ans = 'answerB';
+					} else if (radioButtons[2].checked) {
+						ans = 'answerC';
+					} else if (radioButtons[3].checked) {
+						ans = 'answerD';
+					}	   
+				array.push({
+					id : $(this).attr("id"),
+					tick : ans
+				});
+			});
+			send(array);
+		});
 
-function addRadioButton() {
-	alert(i + "dupa");
-};
-
+	});
 </script>
 <title>Webowa Aplikacja Do Przeprowadzania Testow</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -37,44 +50,36 @@ function addRadioButton() {
 </head>
 <body>
 
-<form id="testForm" action="#" method="post">
-<table>
-    <tr th:each="quest : ${test}">
-    <div>
-    <script>
-    increment();
-    </script>
-    <tr>
-        <th>Pytanie:</th>
-        <td id="id" th:hidden="${quest.id}"> </td>
-        <td th:text="${quest.content}"> </td>
-    </tr>
-    <tr>
-        <td th:text="${quest.answerA}"> </td> 
-        <td> <input type="radio" name="tick" value=""/></td>
-        <script>
-        addRadioButton();
-        </script>
-    </tr>
-    <tr>
-        <td th:text="${quest.answerB}"> </td> 
-        <td> <input type="radio" name="tick" value=""/></td>
-        <script>
-        addRadioButton();
-        </script>
-    </tr>
-    <tr>
-        <td th:text="${quest.answerC}"> </td> 
-        <td> <input type="radio" name="tick" value=""/></td>
-    </tr>
-    <tr>
-        <td th:text="${quest.answerD}"> </td> 
-        <td> <input type="radio" name="tick" value=""/></td>
-        </div>
-    </tr>
-    </tr>
-</table>
-<button id="send" type="button">Wyślij</button>
-</form>
+	<form id="testForm" action="#" method="post">
+		<table>
+			<tr th:each="quest : ${test}">
+				<div th:id="${quest.id}">
+					<tr>
+						<th>Pytanie:</th>
+						<td th:text="${quest.content}"></td>
+					</tr>
+
+
+					<tr>
+						<td th:text="${quest.answerA}"></td>
+						<td><input type="radio" th:name="${quest.id}"></input></td>
+					</tr>
+					<tr>
+						<td th:text="${quest.answerB}"></td>
+						<td><input type="radio" th:name="${quest.id}"></input></td>
+					</tr>
+					<tr>
+						<td th:text="${quest.answerC}"></td>
+						<td><input type="radio" th:name="${quest.id}"></input></td>
+					</tr>
+					<tr>
+						<td th:text="${quest.answerD}"></td>
+						<td><input type="radio" th:name="${quest.id}"></input></td>
+					</tr>
+				</div>
+			</tr>
+		</table>
+		<button id="send" type="button">Wyślij</button>
+	</form>
 </body>
 </html>

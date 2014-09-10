@@ -2,23 +2,21 @@ package sample.data.jpa.web;
 
 import java.util.List;
 
-import net.spy.memcached.tapmessage.RequestMessage;
+import javax.servlet.http.HttpSession;
 
+import org.apache.catalina.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
+import sample.data.dto.QuestionDTO;
 import sample.data.jpa.core.TestCreator;
 import sample.data.jpa.model.Question;
-import sample.data.jpa.model.Test;
+import sample.data.jpa.service.QuestionService;
 
 @Controller
 public class TestController {
@@ -27,6 +25,9 @@ public class TestController {
     
     @Autowired
     TestCreator testCreator;
+
+    @Autowired
+    QuestionService questService;
     
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public String messages(Model model) {
@@ -34,10 +35,13 @@ public class TestController {
         return "test";
     }
     
-    @RequestMapping(value = "/checkTest", method = RequestMethod.POST)
-    public String check(@ModelAttribute("testToCheck") Test[] question, BindingResult result, Model model) {
+    @RequestMapping(value = "/checkTest", method = RequestMethod.POST, consumes="application/json")
+    public String check(@RequestBody List<QuestionDTO> question, HttpSession session) {
         //check answers
+        
+        
+        session.setAttribute("allPoints", points);
         //save test to db with mark
-        return "";
+        return "result";
     }
 }
