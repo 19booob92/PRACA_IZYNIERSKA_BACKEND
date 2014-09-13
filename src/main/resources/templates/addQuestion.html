@@ -13,6 +13,8 @@ $(document).ready(function() {
 
 
 </script>
+<link rel="stylesheet" th:href="@{/css/main.css}"
+	href="../../css/main.css" />
 </head>
 <body>
 	<form action="#" th:action="@{/quest/create}" th:object="${question}"
@@ -25,7 +27,7 @@ Odp. B    <input type="text" name="answerB" /><input type="radio" name="correctA
 Odp. C	  <input type="text" name="answerC" /><input type="radio" name="correctAnswer" value=""/><br/>
 Odp. D    <input type="text" name="answerD" /><input type="radio" name="correctAnswer" value=""/><br/>
 		
-		<button type="submit">Dodaj</button>
+		<button class="button" type="submit">Dodaj</button>
 	</form>
 </body>
 </html>

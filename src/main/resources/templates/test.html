@@ -2,7 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
 <head>
-
+<link rel="stylesheet" th:href="@{/css/main.css}"
+	href="../../css/main.css" />
 <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
 <script>
 
@@ -12,7 +13,8 @@
 			type: "POST",
 	        contentType: "application/json",
 			data: JSON.stringify(data),
-			success: function() {
+			success: function(data) {
+				$("#result").text("Wynik: " + data);
 			}
 		});
 	}
@@ -79,7 +81,8 @@
 				</div>
 			</tr>
 		</table>
-		<button id="send" type="button">Wyślij</button>
+		<button class="button" id="send" type="button">Wyślij</button>
 	</form>
+	<p id="result"></p>
 </body>
 </html>

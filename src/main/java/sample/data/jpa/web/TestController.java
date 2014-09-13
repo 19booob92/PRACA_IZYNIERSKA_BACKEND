@@ -19,11 +19,12 @@ import sample.data.jpa.core.TestCreator;
 import sample.data.jpa.model.Question;
 import sample.data.jpa.service.QuestionService;
 
+
 @Controller
 public class TestController {
-    
-    private static final int AMOUNT = 3; //FIXME
-    
+
+    private static final int AMOUNT = 3; // FIXME
+
     @Autowired
     TestCreator testCreator;
 
@@ -32,17 +33,17 @@ public class TestController {
 
     @Autowired
     QuestionService questService;
-    
+
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public String messages(Model model) {
         model.addAttribute("test", testCreator.createTest(AMOUNT));
         return "test";
     }
-    
-    @RequestMapping(value = "/checkTest", method = RequestMethod.POST, consumes="application/json")
-    public String check(@RequestBody List<QuestionDTO> question, HttpSession session) {
-        session.setAttribute("allPoints", testChecker.checkQuestions(question));
-        //save test to db with mark
-        return "result";
+
+    @RequestMapping(value = "/checkTest", method = RequestMethod.POST, consumes = "application/json")
+    @ResponseBody
+    public String check(@RequestBody List<QuestionDTO> question) {
+        // save test to db with mark
+        return String.valueOf(testChecker.checkQuestions(question));
     }
 }

@@ -4,13 +4,15 @@
 <head>
 <title>Webowa Aplikacja Do Przeprowadzania Testow</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
- <link rel="stylesheet"
-th:href="@{/css/main.css}"
-href="../../css/main.css"/>
+<link rel="stylesheet" th:href="@{/css/main.css}"
+	href="../../css/main.css" />
 </head>
 <body>
-	<a href="/test" th:href="@{/test}">Wygeneruj test</a><br/>
+	<a href="/test" th:href="@{/test}"><div class="button">Wygeneruj
+			test</div></a>
 	<a href="/addQuestion" th:href="@{/addQuestion}"
-		class="btn btn-large btn-success">Stwórz pytanie</a>
+		class="btn btn-large btn-success"><div class="button">Stwórz
+			pytanie</div></a>
+
 </body>
 </html>
