@@ -30,6 +30,9 @@ public class User implements Serializable {
 
     private Date dateOfBirth;
 
+    private String password;
+    
+    private String login;
 
     public long getId() {
         return id;
@@ -37,5 +40,85 @@ public class User implements Serializable {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    
+    public int getIndexNo() {
+        return indexNo;
+    }
+
+    
+    public void setIndexNo(int indexNo) {
+        this.indexNo = indexNo;
+    }
+
+    
+    public String getName() {
+        return name;
+    }
+
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    
+    public String getSurname() {
+        return surname;
+    }
+
+    
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    
+    public String getAddress() {
+        return address;
+    }
+
+    
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    
+    public String getSemester() {
+        return semester;
+    }
+
+    
+    public void setSemester(String semester) {
+        this.semester = semester;
+    }
+
+    
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    
+    public String getPassword() {
+        return password;
+    }
+
+    
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    
+    public String getLogin() {
+        return login;
+    }
+
+    
+    public void setLogin(String login) {
+        this.login = login;
     }
 }

@@ -3,6 +3,7 @@ package sample.data.jpa;
 import javax.sql.DataSource;
 
 import org.apache.commons.dbcp.BasicDataSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -108,4 +109,5 @@ public class SampleDataJpaApplication extends WebMvcConfigurerAdapter {
         viewResolver.setTemplateEngine(engine);
         return viewResolver;
     }
+
 }

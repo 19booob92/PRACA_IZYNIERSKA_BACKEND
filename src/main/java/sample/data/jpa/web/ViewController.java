@@ -15,5 +15,10 @@ public class ViewController {
     public String questionView() {
         return "addQuestion";
     }
+    
+    @RequestMapping(value = "/login")
+    public String getLoginPage() {
+        return "login";
+    }
 
 }
