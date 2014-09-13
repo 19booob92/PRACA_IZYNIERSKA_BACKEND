@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import sample.data.dto.QuestionDTO;
+import sample.data.jpa.core.TestChecker;
 import sample.data.jpa.core.TestCreator;
 import sample.data.jpa.model.Question;
 import sample.data.jpa.service.QuestionService;
@@ -27,6 +28,9 @@ public class TestController {
     TestCreator testCreator;
 
     @Autowired
+    TestChecker testChecker;
+
+    @Autowired
     QuestionService questService;
     
     @RequestMapping(value = "/test", method = RequestMethod.GET)
@@ -37,10 +41,7 @@ public class TestController {
     
     @RequestMapping(value = "/checkTest", method = RequestMethod.POST, consumes="application/json")
     public String check(@RequestBody List<QuestionDTO> question, HttpSession session) {
-        //check answers
-        
-        
-        session.setAttribute("allPoints", points);
+        session.setAttribute("allPoints", testChecker.checkQuestions(question));
         //save test to db with mark
         return "result";
     }
