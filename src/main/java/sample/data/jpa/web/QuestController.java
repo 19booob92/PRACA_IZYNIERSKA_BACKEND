@@ -1,5 +1,7 @@
 package sample.data.jpa.web;
     
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import sample.data.dto.QuestionDTO;
 import sample.data.jpa.model.Question;
 import sample.data.jpa.service.QuestionService;
 
@@ -24,8 +27,14 @@ public class QuestController {
     QuestionService questService;
 
     @RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
-    public @ResponseBody Question questionId(@PathVariable Long id) {
+    public @ResponseBody Question getQuestion(@PathVariable Long id) {
         return questService.getOneQuestion(id);
+    }
+    
+    @RequestMapping(value = "/getAll", method = RequestMethod.GET)
+    public String getAllQuestions(Model model) {
+        model.addAttribute("questions", questService.getAllQuestions());
+        return "editQuestion";
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
@@ -34,9 +43,13 @@ public class QuestController {
         return "home";
     }
 
-    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
-    public @ResponseBody String deleteMsg(@PathVariable Long id) {
-        questService.deleteQuestion(id);
-        return "Deleted";
+    @RequestMapping(value = "/delete", method = RequestMethod.POST, consumes = "application/json")
+    public String deleteMsg(@RequestBody List<QuestionDTO> ids) {
+        for (QuestionDTO questId : ids) {
+            questService.deleteQuestion(questId.getId());
+        }
+        return "editQuestion";
     }
+    
+    
 }

@@ -7,5 +7,6 @@ import sample.data.jpa.model.User;
 
 public interface UserRepo extends CrudRepository<User, Long> {
 
-}
+    User findByLogin(String login);
 
+}

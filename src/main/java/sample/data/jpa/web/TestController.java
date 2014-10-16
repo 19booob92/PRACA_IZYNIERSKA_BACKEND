@@ -42,8 +42,8 @@ public class TestController {
 
     @RequestMapping(value = "/checkTest", method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody
-    public String check(@RequestBody List<QuestionDTO> question) {
+    public String check(@RequestBody List<QuestionDTO> questions) {
         // save test to db with mark
-        return String.valueOf(testChecker.checkQuestions(question));
+        return String.valueOf(testChecker.checkQuestions(questions));
     }
 }

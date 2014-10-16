@@ -21,4 +21,9 @@ public class ViewController {
         return "login";
     }
 
+    @RequestMapping(value = "/editQuestion")
+    public String editQuestionPage() {
+        return "redirect:/quest/getAll";
+    }
+
 }

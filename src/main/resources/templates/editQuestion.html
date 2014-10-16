@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Edyjca pytan</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+<script>
+
+function send(data) {
+	$.ajax({
+		url: "/quest/delete",
+		type: "POST",
+        contentType: "application/json",
+		data: JSON.stringify(data),
+		success: function(data) {
+			location.reload();
+		}
+	});
+}
+
+$(document).ready(function() {
+	$("#delete").click(function() {
+		var array = [];
+		$('input[type=checkbox]').each(function () {
+			   if ($(this).is(':checked')) {
+						array.push({
+							id : $(this).attr("name")
+					});
+
+				}
+			});
+			send(array);
+		});
+
+	});
+</script>
+<link rel="stylesheet" th:href="@{/css/main.css}"
+	href="../../css/main.css" />
+</head>
+<body>
+
+	<form id="testForm" action="#" method="GET">
+		<table>
+			<tr th:each="quest : ${questions}">
+			<tr>
+				<th>Pytanie:</th>
+				
+				<td><input type="text" th:value="${quest.content}"></input></td>
+				<td><input type="checkbox" th:name="${quest.id}"></input></td>
+
+			</tr>
+
+			<tr>
+				<td><input type="text" th:value="${quest.answerA}"></input></td>
+				<td><input type="radio" th:name="${quest.id}"></input></td>
+			</tr>
+			<tr>
+				<td><input type="text" th:value="${quest.answerB}"></input></td>
+				<td><input type="radio" th:name="${quest.id}"></input></td>
+			</tr>
+			<tr>
+				<td><input type="text" th:value="${quest.answerC}"></input></td>
+				<td><input type="radio" th:name="${quest.id}"></input></td>
+			</tr>
+			<tr>
+				<td><input type="text" th:value="${quest.answerD}"></input></td>
+				<td><input type="radio" th:name="${quest.id}"></input></td>
+			</tr>
+			</tr>
+		</table>
+		<button class="button" id="send" type="button">Edytuj</button>
+		<button class="button" id="delete" type="button">Usun</button>
+
+	</form>
+</body>
+</html>

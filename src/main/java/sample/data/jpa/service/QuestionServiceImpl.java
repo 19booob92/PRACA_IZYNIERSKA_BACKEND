@@ -27,8 +27,8 @@ public class QuestionServiceImpl implements QuestionService {
     }
     
     @Override
-    public void deleteQuestion(Long id) {
-        questionRepo.delete(id);
+    public void deleteQuestion(int id) {
+        questionRepo.delete((long)id);
     }
 
     @Override
