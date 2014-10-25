@@ -18,7 +18,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 public class User implements Serializable {
 
     private static final long serialVersionUID = 6429316483965915578L;

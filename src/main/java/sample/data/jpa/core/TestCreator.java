@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import sample.data.jpa.model.Question;
 import sample.data.jpa.service.QuestionService;
-import scala.collection.mutable.LinkedList;
 
 @Component
 public class TestCreator {
