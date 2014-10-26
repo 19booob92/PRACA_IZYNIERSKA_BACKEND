@@ -2,9 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
 <head>
+<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
 <link rel="stylesheet" th:href="@{/css/main.css}"
 	href="../../css/main.css" />
-<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
 <script>
 	function send(data) {
 		$.ajax({
@@ -12,26 +12,21 @@
 			type : "POST",
 			contentType : "application/json",
 			data : JSON.stringify(data),
-			success : function(data) {
-				$("#result").text("Wynik: " + data);
+			success : function(result) {
+				$("#result").text("Wynik: " + result);
 			}
 		});
 	}
-
 	$(document).ready(
 			function() {
 				$("#send").click(
 						function() {
 							var array = [];
-							$(document).find("div").each(
+							$('div.formDiv').each(
 									function() {
-										var divId = $(this).parent()
-										.attr("id");
 										var radioButtons = document
-												.getElementsByName(divId);
-
-										console.log(radioButtons[0] + "id "
-												+ $(this).attr("id") + " " + divId);
+												.getElementsByName($(this)
+														.attr("id"));
 										var ans = '';
 										if (radioButtons[0].checked) {
 											ans = 'answerA';
@@ -57,17 +52,14 @@
 	href="../../views/style.css" th:href="@{/views/style.css}" />
 </head>
 <body>
-	<a href="/logout" th:href="@{/logout}"><div class="button">Wyloguj</div></a>
 	<form id="testForm" action="#" method="post">
 		<table>
 			<tr th:each="quest : ${test}">
-				<div th:id="${quest.id}">
+				<div class="formDiv" th:id="${quest.id}">
 					<tr>
 						<th>Pytanie:</th>
 						<td th:text="${quest.content}"></td>
 					</tr>
-
-
 					<tr>
 						<td th:text="${quest.answerA}"></td>
 						<td><input type="radio" th:name="${quest.id}"></input></td>
@@ -90,5 +82,6 @@
 		<button class="button" id="send" type="button">Wyślij</button>
 	</form>
 	<p id="result"></p>
+	<a href="/logout" th:href="@{/logout}"><div class="button">Wyloguj</div></a>
 </body>
 </html>
