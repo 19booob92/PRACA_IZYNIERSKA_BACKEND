@@ -7,16 +7,36 @@
 <link rel="stylesheet" th:href="@{/css/main.css}"
 	href="../../css/main.css" />
 </head>
+<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+<script>
+$(document).ready(function() {
+	getRole();
+});
+
+function getRole() {
+	$.get("/users/role", function( data ) {
+		if (data === "STUDENT") {
+			$("#questMng").hide();
+			$("#usersMng").hide();
+		} else if (data === "ADMIN") {
+			$("#genTest").hide();
+			$("#questMng").hide();
+		} else {
+			$("#usersMng").hide();
+			$("#genTest").hide();
+		}
+	});
+}
+</script>
+
 <body>
-	<a href="/test" th:href="@{/test}"><div class="button">Wygeneruj
+
+
+	<a id="genTest" href="/test" th:href="@{/test}"><div class="button">Wygeneruj
 			test</div></a>
-	<a href="/addQuestion" th:href="@{/addQuestion}"
-		class="btn btn-large btn-success"><div class="button">Stwórz
-			pytanie</div></a>
-	<a href="/editQuestion" th:href="@{/editQuestion}"
-		class="btn btn-large btn-success"><div class="button">Edytuj
-			pytania</div></a>
-	<a href="/users" th:href="@{/editUsers}"><div class="button">Użytkownicy
-		</div></a>
+	<a id="questMng" href="/quest/questMng" th:href="@{/quest/questMng}"
+		class="btn btn-large btn-success"><div class="button">Pytania</div></a>
+	<a id="usersMng" href="/users/usersMng" th:href="@{/users/usersMng}"><div
+			class="button">Użytkownicy</div></a>
 </body>
 </html>

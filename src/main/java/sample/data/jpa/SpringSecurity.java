@@ -40,9 +40,13 @@ public class SpringSecurity extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/css/*", "/logout", "/login").permitAll()
-                .antMatchers("/test/**").access("hasRole('" + Authorities.LECTOR +"')")
-                .anyRequest().authenticated();
+                .antMatchers("/css/*", "/logout", "/login", "/users/role").permitAll()
+                .antMatchers("/test/**").access("hasRole('" + Authorities.STUDENT + "')")
+                .antMatchers("/users/**").access("hasRole('" + Authorities.ADMIN + "')")
+                .antMatchers("/quest/**").access("hasRole('" + Authorities.LECTOR + "')")
+                .anyRequest().authenticated()
+                .and()
+                .exceptionHandling().accessDeniedPage("/login");
         http
                 .formLogin()
                 .loginPage("/login")
@@ -62,14 +66,5 @@ public class SpringSecurity extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService).passwordEncoder(encoder);
         auth.jdbcAuthentication().authoritiesByUsernameQuery(
                 "select username, authority as role from authorities where username=?");
-        
-        if (!userDetailsService.userExists("stefan")) {
-            List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-            authorities.add(new SimpleGrantedAuthority(Authorities.LECTOR));
-            User userDetails = new User("stefan", encoder.encode("silne"), authorities);
-
-            userDetailsService.createUser(userDetails);
-        }
-
     }
 }

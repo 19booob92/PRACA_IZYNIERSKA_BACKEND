@@ -23,12 +23,15 @@
 				$("#send").click(
 						function() {
 							var array = [];
-							$('div').each(
+							$(document).find("div").each(
 									function() {
-
+										var divId = $(this).parent()
+										.attr("id");
 										var radioButtons = document
-												.getElementsByName($(this)
-														.attr("id"));
+												.getElementsByName(divId);
+
+										console.log(radioButtons[0] + "id "
+												+ $(this).attr("id") + " " + divId);
 										var ans = '';
 										if (radioButtons[0].checked) {
 											ans = 'answerA';
@@ -46,7 +49,6 @@
 									});
 							send(array);
 						});
-
 			});
 </script>
 <title>Webowa Aplikacja Do Przeprowadzania Testow</title>

@@ -11,7 +11,7 @@ public class ViewController {
         return "home";
     }
 
-    @RequestMapping(value = "/addQuestion")
+    @RequestMapping(value = "/quest/addQuestion")
     public String questionView() {
         return "addQuestion";
     }
@@ -26,9 +26,19 @@ public class ViewController {
         return "redirect:/quest/getAll";
     }
 
-    @RequestMapping(value = "/editUsers")
+    @RequestMapping(value = "/userCreation")
+    public String usersCreate() {
+        return "userCreation";
+    }
+
+    @RequestMapping(value = "/users/usersMng")
     public String usersManage() {
-        return "editUsers";
+        return "usersMng";
+    }
+
+    @RequestMapping(value = "/quest/questMng")
+    public String questManage() {
+        return "questMng";
     }
     
 }

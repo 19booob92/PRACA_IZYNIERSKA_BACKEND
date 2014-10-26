@@ -10,13 +10,17 @@
 </head>
 <body>
 	<a href="/logout" th:href="@{/logout}"><div class="button">Wyloguj</div></a>
-	
+
 	<form action="#" th:action="@{/users/create}" th:object="${users}"
 		method="post">
-		login: <input type="text" name="userName" /><br />
-		haslo: <input type="text" name="password" /><br />
-		auth: <input type="text" name="auth" /><br /> <!-- To ma być lista rozwijalna -->
-		
+		login: <input type="text" name="userName" /><br /> 
+		haslo: <input
+			type="text" name="password" /><br /> 
+		rola:	<select name="auth">
+			<option value="LECTOR">Prowadzący</option>
+			<option value="ADMIN">Administrator</option>
+			<option value="STUDENT">Student</option>
+		</select>
 
 		<button class="button" type="submit">Dodaj</button>
 	</form>

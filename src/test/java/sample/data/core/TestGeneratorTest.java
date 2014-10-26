@@ -21,16 +21,13 @@ import sample.data.jpa.model.Question;
 import sample.data.jpa.service.QuestionService;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TestGeneratorTest {
+public class TestGeneratorTest extends TestBase {
     
     @Mock
     private TestCreator testCreator;
 
     @Mock
     private QuestionService questService;
-    
-    private List<Question> fakeList;
-    private List<Question> shortFakeList;
     
     @Before
     public void init() {
