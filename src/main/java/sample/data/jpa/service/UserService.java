@@ -4,9 +4,9 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
-import sample.data.jpa.model.User;
+import sample.data.jpa.model.UserTmp;
 
 public interface UserService {
 
-    User findByUserName(String login);
+    UserTmp findByUserName(String login);
 }

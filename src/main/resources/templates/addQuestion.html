@@ -5,28 +5,28 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
 <script>
-$(document).ready(function() {
-	$('input:radio').change(function() {
-		        $(this).val($(this).prev().attr('name'));
+	$(document).ready(function() {
+		$('input:radio').change(function() {
+			$(this).val($(this).prev().attr('name'));
 		});
-	}); 
-
-
+	});
 </script>
 <link rel="stylesheet" th:href="@{/css/main.css}"
 	href="../../css/main.css" />
 </head>
 <body>
+	<a href="/logout" th:href="@{/logout}"><div class="button">Wyloguj</div></a>
 	<form action="#" th:action="@{/quest/create}" th:object="${question}"
 		method="post">
-				Pytanie:  <input type="text" name="content" /><br/><br/>
-				Ilość punktów: <input type="number" name="points" /><br/><br/>
+		Pytanie: <input type="text" name="content" /><br />
+		<br /> Ilość punktów: <input type="number" name="points" /><br />
+		<br /> Odp. A <input type="text" name="answerA" /><input type="radio"
+			name="correctAnswer" value="" /><br /> Odp. B <input type="text"
+			name="answerB" /><input type="radio" name="correctAnswer" value="" /><br />
+		Odp. C <input type="text" name="answerC" /><input type="radio"
+			name="correctAnswer" value="" /><br /> Odp. D <input type="text"
+			name="answerD" /><input type="radio" name="correctAnswer" value="" /><br />
 
-Odp. A    <input type="text" name="answerA" /><input type="radio" name="correctAnswer" value=""/><br/>
-Odp. B    <input type="text" name="answerB" /><input type="radio" name="correctAnswer" value=""/><br/>
-Odp. C	  <input type="text" name="answerC" /><input type="radio" name="correctAnswer" value=""/><br/>
-Odp. D    <input type="text" name="answerD" /><input type="radio" name="correctAnswer" value=""/><br/>
-		
 		<button class="button" type="submit">Dodaj</button>
 	</form>
 </body>

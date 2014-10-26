@@ -23,7 +23,7 @@ public class Mark implements Serializable {
 //    @OneToOne
     private Test test;
 
-    private User user;
+    private UserTmp user;
     
     public long getId() {
         return id;

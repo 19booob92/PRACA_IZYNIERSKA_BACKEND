@@ -19,7 +19,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 @Entity
 @Table(name = "user")
-public class User implements Serializable {
+public class UserTmp implements Serializable {
 
     private static final long serialVersionUID = 6429316483965915578L;
 
@@ -45,7 +45,7 @@ public class User implements Serializable {
 
     private String login;
 
-    public User (String login, String password, boolean isEnabled, List<GrantedAuthority> authorities) {
+    public UserTmp (String login, String password, boolean isEnabled, List<GrantedAuthority> authorities) {
         this.login = login;
         this.password = password;
         this.enabled = isEnabled;

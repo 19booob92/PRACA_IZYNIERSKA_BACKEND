@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Webowa Aplikacja Do Przeprowadzania Testow</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+
+<link rel="stylesheet" th:href="@{/css/main.css}"
+	href="../../css/main.css" />
+</head>
+<body>
+	<a href="/logout" th:href="@{/logout}"><div class="button">Wyloguj</div></a>
+	
+	<form action="#" th:action="@{/users/create}" th:object="${users}"
+		method="post">
+		login: <input type="text" name="userName" /><br />
+		haslo: <input type="text" name="password" /><br />
+		auth: <input type="text" name="auth" /><br /> <!-- To ma być lista rozwijalna -->
+		
+
+		<button class="button" type="submit">Dodaj</button>
+	</form>
+</body>
+</html>

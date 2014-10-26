@@ -36,15 +36,12 @@ public class SpringSecurity extends WebSecurityConfigurerAdapter {
     @Autowired
     DataSource dataSource;
 
-    @Autowired
-    JdbcDaoSupport jdD;
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
                 .antMatchers("/css/*", "/logout", "/login").permitAll()
-                .antMatchers("/test/**").hasRole(Authorities.LECTOR.toString())
+                .antMatchers("/test/**").access("hasRole('" + Authorities.LECTOR +"')")
                 .anyRequest().authenticated();
         http
                 .formLogin()
@@ -64,11 +61,11 @@ public class SpringSecurity extends WebSecurityConfigurerAdapter {
         PasswordEncoder encoder = new BCryptPasswordEncoder();
         auth.userDetailsService(userDetailsService).passwordEncoder(encoder);
         auth.jdbcAuthentication().authoritiesByUsernameQuery(
-                "select username as username, authority as authority from authorities where username = ?");
+                "select username, authority as role from authorities where username=?");
         
         if (!userDetailsService.userExists("stefan")) {
             List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-            authorities.add(new SimpleGrantedAuthority(Authorities.LECTOR.toString()));
+            authorities.add(new SimpleGrantedAuthority(Authorities.LECTOR));
             User userDetails = new User("stefan", encoder.encode("silne"), authorities);
 
             userDetailsService.createUser(userDetails);

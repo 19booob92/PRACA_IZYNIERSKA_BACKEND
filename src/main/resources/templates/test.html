@@ -6,44 +6,48 @@
 	href="../../css/main.css" />
 <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
 <script>
-
 	function send(data) {
 		$.ajax({
-			url: "/checkTest",
-			type: "POST",
-	        contentType: "application/json",
-			data: JSON.stringify(data),
-			success: function(data) {
+			url : "/checkTest",
+			type : "POST",
+			contentType : "application/json",
+			data : JSON.stringify(data),
+			success : function(data) {
 				$("#result").text("Wynik: " + data);
 			}
 		});
 	}
 
-	$(document).ready(function() {
-		$("#send").click(function() {
-			var array = [];
-			$('div').each(function() {
-				
-				   var radioButtons = document.getElementsByName($(this).attr("id"));
-				   var ans = '';
-					if (radioButtons[0].checked) {
-						ans = 'answerA';
-					} else if (radioButtons[1].checked) {
-						ans = 'answerB';
-					} else if (radioButtons[2].checked) {
-						ans = 'answerC';
-					} else if (radioButtons[3].checked) {
-						ans = 'answerD';
-					}	   
-				array.push({
-					id : $(this).attr("id"),
-					tick : ans
-				});
-			});
-			send(array);
-		});
+	$(document).ready(
+			function() {
+				$("#send").click(
+						function() {
+							var array = [];
+							$('div').each(
+									function() {
 
-	});
+										var radioButtons = document
+												.getElementsByName($(this)
+														.attr("id"));
+										var ans = '';
+										if (radioButtons[0].checked) {
+											ans = 'answerA';
+										} else if (radioButtons[1].checked) {
+											ans = 'answerB';
+										} else if (radioButtons[2].checked) {
+											ans = 'answerC';
+										} else if (radioButtons[3].checked) {
+											ans = 'answerD';
+										}
+										array.push({
+											id : $(this).attr("id"),
+											tick : ans
+										});
+									});
+							send(array);
+						});
+
+			});
 </script>
 <title>Webowa Aplikacja Do Przeprowadzania Testow</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -51,7 +55,7 @@
 	href="../../views/style.css" th:href="@{/views/style.css}" />
 </head>
 <body>
-
+	<a href="/logout" th:href="@{/logout}"><div class="button">Wyloguj</div></a>
 	<form id="testForm" action="#" method="post">
 		<table>
 			<tr th:each="quest : ${test}">

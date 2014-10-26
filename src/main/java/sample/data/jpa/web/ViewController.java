@@ -26,4 +26,9 @@ public class ViewController {
         return "redirect:/quest/getAll";
     }
 
+    @RequestMapping(value = "/editUsers")
+    public String usersManage() {
+        return "editUsers";
+    }
+    
 }
