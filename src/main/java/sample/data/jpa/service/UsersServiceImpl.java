@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,8 +15,6 @@ import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.stereotype.Service;
 
 import sample.data.jpa.model.Users;
-import sample.data.jpa.utils.Authorities;
-
 
 @Service
 public class UsersServiceImpl implements UsersService {
@@ -43,7 +40,6 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public void deleteUser(String userName) {
-
 
     }
 

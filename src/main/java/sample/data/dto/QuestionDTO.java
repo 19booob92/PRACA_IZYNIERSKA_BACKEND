@@ -5,8 +5,7 @@ import java.io.Serializable;
 
 public class QuestionDTO implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
+    private static final long serialVersionUID = 145687987564798L;
 
     private int id;
     private String tick;

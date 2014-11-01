@@ -3,7 +3,9 @@
 <head>
 <title>Webowa Aplikacja Do Przeprowadzania Testow</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+
+<script src="../../js/jquery-1.4.1.min.js"></script>
+
 <script>
 	$(document).ready(function() {
 		$('input:radio').change(function() {
@@ -18,9 +20,9 @@
 	<a href="/logout" th:href="@{/logout}"><div class="button">Wyloguj</div></a>
 	<form action="#" th:action="@{/quest/create}" th:object="${question}"
 		method="post">
-		Pytanie: <input type="text" name="content" /><br />
-		<br /> Ilość punktów: <input type="number" name="points" /><br />
-		<br /> Odp. A <input type="text" name="answerA" /><input type="radio"
+		Pytanie: <input type="text" name="content" /><br /> <br /> Ilość
+		punktów: <input type="number" name="points" /><br /> <br /> Odp. A
+		<input type="text" name="answerA" /><input type="radio"
 			name="correctAnswer" value="" /><br /> Odp. B <input type="text"
 			name="answerB" /><input type="radio" name="correctAnswer" value="" /><br />
 		Odp. C <input type="text" name="answerC" /><input type="radio"

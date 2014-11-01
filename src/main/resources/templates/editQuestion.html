@@ -38,8 +38,7 @@ $(document).ready(function() {
 	href="../../css/main.css" />
 </head>
 <body>
-	<a href="/logout" th:href="@{/logout}"><div class="button">Wyloguj</div></a>
-	<form id="testForm" action="#" method="GET">
+	<form id="testForm" action="#" method="get">
 		<table>
 			<tr th:each="quest : ${questions}">
 			<tr>
@@ -72,5 +71,6 @@ $(document).ready(function() {
 		<button class="button" id="delete" type="button">Usun</button>
 
 	</form>
+	<a href="/logout" th:href="@{/logout}"><div class="button">Wyloguj</div></a>
 </body>
 </html>

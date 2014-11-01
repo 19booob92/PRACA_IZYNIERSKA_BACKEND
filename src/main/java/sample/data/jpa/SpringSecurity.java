@@ -44,6 +44,7 @@ public class SpringSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("/test/**").access("hasRole('" + Authorities.STUDENT + "')")
                 .antMatchers("/users/**").access("hasRole('" + Authorities.ADMIN + "')")
                 .antMatchers("/quest/**").access("hasRole('" + Authorities.LECTOR + "')")
+                .antMatchers("/stats/**").access("hasRole('" + Authorities.LECTOR + "')")
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().accessDeniedPage("/login");

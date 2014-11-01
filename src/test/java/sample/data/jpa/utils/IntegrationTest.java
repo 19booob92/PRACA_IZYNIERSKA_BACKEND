@@ -14,8 +14,8 @@ import sample.data.jpa.SampleDataJpaApplication;
 
 @WebAppConfiguration
 @ContextConfiguration(classes = { SampleDataJpaApplication.class })
-@RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
+@RunWith(SpringJUnit4ClassRunner.class)
 @PropertySource({ "classpath:application.properties" })
 public class IntegrationTest {
 

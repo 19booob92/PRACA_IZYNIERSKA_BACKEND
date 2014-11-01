@@ -40,5 +40,10 @@ public class ViewController {
     public String questManage() {
         return "questMng";
     }
+
+    @RequestMapping(value = "/stats/userStat")
+    public String usersStats() {
+        return "redirect:/stats/statsForUser";
+    }
     
 }
