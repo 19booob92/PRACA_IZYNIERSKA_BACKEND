@@ -22,6 +22,10 @@ public class Results implements Serializable{
     private String studentId;
 
     private long points;
+
+    private long maxPoints;
+
+    private String mark;
     
     public long getTestId() {
         return testId;
@@ -50,6 +54,30 @@ public class Results implements Serializable{
     
     public void setStudentId(String studentId) {
         this.studentId = studentId;
+    }
+
+
+    
+    public long getMaxPoints() {
+        return maxPoints;
+    }
+
+
+    
+    public void setMaxPoints(long maxPoints) {
+        this.maxPoints = maxPoints;
+    }
+
+
+    
+    public String getMark() {
+        return mark;
+    }
+
+
+    
+    public void setMark(String mark) {
+        this.mark = mark;
     }
 
     

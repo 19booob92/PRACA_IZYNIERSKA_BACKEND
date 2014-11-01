@@ -17,12 +17,16 @@
 	<table>
 		<tr>
 			<td>Punkty</td>
+			<td>Maksymalna ilość punktów</td>
+			<td>Ocena</td>
 			<td>Id testu</td>
 			<td>Id studenta</td>
 		</tr>
 		<tr th:each="stat : ${statsUsr}">
 		<tr>
 			<td th:text="${stat.points}"></td>
+			<td th:text="${stat.maxPoints}"></td>
+			<td th:text="${stat.mark}"></td>
 			<td th:text="${stat.testId}"></td>
 			<td th:text="${stat.studentId}"></td>
 		</tr>

@@ -57,7 +57,6 @@ public class TestController {
         ResultDTO testResult = testChecker.checkQuestions(questions.getQuestions());
         persistResult(questions, authentication, testResult);
         Gson gson = new Gson();
-
         return gson.toJson(testResult);
     }
 
@@ -66,6 +65,8 @@ public class TestController {
         result.setPoints(testResult.getPoints());
         result.setTestId(questions.getTestId());
         result.setStudentId(authentication.getName());
+        result.setMark(testResult.getMark());
+        result.setMaxPoints(testResult.getMaxPoints());
 
         resultsService.addResult(result);
     }

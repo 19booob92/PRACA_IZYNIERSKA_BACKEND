@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Webowa Aplikacja Do Przeprowadzania Testow</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+
+<link rel="stylesheet" th:href="@{/css/main.css}"
+	href="../../css/main.css" />
+</head>
+<body>
+	<form action="#" th:action="@{/mark}" th:object="${markTresholds}"
+		method="post">
+				
+		<div th:each="mark : ${marks}">
+				
+		Celujący: <input type="text" th:name="tresholdA" th:value = "${mark.tresholdA}"/><br /> 
+		Bardzo dobry: <input
+			type="text" th:name="tresholdB" th:value = "${mark.tresholdB}"/><br /> 
+		Dobry: <input
+			type="text" th:name="tresholdC" th:value = "${mark.tresholdC}"/><br /> 
+		Dostateczny: <input
+			type="text" th:name="tresholdD" th:value = "${mark.tresholdD}"/><br /> 
+		Niedopuszczajacy: <input
+			type="text" th:name="tresholdE" th:value = "${mark.tresholdE}"/><br /> 
+		</div>
+
+		<button class="button" type="submit">Aktualizuj</button>
+	</form>
+	<a href="/logout" th:href="@{/logout}"><div class="button">Wyloguj</div></a>
+</body>
+</html>

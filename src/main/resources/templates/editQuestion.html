@@ -5,31 +5,35 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
 <script>
+	function send(data) {
+		$.ajax({
+			url : "/quest/delete",
+			type : "POST",
+			contentType : "application/json",
+			data : JSON.stringify(data),
+			success : function(data) {
+				location.reload();
+			}
+		});
+	}
 
-function send(data) {
-	$.ajax({
-		url: "/quest/delete",
-		type: "POST",
-        contentType: "application/json",
-		data: JSON.stringify(data),
-		success: function(data) {
-			location.reload();
-		}
-	});
-}
-
-$(document).ready(function() {
-	$("#delete").click(function() {
-		var array = [];
-		$('input[type=checkbox]').each(function () {
-			   if ($(this).is(':checked')) {
-						array.push({
-							id : $(this).attr("name")
+	$(document).ready(function() {
+		$("#delete").click(function() {
+			var array = [];
+			$('input[type=checkbox]').each(function() {
+				if ($(this).is(':checked')) {
+					array.push({
+						id : $(this).attr("name")
 					});
 
 				}
 			});
-			send(array);
+
+			var conf = confirm("Czy na pewno usunąć te pytania ?");
+			if (conf == true) {
+				send(array);
+			} else {
+			}
 		});
 
 	});
@@ -43,7 +47,7 @@ $(document).ready(function() {
 			<tr th:each="quest : ${questions}">
 			<tr>
 				<th>Pytanie:</th>
-				
+
 				<td><input type="text" th:value="${quest.content}"></input></td>
 				<td><input type="checkbox" th:name="${quest.id}"></input></td>
 

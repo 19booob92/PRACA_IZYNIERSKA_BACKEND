@@ -18,10 +18,14 @@ function getRole() {
 		if (data === "STUDENT") {
 			$("#questMng").hide();
 			$("#usersMng").hide();
+			$("#treshold").hide();
+			$("#stats").hide();
 		} else if (data === "ADMIN") {
 			$("#genTest").hide();
 			$("#questMng").hide();
-		} else {
+			$("#treshold").hide();
+			$("#stats").hide();
+		} else if (data === "LECTOR") {
 			$("#usersMng").hide();
 			$("#genTest").hide();
 		}
@@ -40,5 +44,7 @@ function getRole() {
 		class="btn btn-large btn-success"><div class="button">Pytania</div></a>
 	<a id="usersMng" href="/users/usersMng" th:href="@{/users/usersMng}"><div
 			class="button">Użytkownicy</div></a>
+	<a id="treshold" href="/mark" th:href="@{/mark}"><div
+			class="button">Progi</div></a>
 </body>
 </html>

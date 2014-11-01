@@ -1,6 +1,5 @@
 package sample.data.jpa.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -13,5 +12,6 @@ public interface ResultsService {
     Set<Results> getResultsForUser(long id);
     Set<Results> getResultsForTest(long id);
     void addResult(Results result);
+    String evaluateMark(int points, int max);
     
 }

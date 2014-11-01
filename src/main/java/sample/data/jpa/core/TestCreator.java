@@ -14,7 +14,7 @@ import sample.data.jpa.service.QuestionService;
 public class TestCreator {
 
     @Autowired
-    public QuestionService questService;
+    private QuestionService questService;
 
     private Random random;
 

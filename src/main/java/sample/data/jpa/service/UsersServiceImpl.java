@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.DataSource;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import sample.data.jpa.model.Users;
 
 @Service
+@Transactional
 public class UsersServiceImpl implements UsersService {
 
     @Autowired

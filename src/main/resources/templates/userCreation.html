@@ -9,8 +9,6 @@
 	href="../../css/main.css" />
 </head>
 <body>
-	<a href="/logout" th:href="@{/logout}"><div class="button">Wyloguj</div></a>
-
 	<form action="#" th:action="@{/users/create}" th:object="${users}"
 		method="post">
 		login: <input type="text" name="userName" /><br /> 
@@ -24,5 +22,6 @@
 
 		<button class="button" type="submit">Dodaj</button>
 	</form>
+	<a href="/logout" th:href="@{/logout}"><div class="button">Wyloguj</div></a>
 </body>
 </html>

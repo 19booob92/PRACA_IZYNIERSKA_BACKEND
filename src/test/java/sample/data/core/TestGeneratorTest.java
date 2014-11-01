@@ -33,7 +33,7 @@ public class TestGeneratorTest extends TestBase {
     public void init() {
         Mockito.doCallRealMethod().when(testCreator).createTest(Mockito.anyInt());
         initData();
-        testCreator.questService = questService;
+//        testCreator.questService = questService;
 //        when(testCreator.createTest(Mockito.anyInt())).thenCallRealMethod();
     }
     
