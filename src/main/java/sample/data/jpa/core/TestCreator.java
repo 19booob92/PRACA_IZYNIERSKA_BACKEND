@@ -49,7 +49,7 @@ public class TestCreator {
     }
 
     private Question randomQuestion() {
-        int randomValue = random.nextInt(listFromDataBase.size() - 1);
+        int randomValue = random.nextInt(listFromDataBase.size());
         return listFromDataBase.get(randomValue);
     }
 

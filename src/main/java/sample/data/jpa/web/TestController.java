@@ -1,5 +1,6 @@
 package sample.data.jpa.web;
 
+import java.awt.geom.IllegalPathStateException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,17 +43,19 @@ public class TestController {
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public String messages(Model model) {
-        model.addAttribute("test", testCreator.createTest(AMOUNT));
-        return "test";
+        try {
+            model.addAttribute("test", testCreator.createTest(AMOUNT));
+            return "test";
+        } catch (IllegalArgumentException e) {
+            return "errorPage";
+        }
     }
 
     @RequestMapping(value = "/checkTest", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     @ResponseBody
     public String check(@RequestBody AnswerDTO questions, Authentication authentication) {
         ResultDTO testResult = testChecker.checkQuestions(questions.getQuestions());
-
         persistResult(questions, authentication, testResult);
-
         Gson gson = new Gson();
 
         return gson.toJson(testResult);
