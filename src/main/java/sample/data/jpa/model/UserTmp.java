@@ -18,135 +18,58 @@ import org.springframework.security.core.GrantedAuthority;
 
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class UserTmp implements Serializable {
 
     private static final long serialVersionUID = 6429316483965915578L;
 
     @Id
-    @GeneratedValue
-    private long id;
-
-    private int indexNo;
-
-    private String name;
-
-    private String surname;
-
-    private String address;
-
-    private String semester;
-
-    private Date dateOfBirth;
+    private String username;
 
     private String password;
 
     private boolean enabled = true;
 
-    private String login;
+    private boolean able = true;
 
-    public UserTmp (String login, String password, boolean isEnabled, List<GrantedAuthority> authorities) {
-        this.login = login;
-        this.password = password;
-        this.enabled = isEnabled;
+    
+    public String getUsername() {
+        return username;
     }
 
-    public long getId() {
-        return id;
+    
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-
-    public int getIndexNo() {
-        return indexNo;
-    }
-
-
-    public void setIndexNo(int indexNo) {
-        this.indexNo = indexNo;
-    }
-
-
-    public String getName() {
-        return name;
-    }
-
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-
-    public String getSurname() {
-        return surname;
-    }
-
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-
-    public String getAddress() {
-        return address;
-    }
-
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-
-    public String getSemester() {
-        return semester;
-    }
-
-
-    public void setSemester(String semester) {
-        this.semester = semester;
-    }
-
-
-    public Date getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-
+    
     public String getPassword() {
         return password;
     }
 
-
+    
     public void setPassword(String password) {
         this.password = password;
     }
 
-
-    public String getLogin() {
-        return login;
-    }
-
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-
+    
     public boolean isEnabled() {
         return enabled;
     }
 
-
+    
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    
+    public boolean isAble() {
+        return able;
+    }
+
+    
+    public void setAble(boolean able) {
+        this.able = able;
     }
 
 }

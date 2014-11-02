@@ -7,6 +7,6 @@ import sample.data.jpa.model.UserTmp;
 
 public interface UsersRepo extends CrudRepository<UserTmp, Long> {
 
-    UserTmp findByLogin(String login);
+    UserTmp findByUsername(String login);
 
 }

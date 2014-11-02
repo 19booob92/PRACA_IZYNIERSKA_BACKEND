@@ -49,7 +49,7 @@ public class ResultsServiceImpl implements ResultsService {
     @Override
     public String evaluateMark(int points, int maxPoints) {
         Mark mark = service.getModel(); 
-        final int PERCENT = 100* (points / maxPoints);
+        final float PERCENT = (float) (100. * ((float)points / (float)maxPoints));
 
         if (PERCENT < mark.getTresholdE()) {
             return Mark.NIEDOPUSZCZAJACY;

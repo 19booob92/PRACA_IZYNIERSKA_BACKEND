@@ -30,10 +30,9 @@ function getRole() {
 </script>
 
 <body>
-	<a id="genTest" href="/test" th:href="@{/test}"><div class="button">Wygeneruj
-			test</div></a>
+		<a href="/logout" th:href="@{/logout}"><div class="button">Wyloguj</div></a>
 			
-			
-			<div align="center" font-size = "25px" color="red">W bazie nie ma wystarczającej ilości pytań !</div>
+			<div align="center" font-size = "25px" color="red" th:text="${session.errorTxt}">
+			</div>
 </body>
 </html>

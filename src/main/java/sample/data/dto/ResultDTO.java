@@ -14,13 +14,13 @@ public class ResultDTO implements Serializable{
 
     private String mark;
     
-    private int percent;
+    private String percent;
     
     public ResultDTO(boolean [] isCorrect, int points, int maxPoints, String mark) {
         this.isCorrect = isCorrect;
         this.points = points;
         this.maxPoints = maxPoints;
-        this.percent = 100 * (points / maxPoints);
+        this.percent = String.valueOf(100. * ((float)points / (float)maxPoints)).substring(0, 5);
         this.mark = mark;
     }
 
@@ -64,12 +64,12 @@ public class ResultDTO implements Serializable{
     }
 
     
-    public int getPercent() {
+    public String getPercent() {
         return percent;
     }
 
     
-    public void setPercent(int percent) {
+    public void setPercent(String percent) {
         this.percent = percent;
     }
 }

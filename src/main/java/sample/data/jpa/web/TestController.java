@@ -3,6 +3,8 @@ package sample.data.jpa.web;
 import java.awt.geom.IllegalPathStateException;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -22,6 +24,8 @@ import sample.data.jpa.core.TestCreator;
 import sample.data.jpa.model.Results;
 import sample.data.jpa.service.QuestionService;
 import sample.data.jpa.service.ResultsService;
+import sample.data.jpa.service.UserService;
+import sample.data.jpa.service.UsersService;
 
 
 @Controller
@@ -40,13 +44,22 @@ public class TestController {
 
     @Autowired
     ResultsService resultsService;
+    
+    @Autowired
+    UsersService usersService;
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
-    public String messages(Model model) {
+    public String messages(Model model, Authentication auth, HttpSession session) {
         try {
-            model.addAttribute("test", testCreator.createTest(AMOUNT));
-            return "test";
+            if (usersService.getUser(auth.getName()).isAble()) {
+                model.addAttribute("test", testCreator.createTest(AMOUNT));
+                return "test";
+            } else {
+                session.setAttribute("errorTxt", "Już rozwiązałeś test !");
+                return "errorPage";
+            }
         } catch (IllegalArgumentException e) {
+            session.setAttribute("errorTxt", "W bazie nie ma wystarczającej ilości pytań !");
             return "errorPage";
         }
     }
@@ -56,6 +69,9 @@ public class TestController {
     public String check(@RequestBody AnswerDTO questions, Authentication authentication) {
         ResultDTO testResult = testChecker.checkQuestions(questions.getQuestions());
         persistResult(questions, authentication, testResult);
+
+        usersService.disableUser(authentication.getName());
+        
         Gson gson = new Gson();
         return gson.toJson(testResult);
     }

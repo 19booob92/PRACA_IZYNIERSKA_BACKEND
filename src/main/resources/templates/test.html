@@ -10,8 +10,16 @@
 <!--  Sprawdzać czy wszystkie odpowiedzi są zaznaczone -->
 
 <script>
-	function send(data) {
+	var questAmount = 0;
 
+	function avoidRefresh() {
+		window.onbeforeunload = function() {
+	        return "Dude, are you sure you want to leave? Think of the kittens!";
+	    }
+	}
+	
+	function send(data) {
+		
 		$.ajax({
 			url : "/checkTest",
 			type : "POST",
@@ -43,13 +51,16 @@
 			}
 		});
 	}
+	
 	$(document).ready(
+			
 			function() {
 				$("#send").click(
 						function() {
 							var array = [];
 							$('div.formDiv').each(
 									function() {
+									questAmount++;
 										var radioButtons = document
 												.getElementsByName($(this)
 														.attr("id"));
@@ -68,7 +79,12 @@
 											tick : ans
 										});
 									});
-							send(array);
+							if (array.length === questAmount) {
+								send(array);
+								avoidRefresh();
+							} else {
+								alert("Nie odpoweidziałeś na wszystkie pytania");
+							}
 
 							$(this).hide();
 						});
