@@ -34,10 +34,6 @@ public class Question implements Serializable {
     
     private int points;
     
-    @ManyToOne
-    @JoinColumn(name = "test")
-    private Test test;
-    
     public String getContent(){
         return content;
     }

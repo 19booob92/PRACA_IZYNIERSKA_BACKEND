@@ -45,5 +45,5 @@ public class ViewController {
     public String usersStats() {
         return "redirect:/stats/statsForUser";
     }
-    
+
 }

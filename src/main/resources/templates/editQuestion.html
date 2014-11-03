@@ -3,9 +3,11 @@
 <head>
 <title>Edyjca pytan</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+
+<script src="../../js/jquery-1.4.1.min.js"></script>
 <script>
 	function send(data) {
+
 		$.ajax({
 			url : "/quest/delete",
 			type : "POST",
@@ -18,6 +20,11 @@
 	}
 
 	$(document).ready(function() {
+
+		$("input[type=button]").click(function() {
+			edit($(this).attr("name"));
+		});
+
 		$("#delete").click(function() {
 			var array = [];
 			$('input[type=checkbox]').each(function() {
@@ -37,6 +44,19 @@
 		});
 
 	});
+
+	function edit(questId) {
+		$.ajax({
+			url : "/quest/edit/" + questId,
+			type : "GET",
+			success : function(data) {
+				var newWindow = window.open("", "edytuj",
+						"resizable=yes, width=350,height=250");
+				newWindow.document.write(data);
+				newWindow.moveTo(100, 100);
+			}
+		});
+	}
 </script>
 <link rel="stylesheet" th:href="@{/css/main.css}"
 	href="../../css/main.css" />
@@ -50,6 +70,8 @@
 
 				<td><input type="text" th:value="${quest.content}"></input></td>
 				<td><input type="checkbox" th:name="${quest.id}"></input></td>
+				<td><input class="editBtn" type="button" th:name="${quest.id}"
+					value="edytuj"></input></td>
 
 			</tr>
 

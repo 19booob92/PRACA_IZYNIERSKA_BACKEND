@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Webowa Aplikacja Do Przeprowadzania Testow</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" th:href="@{/css/main.css}"
+	href="../../css/main.css" />
+</head>
+<body>
+
+	<form action="#" th:action="@{/quest/edit}" th:object="${questions}"
+		method="post">
+
+		<div th:each="quest : ${editQuest}">
+
+			<input type="text" th:name="id" th:value="${quest.id}"></input>
+			Pytanie: <input type="text" th:name="content"
+				th:value="${quest.content}"></input> <input type="text"
+				th:name="answerA" th:value="${quest.answerA}"></input> <input
+				type="radio" th:name="correctAnswer" th:value="${quest.answerA}"></input> <input type="text"
+				th:name="answerB" th:value="${quest.answerB}"></input> <input
+				type="radio" th:name="correctAnswer" th:value="${quest.answerB}"></input> <input type="text"
+				th:name="answerC" th:value="${quest.answerC}"></input> <input
+				th:type="radio" th:name="correctAnswer" th:value="${quest.answerC}"></input> <input type="text"
+				th:name="answerD" th:value="${quest.answerD}"></input> <input
+				th:type="radio" th:name="correctAnswer" th:value="${quest.answerD}"></input>
+		</div>
+		<button class="button" type="submit">Edytuj</button>
+	</form>
+</body>
+</html>

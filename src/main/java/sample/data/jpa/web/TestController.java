@@ -31,7 +31,7 @@ import sample.data.jpa.service.UsersService;
 @Controller
 public class TestController {
 
-    private static final int AMOUNT = 3; // FIXME
+    private static final int AMOUNT = 10; // FIXME
 
     @Autowired
     TestCreator testCreator;
@@ -63,7 +63,7 @@ public class TestController {
             return "errorPage";
         }
     }
-
+   
     @RequestMapping(value = "/checkTest", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     @ResponseBody
     public String check(@RequestBody AnswerDTO questions, Authentication authentication) {

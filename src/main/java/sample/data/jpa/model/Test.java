@@ -23,9 +23,6 @@ public class Test implements Serializable {
 
     private String name;
 
-    @OneToMany(mappedBy = "test", fetch = FetchType.EAGER)
-    private List<Question> questions;
-    
     private int semester;
 
     private int points;
@@ -65,13 +62,4 @@ public class Test implements Serializable {
         this.points = points;
     }
 
-    
-    public List<Question> getQuestions() {
-        return questions;
-    }
-
-    
-    public void setQuestions(List<Question> questions) {
-        this.questions = questions;
-    }
 }

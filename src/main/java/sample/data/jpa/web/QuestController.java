@@ -1,8 +1,11 @@
 package sample.data.jpa.web;
-    
+
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import sample.data.dto.MarkDTO;
 import sample.data.dto.QuestionDTO;
 import sample.data.jpa.model.Question;
 import sample.data.jpa.service.QuestionService;
@@ -29,7 +33,7 @@ public class QuestController {
     public @ResponseBody Question getQuestion(@PathVariable Long id) {
         return questService.getOneQuestion(id);
     }
-    
+
     @RequestMapping(value = "/getAll", method = RequestMethod.GET)
     public String getAllQuestions(Model model) {
         model.addAttribute("questions", questService.getAllQuestions());
@@ -50,5 +54,17 @@ public class QuestController {
         return "editQuestion";
     }
     
-    
+    @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
+    public String quests(@PathVariable long id, Model model) {
+            Question quest = questService.getOneQuestion(id);
+            model.addAttribute("editQuest", quest);
+            return "editQuestById";
+    }
+
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
+    public String quests(@ModelAttribute("questions") Question quest, BindingResult result, Model model) {
+        questService.addQuestion(quest);
+        return "";
+    }
+
 }
