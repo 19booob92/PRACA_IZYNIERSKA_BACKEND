@@ -15,36 +15,30 @@ $(document).ready(function() {
 
 function getRole() {
 	$.get("/users/role", function( data ) {
+		
 		if (data === "STUDENT") {
-			$("#questMng").hide();
-			$("#usersMng").hide();
-			$("#treshold").hide();
-			$("#stats").hide();
+			$('#genTest').show();
 		} else if (data === "ADMIN") {
-			$("#genTest").hide();
-			$("#questMng").hide();
-			$("#treshold").hide();
-			$("#stats").hide();
+			$("#usersMng").show();
 		} else if (data === "LECTOR") {
-			$("#usersMng").hide();
-			$("#genTest").hide();
+			$("#treshold").show();
+			$("#stats").show();
+			$("#questMng").show();
 		}
 	});
 }
 </script>
 
 <body>
-
-
-	<a id="genTest" href="/test" th:href="@{/test}"><div class="button">Wygeneruj
+	<a class="hide" id="genTest" href="/test" th:href="@{/test}"><div class="button">Wygeneruj
 			test</div></a>
 	<a id="stats" href="/stats/userStat" th:href="@{/stats/userStat}"
-		class="btn btn-large btn-success"><div class="button">Statystyki</div></a>
+		class="btn btn-large btn-success hide"><div class="button">Statystyki</div></a>
 	<a id="questMng" href="/quest/questMng" th:href="@{/quest/questMng}"
-		class="btn btn-large btn-success"><div class="button">Pytania</div></a>
-	<a id="usersMng" href="/users/usersMng" th:href="@{/users/usersMng}"><div
+		class="hide btn btn-large btn-success"><div class="button">Pytania</div></a>
+	<a class = "hide" id="usersMng" href="/users/usersMng" th:href="@{/users/usersMng}"><div
 			class="button">Użytkownicy</div></a>
-	<a id="treshold" href="/mark" th:href="@{/mark}"><div
+	<a id="treshold" class="hide" href="/mark" th:href="@{/mark}"><div
 			class="button">Progi</div></a>
 </body>
 </html>

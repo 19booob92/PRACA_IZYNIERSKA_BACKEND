@@ -2,13 +2,16 @@ package sample.data.jpa.service;
 
 import java.util.List;
 
+import sample.data.dto.EditQuestionDTO;
 import sample.data.jpa.model.Question;
 
 
 public interface QuestionService {
     
-    void addQuestion(Question quest);
+    void addQuestion(EditQuestionDTO quest);
+    void editQuestion(EditQuestionDTO quest);
     Question getOneQuestion(Long id);
     void deleteQuestion(int id);
     List<Question> getAllQuestions();
+    
 }

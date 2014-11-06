@@ -15,7 +15,7 @@ import sample.data.jpa.service.MarkService;
 
 
 @Controller
-@RequestMapping(value = "/mark")
+@RequestMapping(value = "/mark" )
 public class MarkController {
 
     @Autowired

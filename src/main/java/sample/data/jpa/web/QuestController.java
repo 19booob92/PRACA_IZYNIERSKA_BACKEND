@@ -2,10 +2,7 @@ package sample.data.jpa.web;
 
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,8 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import sample.data.dto.MarkDTO;
+import sample.data.dto.EditQuestionDTO;
 import sample.data.dto.QuestionDTO;
+import sample.data.jpa.mappers.QuestionMapper;
 import sample.data.jpa.model.Question;
 import sample.data.jpa.service.QuestionService;
 
@@ -29,6 +27,9 @@ public class QuestController {
     @Autowired
     QuestionService questService;
 
+    @Autowired
+    QuestionMapper questMapper;
+    
     @RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
     public @ResponseBody Question getQuestion(@PathVariable Long id) {
         return questService.getOneQuestion(id);
@@ -41,7 +42,7 @@ public class QuestController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String createMsg(@ModelAttribute("question") Question question, BindingResult result, Model model) {
+    public String createMsg(@ModelAttribute("question") EditQuestionDTO question, BindingResult result, Model model) {
         questService.addQuestion(question);
         return "addQuestion";
     }
@@ -62,9 +63,9 @@ public class QuestController {
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public String quests(@ModelAttribute("questions") Question quest, BindingResult result, Model model) {
-        questService.addQuestion(quest);
-        return "";
+    public void quests(@ModelAttribute("questions") EditQuestionDTO quest, BindingResult result, Model model) {
+        
+        questService.editQuestion(quest);
     }
 
 }

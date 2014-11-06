@@ -6,6 +6,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" th:href="@{/css/main.css}"
 	href="../../css/main.css" />
+	
+	<script src="../../js/jquery-1.4.1.min.js"></script>
+<script>
+
+
+</script>
 </head>
 <body>
 
@@ -18,15 +24,21 @@
 			Pytanie: <input type="text" th:name="content"
 				th:value="${quest.content}"></input> <input type="text"
 				th:name="answerA" th:value="${quest.answerA}"></input> <input
-				type="radio" th:name="correctAnswer" th:value="${quest.answerA}"></input> <input type="text"
-				th:name="answerB" th:value="${quest.answerB}"></input> <input
-				type="radio" th:name="correctAnswer" th:value="${quest.answerB}"></input> <input type="text"
+				type="radio" th:name="correctAnswer" th:value="${quest.answerA}"></input>
+			<input type="text" th:name="answerB" th:value="${quest.answerB}"></input>
+			<input type="radio" th:name="correctAnswer"
+				th:value="${quest.answerB}"></input> <input type="text"
 				th:name="answerC" th:value="${quest.answerC}"></input> <input
-				th:type="radio" th:name="correctAnswer" th:value="${quest.answerC}"></input> <input type="text"
-				th:name="answerD" th:value="${quest.answerD}"></input> <input
-				th:type="radio" th:name="correctAnswer" th:value="${quest.answerD}"></input>
+				th:type="radio" th:name="correctAnswer" th:value="${quest.answerC}"></input>
+			<input type="text" th:name="answerD" th:value="${quest.answerD}"></input>
+			<input th:type="radio" th:name="correctAnswer"
+				th:value="${quest.answerD}"></input> Przedmiot: <select
+				name="courseGenere">
+				<option value="Algebra">Algebra</option>
+				<option value="Analiza">Analiza</option>
+			</select>
 		</div>
-		<button class="button" type="submit">Edytuj</button>
+		<button id = "btn" class="button" type="submit">Edytuj</button>
 	</form>
 </body>
 </html>

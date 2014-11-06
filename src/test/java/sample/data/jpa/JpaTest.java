@@ -54,7 +54,7 @@ public class JpaTest extends IntegrationTest {
         Question quest = new Question();
         quest.setContent("Glupie pytanie");
         // when
-        questionService.addQuestion(quest);
+//        questionService.addQuestion(quest);
         // Question questFromDB = questionService.getOneQuestion(quest.getId());
         Question questFromDB = (Question) em.createQuery("select c from Question c where c.content = 'Glupie pytanie'").getSingleResult();
         // then

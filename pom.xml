@@ -91,6 +91,15 @@
 			<groupId>org.apache.activemq</groupId>
 			<artifactId>activemq-client</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-neo4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.thinkaurelius.thrift</groupId>
+			<artifactId>thrift-server</artifactId>
+			<version>0.3.3</version>
+		</dependency>
 	</dependencies>
 
 	<build>

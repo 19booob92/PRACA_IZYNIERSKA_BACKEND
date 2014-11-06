@@ -27,7 +27,10 @@
 		Odp. C <input type="text" name="answerC" /><input type="radio"
 			name="correctAnswer" value="" /><br /> Odp. D <input type="text"
 			name="answerD" /><input type="radio" name="correctAnswer" value="" /><br />
-
+		Przedmiot:	<select name="courseGenere">
+			<option value="Algebra">Algebra</option>
+			<option value="Analiza">Analiza</option>
+		</select>
 		<button class="button" type="submit">Dodaj</button>
 	</form>
 	<a href="/logout" th:href="@{/logout}"><div class="button">Wyloguj</div></a>

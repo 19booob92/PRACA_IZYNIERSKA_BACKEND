@@ -63,3 +63,7 @@ form {
 	display: inline-block;
 	text-align: center;
 }
+
+.hide {
+	display: none;
+}
