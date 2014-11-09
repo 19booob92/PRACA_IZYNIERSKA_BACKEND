@@ -1,7 +1,10 @@
 package sample.data.jpa.service;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
+import org.assertj.core.util.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +19,13 @@ public class CourseServiceImpl implements CourseService {
     CourseRepo courseRepo;
     
     @Override
-    public CourseGenere getService(String name) {
+    public CourseGenere findCourse(String name) {
         return courseRepo.findByName(name);
+    }
+
+    @Override
+    public List<CourseGenere> findAll() {
+        return Lists.newArrayList(courseRepo.findAll());
     }
 
 }

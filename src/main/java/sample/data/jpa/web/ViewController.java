@@ -43,7 +43,7 @@ public class ViewController {
 
     @RequestMapping(value = "/stats/userStat")
     public String usersStats() {
-        return "redirect:/stats/statsForUser";
+        return "stats";
     }
 
 }

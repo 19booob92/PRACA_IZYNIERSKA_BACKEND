@@ -2,8 +2,6 @@ package sample.data.jpa.service;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-
 import org.assertj.core.util.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,7 +45,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public void addQuestion(EditQuestionDTO quest) {
-        CourseGenere course = courseService.getService(quest.getCourseGenere());
+        CourseGenere course = courseService.findCourse(quest.getCourseGenere());
         Question questionModel = new Question();
         questionModel.setAnswerA(quest.getAnswerA());
         questionModel.setAnswerB(quest.getAnswerB());

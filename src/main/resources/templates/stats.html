@@ -1,37 +1,81 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
-<head>
-<link rel="stylesheet" th:href="@{/css/main.css}"
-	href="../../css/main.css" />
 
+<head>
 <script src="../../js/jquery-1.4.1.min.js"></script>
+<script src="../../js/jquery.twbsPagination.min.js"></script>
+<script src="../../js/bootstrap.min.js"></script>
 
 <title>Webowa Aplikacja Do Przeprowadzania Testow</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
-<link rel="stylesheet" type="text/css" media="all"
-	href="../../views/style.css" th:href="@{/views/style.css}" />
+
+<link rel="stylesheet" th:href="@{/css/main.css}"
+	href="../../css/main.css" />
+<link rel="stylesheet" th:href="@{/css/bootstrap.css}"
+	href="../../css/bootstrap.css" />
+
+<script>
+	function getPage(pageNum) {
+		$.ajax({
+			url : "/stats/statsForUser/" + pageNum,
+			type : "GET",
+			success : function(result) {
+				$("#paginatedTable").find("tr:gt(0)").remove();
+				$.each(result, function(i) {
+					$('#paginatedTable > tbody:last').append(
+							'<tr>' + '<td>' + result[i].testId + '</td>'
+									+ '<td>' + result[i].studentId + '</td>'
+									+ '<td>' + result[i].mark + '</td>'
+									+ '<td>' + result[i].points + '</td>'
+									+ '<td>' + result[i].maxPoints + '</td>'
+									+ '</tr>');
+				});
+			}
+		});
+	}
+
+	var FIRST_PAGE = 1;
+
+	$(document).ready(function() {
+		getPage(FIRST_PAGE);
+		$('#pagination-demo').twbsPagination({
+			totalPages : 35,
+			visiblePages : 5,
+			first : "Pierwsza",
+			last : "Ostatnia",
+			next : 'Następny',
+			prev : 'Poprzedni',
+			onPageClick : function(event, page) {
+				getPage(page);
+			}
+		});
+	});
+</script>
+
 </head>
 <body>
-	<table>
-		<tr>
-			<td>Punkty</td>
-			<td>Maksymalna ilość punktów</td>
-			<td>Ocena</td>
-			<td>Id testu</td>
-			<td>Id studenta</td>
-		</tr>
-		<tr th:each="stat : ${statsUsr}">
-		<tr>
-			<td th:text="${stat.points}"></td>
-			<td th:text="${stat.maxPoints}"></td>
-			<td th:text="${stat.mark}"></td>
-			<td th:text="${stat.testId}"></td>
-			<td th:text="${stat.studentId}"></td>
-		</tr>
-		</tr>
+
+	<table id="paginatedTable" class="table">
+		<thead>
+			<tr>
+				<td>Id testu</td>
+				<td>Id studenta</td>
+				<td>Ocena</td>
+				<td>Punkty</td>
+				<td>Maksymalna ilość punktów</td>
+			</tr>
+		</thead>
+		<tbody>
+
+		</tbody>
 	</table>
+
+	<div id="page-content"></div>
+	<ul id="pagination-demo" class="pagination-sm pagination">
+	</ul>
+
 	<a href="/logout" th:href="@{/logout}"><div class="button">Wyloguj</div></a>
 </body>
 </html>

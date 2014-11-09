@@ -1,24 +1,25 @@
 package sample.data.jpa.service;
 
-import java.util.List;
 import java.util.Set;
 
 import javax.transaction.Transactional;
 
-import org.assertj.core.util.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import sample.data.jpa.model.Mark;
 import sample.data.jpa.model.Results;
-import sample.data.jpa.repository.MarkRepo;
 import sample.data.jpa.repository.ResultsRepo;
 
 
 @Service
 @Transactional
 public class ResultsServiceImpl implements ResultsService {
-
+    
+    private final int ENTRIES_PER_PAGE = 5;
+    
     @Autowired
     ResultsRepo resultsRepo;
 
@@ -26,8 +27,10 @@ public class ResultsServiceImpl implements ResultsService {
     MarkService service;
 
     @Override
-    public List<Results> getAllResults() {
-        return Lists.newArrayList(resultsRepo.findAll());
+    public Page<Results> getAllResults(Integer pageNum) {
+        PageRequest request =
+                new PageRequest(pageNum - 1, ENTRIES_PER_PAGE);
+        return resultsRepo.findAll(request);
     }
 
     @Override

@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import sample.data.dto.EditQuestionDTO;
-import sample.data.dto.QuestionDTO;
 import sample.data.jpa.model.CourseGenere;
 import sample.data.jpa.model.Question;
 import sample.data.jpa.service.CourseService;
@@ -21,7 +20,7 @@ public class QuestionMapper {
     
     public Question convert(EditQuestionDTO quest){
 
-        CourseGenere course = courseService.getService(quest.getCourseGenere());
+        CourseGenere course = courseService.findCourse(quest.getCourseGenere());
         Question questionModel = questService.getOneQuestion(quest.getId());
         
         questionModel.setAnswerA(quest.getAnswerA());

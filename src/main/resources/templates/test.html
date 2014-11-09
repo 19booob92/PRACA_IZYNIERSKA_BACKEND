@@ -14,7 +14,7 @@
 
 	function avoidRefresh() {
 		window.onbeforeunload = function() {
-	        return "Dude, are you sure you want to leave? Think of the kittens!";
+	        return "Czy jesteś pewny? ";
 	    }
 	}
 	
@@ -79,7 +79,9 @@
 											tick : ans
 										});
 									});
+							console.log(array);
 							if (array.length === questAmount) {
+								console.log(array.length + "  " + questAmount);
 								send(array);
 								avoidRefresh();
 							} else {

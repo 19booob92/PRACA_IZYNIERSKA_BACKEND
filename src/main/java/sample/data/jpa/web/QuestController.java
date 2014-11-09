@@ -63,9 +63,9 @@ public class QuestController {
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public void quests(@ModelAttribute("questions") EditQuestionDTO quest, BindingResult result, Model model) {
-        
+    public String quests(@ModelAttribute("questions") EditQuestionDTO quest) {
         questService.editQuestion(quest);
+        return "editQuestion";
     }
 
 }

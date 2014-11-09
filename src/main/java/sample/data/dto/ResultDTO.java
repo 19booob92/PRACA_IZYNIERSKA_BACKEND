@@ -1,6 +1,8 @@
 package sample.data.dto;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 
 public class ResultDTO implements Serializable{
 
@@ -20,7 +22,11 @@ public class ResultDTO implements Serializable{
         this.isCorrect = isCorrect;
         this.points = points;
         this.maxPoints = maxPoints;
-        this.percent = String.valueOf(100. * ((float)points / (float)maxPoints)).substring(0, 5);
+        
+        BigDecimal roundedValue = new BigDecimal(100. * ((float)points / (float)maxPoints));
+        roundedValue = roundedValue.setScale(4, BigDecimal.ROUND_HALF_UP);
+        
+        this.percent = roundedValue.toString();
         this.mark = mark;
     }
 

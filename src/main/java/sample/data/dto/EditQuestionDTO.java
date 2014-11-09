@@ -1,10 +1,5 @@
 package sample.data.dto;
 
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
-import sample.data.jpa.model.CourseGenere;
 
 
 public class EditQuestionDTO {

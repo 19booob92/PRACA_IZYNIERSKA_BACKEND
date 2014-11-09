@@ -9,36 +9,37 @@
 </head>
 <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
 <script>
-$(document).ready(function() {
-	getRole();
-});
-
-function getRole() {
-	$.get("/users/role", function( data ) {
-		
-		if (data === "STUDENT") {
-			$('#genTest').show();
-		} else if (data === "ADMIN") {
-			$("#usersMng").show();
-		} else if (data === "LECTOR") {
-			$("#treshold").show();
-			$("#stats").show();
-			$("#questMng").show();
-		}
+	$(document).ready(function() {
+		getRole();
 	});
-}
+
+	function getRole() {
+		$.get("/users/role", function(data) {
+
+			if (data === "STUDENT") {
+				$('#genTest').show();
+			} else if (data === "ADMIN") {
+				$("#usersMng").show();
+			} else if (data === "LECTOR") {
+				$("#treshold").show();
+				$("#stats").show();
+				$("#questMng").show();
+			}
+		});
+	}
 </script>
 
 <body>
-	<a class="hide" id="genTest" href="/test" th:href="@{/test}"><div class="button">Wygeneruj
-			test</div></a>
+	<a class="hide" id="genTest" href="/courses" th:href="@{/courses}"><div
+			class="button">Wygeneruj test</div></a>
 	<a id="stats" href="/stats/userStat" th:href="@{/stats/userStat}"
 		class="btn btn-large btn-success hide"><div class="button">Statystyki</div></a>
 	<a id="questMng" href="/quest/questMng" th:href="@{/quest/questMng}"
 		class="hide btn btn-large btn-success"><div class="button">Pytania</div></a>
-	<a class = "hide" id="usersMng" href="/users/usersMng" th:href="@{/users/usersMng}"><div
-			class="button">Użytkownicy</div></a>
+	<a class="hide" id="usersMng" href="/users/usersMng"
+		th:href="@{/users/usersMng}"><div class="button">Użytkownicy</div></a>
 	<a id="treshold" class="hide" href="/mark" th:href="@{/mark}"><div
 			class="button">Progi</div></a>
+	<a href="/logout" th:href="@{/logout}"><div class="button">Wyloguj</div></a>
 </body>
 </html>

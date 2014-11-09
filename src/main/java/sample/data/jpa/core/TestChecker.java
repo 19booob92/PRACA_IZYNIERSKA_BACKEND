@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import sample.data.dto.QuestionDTO;
 import sample.data.dto.ResultDTO;
 import sample.data.jpa.model.Question;
-import sample.data.jpa.model.Results;
 import sample.data.jpa.service.QuestionService;
 import sample.data.jpa.service.ResultsService;
 
@@ -23,7 +22,7 @@ public class TestChecker {
     private ResultsService resultsService;
     
     public ResultDTO checkQuestions(List<QuestionDTO> question) {
-        int points = 0, i = 0;
+        int points = 0, questAmount = 0;
         boolean[] answersBool = new boolean[question.size()];
         int  maxPoints = 0;
         
@@ -34,12 +33,12 @@ public class TestChecker {
             maxPoints += questFromDb.getPoints();
             
             if (quest.getTick().equals(questFromDb.getCorrectAnswer())) {
-                answersBool[i] = true;
+                answersBool[questAmount] = true;
                 points += questFromDb.getPoints();
             } else {
-                answersBool[i] = false;
+                answersBool[questAmount] = false;
             }
-            i++;
+            questAmount++;
         }
         
         return new ResultDTO(answersBool, points, maxPoints, resultsService.evaluateMark(points, maxPoints));

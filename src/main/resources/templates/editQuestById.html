@@ -9,7 +9,12 @@
 	
 	<script src="../../js/jquery-1.4.1.min.js"></script>
 <script>
-
+$(document).ready(function() {
+	$("#btn").click(function(){
+		javascript:self.close();
+		self.close();
+	});
+});
 
 </script>
 </head>
@@ -20,7 +25,7 @@
 
 		<div th:each="quest : ${editQuest}">
 
-			<input type="text" th:name="id" th:value="${quest.id}"></input>
+			<input type="text" th:name="id" th:value="${quest.id}" style="display:none"></input>
 			Pytanie: <input type="text" th:name="content"
 				th:value="${quest.content}"></input> <input type="text"
 				th:name="answerA" th:value="${quest.answerA}"></input> <input

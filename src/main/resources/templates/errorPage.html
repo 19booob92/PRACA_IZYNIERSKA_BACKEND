@@ -30,9 +30,9 @@ function getRole() {
 </script>
 
 <body>
-		<a href="/logout" th:href="@{/logout}"><div class="button">Wyloguj</div></a>
 			
 			<div align="center" font-size = "25px" color="red" th:text="${session.errorTxt}">
 			</div>
+		<a href="/logout" th:href="@{/logout}"><div class="button">Wyloguj</div></a>
 </body>
 </html>

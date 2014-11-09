@@ -1,12 +1,10 @@
 package sample.data.jpa.utils;
 
-import org.springframework.stereotype.Component;
-
-
 import java.io.IOException;
 import java.nio.charset.Charset;
 
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Webowa Aplikacja Do Przeprowadzania Testow</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" th:href="@{/css/main.css}"
+	href="../../css/main.css" />
+</head>
+<script src="../../js/jquery-1.4.1.min.js"></script>
+<script>
+	$(document).ready(function() {
+		btnClick();
+	});
+	
+	function btnClick() {
+		$("input[type=button]").click(function() {
+			btn = $(this);
+			$.ajax({
+				url : "/test/courseName/"+btn.attr("value"),
+				type : "GET",
+				success : function(result) {
+					window.location.replace("/test/courseName/"+btn.attr("value"));
+				}
+			});
+		});
+	}
+</script>
+
+<body>
+		<table>
+			<tr th:each="group : ${groups}">
+						<td><input class="buttonList" type = "button" th:value = "${group.name}"/></td>
+			</tr>
+		</table>
+		<a href="/logout" th:href="@{/logout}"><div class="button">Wyloguj</div></a>
+</body>
+</html>
