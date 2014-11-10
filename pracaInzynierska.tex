@@ -1,0 +1,56 @@
+\documentclass[a4paper, titlepage]{article}
+
+\usepackage{polski}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{listings}
+\usepackage{indentfirst}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{url}
+\usepackage{dirtree}
+
+
+\DeclareCaptionFont{white}{\color{white}}
+
+\DeclareCaptionFormat{listing}{%
+
+	\parbox{\textwidth}{\colorbox{gray}{\parbox{\textwidth}{#1#2#3}}\vskip-4pt}}
+
+	\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white}
+
+	\lstset{frame=lrb,xleftmargin=\fboxsep,xrightmargin=-\fboxsep}
+
+	\setcounter{page}{0}
+
+	\begin{document}
+
+	\author{Mateusz Olczak}
+
+	\title{Webowa aplikacja do przeprowadzania testów - Praca Inżynierska}
+	
+	\maketitle
+	\newpage
+
+
+	\section{\textbf{Wstęp}}
+
+	W dzisiejszych czasach, dzięki nowym technologiom oraz rosnących przepustowościach pasma internetowego dostępnego dla zwykłego użytkownika, coraz częściej odchodzi się od projektowania aplikacji desktopowych na rzecz aplikacji webowych. Aplikacje webowe są w pełni niezależne od systemu operacyjnego, zazwyczaj cechują się o wiele mniejszymi wymaganiami sprzętowymi (ponieważ przeważająca część logiki, wykonywana jest po stronie serwera). Ponadto dzięki całej gamie frameworków, pomagających w tworzeniu widokowej wartswy aplikacji, systemy tworzone jako aplikacje webowe, są o wiele bardziej estetyczne, ergonomiczne dla użytkownika, a dla twórcy oprogramowania, łatwiejsze do modyfikacji. 
+	Jak widać, istnieje wiele powodów dla których warto porzucić aplikacje desktopowe na rzecz przenośnych systemów przeglądarkowych. Dlatego też realizowana przezemnie aplikacja, reprezentuje nowy nurt.
+	
+
+	\subsection{Cele}
+	Głównym założeniem projektu było stworzenie aplikacji webowej, której zadaniem było umożliwienie tworzenia pytań wyboru oraz generowanie testów z wcześniej utworzonych pytań.
+	Ponadto, dużą uwagę nałożono na bezpieczeństwo oraz responsywność systemu. Aplikacja miała być intuicyjna, aby każdy student mógł rozwiązać test, bez konieczności wcześniejszego wprowadzenia do korzystania z systemu. 
+	\subsection{Zakres pracy}
+	W mojej pracy zawarłem podstawowe informacje o działaniu systemu, opis funkcjonalności, wykorzystanych technologii oraz instrukcję korzystania z systemu.
+	
+	\section{\textbf{Teoria}}
+	\subsection{Spis treści}
+	\subsection{Prawa autorskie}
+	\subsection{Odpowiedzialność dyplomanta}
+	
+\end{document}
+
