@@ -26,21 +26,23 @@ $(document).ready(function() {
 		<div th:each="quest : ${editQuest}">
 
 			<input type="text" th:name="id" th:value="${quest.id}" style="display:none"></input>
-			Pytanie: <input type="text" th:name="content"
-				th:value="${quest.content}"></input> <input type="text"
-				th:name="answerA" th:value="${quest.answerA}"></input> <input
-				type="radio" th:name="correctAnswer" th:value="${quest.answerA}"></input>
+			Pytanie: 
+			<input type="text" th:name="content" th:value="${quest.content}"></input> 
+			<input type="text" th:name="answerA" th:value="${quest.answerA}"></input> 
+			<input type="radio" th:name="correctAnswer" value="answerA" th:checked="${quest.correctAnswer}=='answerA'"></input>
 			<input type="text" th:name="answerB" th:value="${quest.answerB}"></input>
-			<input type="radio" th:name="correctAnswer"
-				th:value="${quest.answerB}"></input> <input type="text"
-				th:name="answerC" th:value="${quest.answerC}"></input> <input
-				th:type="radio" th:name="correctAnswer" th:value="${quest.answerC}"></input>
+			<input type="radio" th:name="correctAnswer"	value="answerB" th:checked="${quest.correctAnswer}=='answerB'"></input> 
+			<input type="text" th:name="answerC" th:value="${quest.answerC}"></input>
+			<input th:type="radio" th:name="correctAnswer" th:value="answerC" th:checked="${quest.correctAnswer}=='answerC'"></input>
 			<input type="text" th:name="answerD" th:value="${quest.answerD}"></input>
-			<input th:type="radio" th:name="correctAnswer"
-				th:value="${quest.answerD}"></input> Przedmiot: <select
+			<input th:type="radio" th:name="correctAnswer" th:value="answerD" th:checked="${quest.correctAnswer}=='answerD'"></input> 
+			Przedmiot:
+			<select
 				name="courseGenere">
 				<option value="Algebra">Algebra</option>
 				<option value="Analiza">Analiza</option>
+				<option value="Informatyka">Analiza</option>
+				<option value="Fizyka">Analiza</option>
 			</select>
 		</div>
 		<button id = "btn" class="button" type="submit">Edytuj</button>

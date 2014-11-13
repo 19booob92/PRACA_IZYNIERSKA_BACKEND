@@ -84,19 +84,19 @@
 
 			<tr>
 				<td th:text="${quest.answerA}"></td>
-				<td><input type="radio" th:name="${quest.id}" /></td>
+				<td><input th:id="${quest.correctAnswer}" type="radio" th:name="${quest.id}" th:checked="${quest.correctAnswer}=='answerA' ? true : false"/></td>
 			</tr>
 			<tr>
 				<td th:text="${quest.answerB}"></td>
-				<td><input type="radio" th:name="${quest.id}" /></td>
+				<td><input th:id="${quest.correctAnswer}" type="radio" th:name="${quest.id}" th:checked="${quest.correctAnswer}=='answerB' ? true : false"/></td>
 			</tr>
 			<tr>
 				<td th:text="${quest.answerC}"></td>
-				<td><input type="radio" th:name="${quest.id}" /></td>
+				<td><input th:id="${quest.correctAnswer}" type="radio" th:name="${quest.id}" th:checked="${quest.correctAnswer}=='answerC' ? true : false"/></td>
 			</tr>
 			<tr>
 				<td th:text="${quest.answerD}"></td>
-				<td><input type="radio" th:name="${quest.id}" /></td>
+				<td><input th:id="${quest.correctAnswer}" type="radio" th:name="${quest.id}" th:checked="${quest.correctAnswer}=='answerD' ? true : false"/></td>
 			</tr>
 			</tr>
 		</table>

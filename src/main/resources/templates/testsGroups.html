@@ -12,27 +12,31 @@
 	$(document).ready(function() {
 		btnClick();
 	});
-	
+
 	function btnClick() {
-		$("input[type=button]").click(function() {
-			btn = $(this);
-			$.ajax({
-				url : "/test/courseName/"+btn.attr("value"),
-				type : "GET",
-				success : function(result) {
-					window.location.replace("/test/courseName/"+btn.attr("value"));
-				}
-			});
-		});
+		$("input[type=button]").click(
+				function() {
+					btn = $(this);
+					$.ajax({
+						url : "/test/courseName/" + btn.attr("value"),
+						type : "GET",
+						success : function(result) {
+							window.location.replace("/test/courseName/"
+									+ btn.attr("value"));
+						}
+					});
+				});
 	}
 </script>
 
 <body>
-		<table>
-			<tr th:each="group : ${groups}">
-						<td><input class="buttonList" type = "button" th:value = "${group.name}"/></td>
-			</tr>
-		</table>
-		<a href="/logout" th:href="@{/logout}"><div class="button">Wyloguj</div></a>
+	<table>
+		<tr th:each="group : ${groups}">
+			<td><input class="buttonList" type="button"
+				th:value="${group.name}" /></td>
+		</tr>
+	</table>
+	</br>
+	<a href="/logout" th:href="@{/logout}"><div class="button">Wyloguj</div></a>
 </body>
 </html>
