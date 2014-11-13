@@ -27,7 +27,7 @@ import com.google.gson.Gson;
 @Controller
 public class TestController {
 
-    private static final int AMOUNT = 10; // FIXME
+    public static final int QUEST_AMOUNT = 10; // FIXME
 
     @Autowired
     TestCreator testCreator;
@@ -48,7 +48,7 @@ public class TestController {
     public String generateTest(@PathVariable String name, Model model, Authentication auth, HttpSession session) {
         try {
             if (usersService.getUser(auth.getName()).isAble()) {
-                model.addAttribute("test", testCreator.createTest(AMOUNT, name));
+                model.addAttribute("test", testCreator.createTest(name));
                 return "test";
             } else {
                 session.setAttribute("errorTxt", "Już rozwiązałeś test !");

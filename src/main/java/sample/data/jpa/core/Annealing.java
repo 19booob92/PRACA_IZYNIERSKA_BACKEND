@@ -1,67 +1,90 @@
-//package sample.data.jpa.core;
-//
-//import java.util.ArrayList;
-//import java.util.Random;
-//
-//import junit.framework.Test;
-//
-//
-//public class Annealing {
-//
-//    private ArrayList<Test> zbiorProcesow;
-//    private int biezacyPotrzebnyCzas = 0, wtw = 0;;
-//
-//    Glowna(int ileProcesow) {
-//        zbiorProcesow = new ArrayList<Proces>();
-//        for (int j = 0; j < ileProcesow; j++) {
-//            zbiorProcesow.add(new Proces());
-//        }
-//    }
-//
-//    int oblicz(ArrayList<Proces> tablica) {
-//        // szuka ustawienia wg kryterium: minimalna wartość z TWT = SUMA(w*T)
-//        wtw = 0;
-//        for (Proces i : tablica) {
-//            System.out.println(i);
-//            biezacyPotrzebnyCzas += i.wymaganiaCzasowe; // sumowanie
-//            System.out.println(biezacyPotrzebnyCzas + " biezacy czas"); // @test
-//            if (biezacyPotrzebnyCzas < i.czasZakonczenia) {
-//                wtw += i.waga;
-//            }
-//            else {
-//                wtw += i.waga * (biezacyPotrzebnyCzas - i.czasZakonczenia);
-//            }
-//        }
-//        System.out.println("To jest wtw " + wtw);
-//        biezacyPotrzebnyCzas = 0;
-//        return wtw; // wtw temteratura początkowa
-//    }
-//
-//    void szukajOptimum() {
-//        int rozwiazanie = oblicz(zbiorProcesow), ktory = 0, zamienZ = 0;
-//        Random generator = new Random();
-//        ArrayList<Proces> kopia = zbiorProcesow;
-//        Proces tmp;
-//        while (rozwiazanie > zbiorProcesow.size() * 50) {
-//            ktory = generator.nextInt(zbiorProcesow.size()); // losuje dwa
-//                                                             // elementy które
-//                                                             // zamienie
-//            zamienZ = generator.nextInt(zbiorProcesow.size());
-//            tmp = kopia.get(ktory);
-//            kopia.set(ktory, kopia.get(zamienZ));
-//            kopia.set(zamienZ, tmp);
-//            if (oblicz(kopia) <= rozwiazanie) {
-//                zbiorProcesow = kopia;
-//                for (Proces i : zbiorProcesow) {
-//                    System.out.println(" Jest " + i);
-//                }
-//            }
-//        }
-//        // kopiuje tablice, losuje, usuwam wylosowany element z kopii tablicy
-//    }
-//
-//    public static void main(String[] args) {
-//        Glowna program = new Glowna(30);
-//        program.szukajOptimum();
-//    }
-//}
+package sample.data.jpa.core;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import org.assertj.core.util.Lists;
+
+import sample.data.jpa.model.Question;
+import sample.data.jpa.utils.PointsAvg;
+import sample.data.jpa.web.TestController;
+
+
+public class Annealing {
+
+    private List<Question> testToServe = new ArrayList<>();
+
+    private List<Question> allQuestionsFromGroup = new ArrayList<>();
+
+    private static final double E = 2.71828152;
+
+    private Random random;
+
+    private String courseGroup;
+
+    private final static float MIN_TEMP = 0.09f;
+
+    public List<Question> findTestsWithSamePointsAmount(List<Question> questsFromGroup, String courseGenere) {
+        double temp = 50;
+        this.courseGroup = courseGenere;
+        allQuestionsFromGroup = questsFromGroup;
+        random = new Random(System.nanoTime());
+        testToServe = splitQuestionList();
+
+        while (temp > MIN_TEMP) {
+            List<Question> beforeSwap = Lists.newArrayList(testToServe);
+            List<Question> beforeSwapOtherQuest = Lists.newArrayList(allQuestionsFromGroup);
+            swap();
+            List<Question> afterSwap = Lists.newArrayList(testToServe);
+            if (PointsAvg.isCloser(beforeSwap, afterSwap, courseGenere)) {
+                testToServe = beforeSwap;
+                allQuestionsFromGroup = beforeSwapOtherQuest;
+            } else if (random.nextFloat() * 1.0 < probality(temp, beforeSwap, afterSwap)) {
+                testToServe = beforeSwap;
+            }
+            temp = cooling(temp);
+        }
+        return testToServe;
+    }
+
+    private double probality(double temp, List<Question> beforeList, List<Question> afterList) {
+        int beforePoints = PointsAvg.getPointsFromTest(beforeList);
+        int afterPoints = PointsAvg.getPointsFromTest(afterList);
+
+          return Math.pow(E, -(PointsAvg.accuracy(afterPoints, this.courseGroup) - PointsAvg.accuracy(beforePoints, this.courseGroup)));
+    }
+
+    private double cooling(double temp) {
+        return temp * 0.55;
+    }
+
+    private List<Question> splitQuestionList() {
+        if (TestController.QUEST_AMOUNT > allQuestionsFromGroup.size()) {
+            throw new IllegalArgumentException(String.valueOf(allQuestionsFromGroup.size()));
+        }
+
+        List<Question> outputList = new ArrayList<Question>();
+
+        outputList = TestCreator.addWithoutDuplicates(allQuestionsFromGroup);
+
+        allQuestionsFromGroup.removeAll(outputList); // deleted questions unused
+                                                     // in first test
+
+        return outputList;
+    }
+
+    private void swap() {
+        
+        int range = (testToServe.size() - 1) > 0 ? testToServe.size() - 1 : 1;
+        int indexToSwap = random.nextInt(range);
+        range = (allQuestionsFromGroup.size() - 1) > 0 ? allQuestionsFromGroup.size() - 1 : 1;
+        int indexToSwapWhith = random.nextInt(range);
+
+        Question questToSwap = testToServe.remove(indexToSwap);
+        Question questToSwapWhith = allQuestionsFromGroup.remove(indexToSwapWhith);
+
+        allQuestionsFromGroup.add(questToSwap);
+        testToServe.add(questToSwapWhith);
+    }
+}

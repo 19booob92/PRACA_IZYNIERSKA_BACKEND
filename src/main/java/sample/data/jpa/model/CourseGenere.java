@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import sample.data.jpa.utils.Courses;
+
 
 @Entity
 @Table(name = "courseGenere")
@@ -32,7 +34,6 @@ public class CourseGenere implements Serializable {
     public String getName() {
         return name;
     }
-
 
     public void setName(String name) {
         this.name = name;

@@ -11,52 +11,65 @@ import org.springframework.stereotype.Component;
 import sample.data.jpa.model.CourseGenere;
 import sample.data.jpa.model.Question;
 import sample.data.jpa.service.CourseService;
-import sample.data.jpa.service.QuestionService;
+import static sample.data.jpa.utils.PointsAvg.*;
+import sample.data.jpa.web.TestController;
+
 
 @Component
 public class TestCreator {
 
+    private Annealing oven = new Annealing();
+
     @Autowired
     private CourseService courseService;
 
-    private Random random;
-
-    private List<Question> listFromDataBase;
+    private static Random random;
 
     public TestCreator() {
-        random = new Random(); // FIXME jakieś zeiarno z dobrym mieszaniem
+        random = new Random(System.nanoTime());
     }
 
-    public List<Question> createTest(int questionsAmout, String name) throws IllegalArgumentException {
-        CourseGenere course = courseService.findCourse(name);
-        listFromDataBase = course.getQuestions();
+    public List<Question> createTest(String courseGroup) throws IllegalArgumentException {
+        List<CourseGenere> courses = courseService.findAll(); // TODO
+        evaluateValues(courses); // TODO
+
+        List<Question> questsForCourse = courseService.findCourse(courseGroup).getQuestions();
         
-        if (questionsAmout > listFromDataBase.size()) {
-            throw new IllegalArgumentException(String.valueOf(listFromDataBase.size()));
+        if (TestController.QUEST_AMOUNT > questsForCourse.size()) {
+            throw new IllegalArgumentException(String.valueOf(questsForCourse.size()));
         }
-        
-        List<Question> outputList = new ArrayList<Question>();
-        
-        for (int i = 0; i < questionsAmout; i++) {
-            addWithoutDuplicates(outputList);
+
+        return oven.findTestsWithSamePointsAmount(questsForCourse, courseGroup);
+    }
+
+    public static List<Question> addWithoutDuplicates(List<Question> inputList) {
+        Question actualItem;
+        List<Question> temp = Lists.newArrayList(inputList);
+        List<Question> outputList = new ArrayList<>();
+        for (int i = 0; i < TestController.QUEST_AMOUNT; i++) {
+            actualItem = randomQuestion(temp);
+
+            while (outputList.contains(actualItem)) {
+                actualItem = randomQuestion(temp);
+            }
+            temp.remove(actualItem);
+            outputList.add(actualItem);
         }
         return outputList;
     }
 
-    private void addWithoutDuplicates(List<Question> outputList) {
-        Question actualItem = randomQuestion();
-
-        while (outputList.contains(actualItem)) {
-            actualItem = randomQuestion();
-        }
-        outputList.add(actualItem);
+    private static Question randomQuestion(List<Question> inputList) {
+        int randomValue = random.nextInt(inputList.size() - 1);
+        return inputList.get(randomValue);
     }
 
-    private Question randomQuestion() {
-        List<Question> listCopy = Lists.newArrayList(listFromDataBase);
-        int randomValue = random.nextInt(listCopy.size()-1);
-        listCopy.remove(randomValue);
-        return listFromDataBase.get(randomValue);
+    public static List<Question> getRandomTest(List<Question> allQuestions) {
+        List<Question> outputList = new ArrayList<Question>();
+
+        for (int i = 0; i < TestController.QUEST_AMOUNT; i++) {
+            outputList = TestCreator.addWithoutDuplicates(allQuestions);
+        }
+        return outputList;
     }
 
 }
