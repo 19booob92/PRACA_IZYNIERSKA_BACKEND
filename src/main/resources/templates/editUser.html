@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<script src="../../js/jquery-1.4.1.min.js"></script>
+<script src="../../js/jquery-ui.min.js"></script>
+<script src="../../js/jquery.twbsPagination.min.js"></script>
+<script src="../../js/bootstrap.min.js"></script>
+
+<link rel="stylesheet" th:href="@{/js/jquery-ui.min.css}"
+	href="../../ja/jquery-ui.min.css" />
+<link rel="stylesheet" th:href="@{/css/main.css}"
+	href="../../css/main.css" />
+<link rel="stylesheet" th:href="@{/css/bootstrap.css}"
+	href="../../css/bootstrap.css" />
+
+
+<title>Webowa Aplikacja Do Przeprowadzania Testow</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+
+
+<script>
+	function deleteUser(userName) {
+
+		$.ajax({
+			url : "/users/delete/" + userName,
+			type : "DELETE",
+			success : function() {
+				location.reload();
+			}
+		});
+	}
+
+	function getPage(pageNum) {
+		$
+				.ajax({
+					url : "/users/getAll/" + pageNum,
+					type : "GET",
+					success : function(result) {
+						$("#paginatedTable").find("tr:gt(0)").remove();
+						$
+								.each(
+										result,
+										function(i) {
+											$('#paginatedTable > tbody:last')
+													.append(
+															'<tr>'
+																	+ '<td>'
+																	+ result[i].username
+																	+ '</td>'
+																	+ '<td>'
+																	+ result[i].enabled
+																	+ '</td>'
+																	+ '<td>'
+																	+ result[i].able
+																	+ '</td>'
+																	+ '<td><input class="btn" type="button" value="delete" id="' +result[i].username + '"/>'
+																	+ '<input class="btn" type="button" value="edit" id="' + result[i].username + '"/></td>'
+																	+ '</tr>');
+										});
+					}
+				});
+	}
+
+	function edit(userId) {
+		$.ajax({
+			url : "/users/edit/" + userId,
+			type : "GET",
+			success : function(data) {
+				document.getElementById("editDialog").innerHTML = data;
+				$("#editDialog").dialog("open");
+			}
+		});
+	}
+
+	var FIRST_PAGE = 1;
+
+	$(document).ready(function() {
+
+		$("#editDialog").dialog({
+			autoOpen : false,
+		});
+
+		getPage(FIRST_PAGE);
+		$('#pagination-demo').twbsPagination({
+			totalPages : 35,
+			visiblePages : 5,
+			first : "Pierwsza",
+			last : "Ostatnia",
+			next : 'Następny',
+			prev : 'Poprzedni',
+			onPageClick : function(event, page) {
+				getPage(page);
+			}
+		});
+
+		$(document).on("click", "input[type=button]", function() {
+			if ($(this).val() === "delete") {
+				var conf = confirm("Czy na pewno usunąć tego użytkownika ?");
+				if (conf == true) {
+					deleteUser($(this).attr('id'));
+				} else {
+				}
+			} else {
+				edit($(this).attr("id"));
+			}
+		});
+	});
+</script>
+
+</head>
+<body>
+
+	<div id="editDialog" title="Edytuj"></div>
+
+	<table id="paginatedTable" class="table">
+		<thead>
+			<tr>
+				<td>Login</td>
+				<td>Aktywny</td>
+				<td>Rozwiązane testy</td>
+				<td>Edycja</td>
+			</tr>
+		</thead>
+		<tbody>
+
+		</tbody>
+	</table>
+
+	<div id="page-content"></div>
+	<ul id="pagination-demo" class="pagination-sm pagination">
+	</ul>
+
+	<a href="/logout" th:href="@{/logout}"><div class="button">Wyloguj</div></a>
+</body>
+</html>

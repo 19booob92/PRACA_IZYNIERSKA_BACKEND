@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import sample.data.jpa.model.CourseGenere;
 import sample.data.jpa.model.Question;
+import sample.data.jpa.model.Test;
 import sample.data.jpa.service.CourseService;
 import static sample.data.jpa.utils.PointsAvg.*;
 import sample.data.jpa.web.TestController;
@@ -29,9 +30,9 @@ public class TestCreator {
         random = new Random(System.nanoTime());
     }
 
-    public List<Question> createTest(String courseGroup) throws IllegalArgumentException {
-        List<CourseGenere> courses = courseService.findAll(); // TODO
-        evaluateValues(courses); // TODO
+    public Test createTest(String courseGroup) throws IllegalArgumentException {
+        List<CourseGenere> courses = courseService.findAll(); // TODO nie w tym miejscu chyba
+        evaluateValues(courses); // TODO w innym komponencie
 
         List<Question> questsForCourse = courseService.findCourse(courseGroup).getQuestions();
         

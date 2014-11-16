@@ -19,4 +19,5 @@ public class UserServiceImpl implements UserService{
     public UserTmp findByUserName(String login) {
         return userRepo.findByUsername(login);
     }
+
 }

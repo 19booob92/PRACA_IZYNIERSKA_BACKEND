@@ -5,4 +5,5 @@ import sample.data.jpa.model.UserTmp;
 public interface UserService {
 
     UserTmp findByUserName(String login);
+
 }

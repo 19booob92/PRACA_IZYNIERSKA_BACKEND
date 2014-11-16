@@ -45,5 +45,10 @@ public class ViewController {
     public String usersStats() {
         return "stats";
     }
+    
+    @RequestMapping(value = "/userDelete")
+    public String editUsersPage() {
+        return "editUser";
+    }
 
 }

@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-
 @Entity
 @Table(name = "users")
 public class UserTmp implements Serializable {
@@ -20,7 +19,7 @@ public class UserTmp implements Serializable {
 
     private boolean enabled = true;
 
-    private boolean able = true;
+    private String able = "";
 
     
     public String getUsername() {
@@ -52,14 +51,15 @@ public class UserTmp implements Serializable {
         this.enabled = enabled;
     }
 
-    
-    public boolean isAble() {
+    public String getAble() {
         return able;
+    }
+    
+    public void setAble(String courseGroup) {
+        this.able += courseGroup;
+        
     }
 
     
-    public void setAble(boolean able) {
-        this.able = able;
-    }
 
 }

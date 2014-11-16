@@ -1,5 +1,7 @@
 package sample.data.jpa.web;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +15,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import sample.data.dto.AnswerDTO;
+import sample.data.dto.QuestionDTO;
 import sample.data.dto.ResultDTO;
 import sample.data.jpa.core.TestChecker;
 import sample.data.jpa.core.TestCreator;
+import sample.data.jpa.model.Question;
 import sample.data.jpa.model.Results;
+import sample.data.jpa.model.Test;
 import sample.data.jpa.service.QuestionService;
 import sample.data.jpa.service.ResultsService;
+import sample.data.jpa.service.TestService;
 import sample.data.jpa.service.UsersService;
 
 import com.google.gson.Gson;
@@ -30,25 +36,31 @@ public class TestController {
     public static final int QUEST_AMOUNT = 10; // FIXME
 
     @Autowired
-    TestCreator testCreator;
+    private TestService testService;
 
     @Autowired
-    TestChecker testChecker;
+    private TestCreator testCreator;
 
     @Autowired
-    QuestionService questService;
+    private TestChecker testChecker;
 
     @Autowired
-    ResultsService resultsService;
-    
+    private QuestionService questService;
+
     @Autowired
-    UsersService usersService;
+    private ResultsService resultsService;
+
+    @Autowired
+    private UsersService usersService;
 
     @RequestMapping(value = "/test/courseName/{name}", method = RequestMethod.GET)
     public String generateTest(@PathVariable String name, Model model, Authentication auth, HttpSession session) {
         try {
-            if (usersService.getUser(auth.getName()).isAble()) {
-                model.addAttribute("test", testCreator.createTest(name));
+            if (usersService.isAble(auth.getName(), name)) {
+                Test generatedTest = testCreator.createTest(name);
+                testService.saveTest(generatedTest);
+                model.addAttribute("test", generatedTest.getQuestions());
+                model.addAttribute("testId", generatedTest.getId());
                 return "test";
             } else {
                 session.setAttribute("errorTxt", "Już rozwiązałeś test !");
@@ -59,19 +71,27 @@ public class TestController {
             return "errorPage";
         }
     }
-   
+
     @RequestMapping(value = "/checkTest", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     @ResponseBody
     public String check(@RequestBody AnswerDTO questions, Authentication authentication) {
-        ResultDTO testResult = testChecker.checkQuestions(questions.getQuestions());
+        List<QuestionDTO> addQuestions = questions.getQuestions();
+
+        ResultDTO testResult = testChecker.checkQuestions(addQuestions);
         persistResult(questions, authentication, testResult);
 
-        usersService.disableUser(authentication.getName());
+        String courseGroup = questService.recognizeCourseGroup(addQuestions);
+
+        String user = authentication.getName();
         
+        usersService.disableUser(user, courseGroup);
+
+        testService.completeTestData(courseGroup, testResult.getPoints(), user, questions);
+
         Gson gson = new Gson();
         return gson.toJson(testResult);
     }
-    
+
     private void persistResult(AnswerDTO questions, Authentication authentication, ResultDTO testResult) {
         Results result = new Results();
         result.setPoints(testResult.getPoints());
@@ -82,4 +102,5 @@ public class TestController {
 
         resultsService.addResult(result);
     }
+
 }

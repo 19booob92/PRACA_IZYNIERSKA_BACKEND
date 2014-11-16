@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import sample.data.dto.EditQuestionDTO;
+import sample.data.dto.QuestionDTO;
 import sample.data.jpa.mappers.QuestionMapper;
 import sample.data.jpa.model.CourseGenere;
 import sample.data.jpa.model.Question;
@@ -18,6 +19,7 @@ import sample.data.jpa.repository.QuestionRepo;
 @Service
 public class QuestionServiceImpl implements QuestionService {
 
+    private final static int ANY_QUEST = 0;
 
     @Autowired
     private CourseService courseService;
@@ -61,6 +63,13 @@ public class QuestionServiceImpl implements QuestionService {
     public void editQuestion(EditQuestionDTO quest) {
         Question question = questMapper.convert(quest);
         questionRepo.save(question);
+    }
+
+    @Override
+    public String recognizeCourseGroup(List<QuestionDTO> quests) {
+        Long questDtoId = (long) quests.get(ANY_QUEST).getId();
+        Question quest = getOneQuestion(questDtoId);
+        return quest.getCourseGenere().getName();
     }
 
 }

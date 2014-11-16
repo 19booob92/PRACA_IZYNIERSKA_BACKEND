@@ -7,6 +7,8 @@ import java.util.Random;
 import org.assertj.core.util.Lists;
 
 import sample.data.jpa.model.Question;
+import sample.data.jpa.model.Test;
+import sample.data.jpa.utils.IdGenerator;
 import sample.data.jpa.utils.PointsAvg;
 import sample.data.jpa.web.TestController;
 
@@ -25,7 +27,7 @@ public class Annealing {
 
     private final static float MIN_TEMP = 0.09f;
 
-    public List<Question> findTestsWithSamePointsAmount(List<Question> questsFromGroup, String courseGenere) {
+    public Test findTestsWithSamePointsAmount(List<Question> questsFromGroup, String courseGenere) {
         double temp = 50;
         this.courseGroup = courseGenere;
         allQuestionsFromGroup = questsFromGroup;
@@ -45,7 +47,10 @@ public class Annealing {
             }
             temp = cooling(temp);
         }
-        return testToServe;
+        Test test = new Test();
+        test.setId(IdGenerator.getNextTestId());
+        test.setQuestions(testToServe);
+        return test;
     }
 
     private double probality(double temp, List<Question> beforeList, List<Question> afterList) {

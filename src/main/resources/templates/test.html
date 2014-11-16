@@ -20,12 +20,14 @@
 	
 	function send(data) {
 		
+		var testId = $("table").attr("id");
+		
 		$.ajax({
 			url : "/checkTest",
 			type : "POST",
 			contentType : "application/json",
 			data : "{\"questions\" :" + JSON.stringify(data)
-					+ ", \"testId\" : \"666\" }",
+					+ ", \"testId\" : \""+ testId + "\" }",
 			success : function(result) {
 				var i = 0;
 				$('th').each(function() {
@@ -99,7 +101,7 @@
 </head>
 <body>
 	<form id="testForm" action="#" method="post">
-		<table>
+		<table th:id = "${testId}">
 			<tr th:each="quest : ${test}">
 				<div class="formDiv" th:id="${quest.id}">
 					<tr>

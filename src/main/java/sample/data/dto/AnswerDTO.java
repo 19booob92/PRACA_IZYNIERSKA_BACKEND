@@ -11,7 +11,7 @@ public class AnswerDTO implements Serializable{
     private static final long serialVersionUID = 7620918360970193924L;
 
     private ArrayList<QuestionDTO> questions;
-    private int testId;
+    private long testId;
     
     public ArrayList<QuestionDTO> getQuestions() {
         return questions;
@@ -21,11 +21,11 @@ public class AnswerDTO implements Serializable{
         this.questions = questions;
     }
     
-    public int getTestId() {
+    public long getTestId() {
         return testId;
     }
     
-    public void setTestId(int testId) {
+    public void setTestId(long testId) {
         this.testId = testId;
     }
 }

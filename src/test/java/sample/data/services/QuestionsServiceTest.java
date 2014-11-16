@@ -23,6 +23,5 @@ public class QuestionsServiceTest extends IntegrationTest{
     @Test
     public void shouldGetCourseWithNameAlgebra() {
         
-        
     }
 }

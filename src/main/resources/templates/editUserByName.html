@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Webowa Aplikacja Do Przeprowadzania Testow</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" th:href="@{/css/main.css}"
+	href="../../css/main.css" />
+	
+	<script src="../../js/jquery-1.4.1.min.js"></script>
+<script>
+$(document).ready(function() {
+	$("#btn").click(function(){
+		javascript:self.close();
+		self.close();
+	});
+});
+
+</script>
+</head>
+<body>
+
+	<form action="#" th:action="@{/users/edit}" th:object="${users}"
+		method="post">
+
+		<div th:each="user : ${editUser}">
+			Login:
+			<input type="text" th:name="username" th:value="${user.username}" style="display:none"></input>
+			<input type="text" th:name="username" th:value="${user.username}" disabled="disabled"></input>
+			Nowe haslo:
+			<input type="text" th:name="password" value="*******"></input>
+			Rozwiązane testy: 
+			<input type="text" th:name="able" th:value="${user.able}"></input>
+			Aktywny: 
+			<input th:type="checkbox" th:name="enabled" th:value="${user.enabled}" th:checked="${user.enabled}"></input>
+		</div>
+		<button id = "btn" class="button" type="submit">Edytuj</button>
+	</form>
+</body>
+</html>
