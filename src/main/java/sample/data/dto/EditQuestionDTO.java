@@ -1,5 +1,9 @@
 package sample.data.dto;
 
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
 
 
 public class EditQuestionDTO {
@@ -14,6 +18,8 @@ public class EditQuestionDTO {
 
     private String content;
 
+    @NotEmpty
+    @NotNull
     private String correctAnswer;
     
     private int points;

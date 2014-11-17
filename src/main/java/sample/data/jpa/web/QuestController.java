@@ -2,6 +2,9 @@ package sample.data.jpa.web;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,7 +32,7 @@ public class QuestController {
 
     @Autowired
     QuestionMapper questMapper;
-    
+
     @RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
     public @ResponseBody Question getQuestion(@PathVariable Long id) {
         return questService.getOneQuestion(id);
@@ -42,7 +45,12 @@ public class QuestController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String createMsg(@ModelAttribute("question") EditQuestionDTO question, BindingResult result, Model model) {
+    public String createMsg(@Valid @ModelAttribute("question") EditQuestionDTO question, HttpSession session, BindingResult result,
+            Model model) {
+        if (result.hasErrors()) {
+            session.setAttribute("errorTxt", "Nie zaznaczyłeś poprawnej odpowiedzi w pytaniu: \"" + question.getContent() + "\"!");
+            return "errorPage";
+        }
         questService.addQuestion(question);
         return "addQuestion";
     }
@@ -54,16 +62,20 @@ public class QuestController {
         }
         return "editQuestion";
     }
-    
+
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
     public String quests(@PathVariable long id, Model model) {
-            Question quest = questService.getOneQuestion(id);
-            model.addAttribute("editQuest", quest);
-            return "editQuestById";
+        Question quest = questService.getOneQuestion(id);
+        model.addAttribute("editQuest", quest);
+        return "editQuestById";
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public String quests(@ModelAttribute("questions") EditQuestionDTO quest) {
+    public String quests(@Valid @ModelAttribute("questions") EditQuestionDTO quest, BindingResult result, HttpSession session) {
+        if (result.hasErrors()) {
+            session.setAttribute("errorTxt", "Nie zaznaczyłeś poprawnej odpowiedzi w pytaniu: \"" + quest.getContent() + "\"!");
+            return "errorPage";
+        }
         questService.editQuestion(quest);
         return "redirect:/quest/getAll";
     }
