@@ -11,27 +11,43 @@
 		$('input:radio').change(function() {
 			$(this).val($(this).prev().attr('name'));
 		});
+
+		$("input[name=" + $("#err").val() + "]").css('border-color', 'red');
+
 	});
 </script>
 <link rel="stylesheet" th:href="@{/css/main.css}"
 	href="../../css/main.css" />
 </head>
 <body>
-	<form action="#" th:action="@{/quest/create}" th:object="${question}"
+
+	<div height="100px" id="errorDiv" align="right">
+		<p id="err"
+			th:text="${error}"
+			style="color: red;"></p>
+	</div>
+
+	<form action="#" th:action="@{/quest/create}" th:object="${answer}"
 		method="post">
-		Pytanie: <input type="text" name="content" /><br /> <br /> Ilość
-		punktów: <input type="number" name="points" /><br /> <br /> Odp. A
-		<input type="text" name="answerA" /><input type="radio"
-			name="correctAnswer" value="" /><br /> Odp. B <input type="text"
-			name="answerB" /><input type="radio" name="correctAnswer" value="" /><br />
-		Odp. C <input type="text" name="answerC" /><input type="radio"
-			name="correctAnswer" value="" /><br /> Odp. D <input type="text"
-			name="answerD" /><input type="radio" name="correctAnswer" value="" /><br />
-		Przedmiot:	<select name="courseGenere">
-			<option value="Algebra">Algebra</option>
-			<option value="Analiza">Analiza</option>
-		</select>
-		<button class="button" type="submit">Dodaj</button>
+		Pytanie: <input type="text" name="content"
+			th:value="${answer.content}"
+			th:class="${#fields.hasErrors('content')}? 'error'" /><br /> <br />
+		Ilość punktów: <input type="number" name="points"
+			th:value="${answer.points}" /><br th:class="${#fields.hasErrors('points')}? 'error'" /> <br /> Odp. A <input
+			type="text" name="answerA" th:value="${answer.answerA}" th:class="${#fields.hasErrors('answerA')}? 'error'" /><input
+			type="radio" name="correctAnswer" /><br /> Odp. B <input
+			type="text" name="answerB" th:value="${answer.answerB}" th:class="${#fields.hasErrors('answerB')}? 'error'" /><input
+			type="radio" name="correctAnswer" value="" /><br /> Odp. C <input
+			type="text" name="answerC" th:value="${answer.answerC}" th:class="${#fields.hasErrors('answerC')}? 'error'"/><input
+			type="radio" name="correctAnswer" value="" /><br /> Odp. D <input
+			type="text" name="answerD" th:value="${answer.answerD}" th:class="${#fields.hasErrors('answerD')}? 'error'"/><input
+			type="radio" name="correctAnswer" value="" /><br /> Przedmiot: <select
+			name="courseGenere">
+			<option th:selected="${answer.courseGenere} == 'Algebra'"
+				value="Algebra">Algebra</option>
+			<option th:selected="${answer.courseGenere}  == 'Analiza'"
+				value="Analiza">Analiza</option>
+		</select> <input class="btn" type="submit" value="Dodaj" />
 	</form>
 	<a href="/logout" th:href="@{/logout}"><div class="button">Wyloguj</div></a>
 </body>

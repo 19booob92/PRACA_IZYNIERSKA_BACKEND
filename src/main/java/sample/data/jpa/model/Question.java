@@ -1,27 +1,18 @@
 package sample.data.jpa.model;
 
 import java.io.Serializable;
-import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.EntityManager;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.TypedQuery;
-
-import org.apache.catalina.Session;
-import org.springframework.beans.factory.annotation.Autowired;
 
 
 @Entity
 @Table(name = "questions")
-// @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class,
-// property = "@id")
 public class Question implements Serializable {
 
     private static final long serialVersionUID = 6429316483965915569L;
@@ -36,7 +27,7 @@ public class Question implements Serializable {
     private String answerC;
     private String answerD;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "courseGenere", referencedColumnName = "name")
     private CourseGenere courseGenere;
 

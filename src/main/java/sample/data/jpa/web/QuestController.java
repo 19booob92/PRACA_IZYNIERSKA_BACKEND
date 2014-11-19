@@ -40,17 +40,26 @@ public class QuestController {
 
     @RequestMapping(value = "/getAll", method = RequestMethod.GET)
     public String getAllQuestions(Model model) {
-        model.addAttribute("questions", questService.getAllQuestions());
+        model.addAttribute("quests", questService.getAllQuestions());
         return "editQuestion";
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String createMsg(@Valid @ModelAttribute("question") EditQuestionDTO question, HttpSession session, BindingResult result,
+    public String createMsg(@Valid @ModelAttribute("answer") EditQuestionDTO question, BindingResult result,
             Model model) {
+        String errorTxt = "";
         if (result.hasErrors()) {
-            session.setAttribute("errorTxt", "Nie zaznaczyłeś poprawnej odpowiedzi w pytaniu: \"" + question.getContent() + "\"!");
-            return "errorPage";
+            if (result.getFieldError("points") != null) {
+                errorTxt += "Ilość punktów powinna nalezeć do przedziału <1, 8> ! \n";
+            }
+            if (result.getFieldError("correctAnswer") != null) {
+                errorTxt += "Nie zaznaczyłeś poprawnej odpowiedzi ! \n";
+            }
+            model.addAttribute("error", errorTxt);
+            model.addAttribute("answer", question);
+            return "addQuestion";
         }
+        model.addAttribute("answer", new EditQuestionDTO());
         questService.addQuestion(question);
         return "addQuestion";
     }
@@ -65,17 +74,32 @@ public class QuestController {
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
     public String quests(@PathVariable long id, Model model) {
-        Question quest = questService.getOneQuestion(id);
-        model.addAttribute("editQuest", quest);
+        EditQuestionDTO quest = questMapper.Question2EditQuestionDTO(questService.getOneQuestion(id));
+        model.addAttribute("questions", quest);
         return "editQuestById";
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public String quests(@Valid @ModelAttribute("questions") EditQuestionDTO quest, BindingResult result, HttpSession session) {
+    public String quests(@Valid @ModelAttribute("questions") EditQuestionDTO quest, BindingResult result, Model model) {
+        String errorTxt = "";
         if (result.hasErrors()) {
-            session.setAttribute("errorTxt", "Nie zaznaczyłeś poprawnej odpowiedzi w pytaniu: \"" + quest.getContent() + "\"!");
-            return "errorPage";
+            if (result.getFieldError("points") != null) {
+                errorTxt += "Ilość punktów powinna nalezeć do przedziału <1, 8> ! \n";
+            } else {
+                errorTxt = "Nie wypełniono wszystkich pól";
+            }
+            if (result.getFieldError("correctAnswer") != null) {
+                errorTxt += "Nie zaznaczyłeś poprawnej odpowiedzi ! \n";
+            } else {
+                errorTxt = "Nie wypełniono wszystkich pól";
+            }
+            
+            model.addAttribute("error", errorTxt);
+            model.addAttribute("questions", quest);
+            model.addAttribute("quests", questService.getAllQuestions());
+            return "editQuestion";
         }
+        model.addAttribute("answer", new EditQuestionDTO());
         questService.editQuestion(quest);
         return "redirect:/quest/getAll";
     }

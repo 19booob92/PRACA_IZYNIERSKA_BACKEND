@@ -223,3 +223,8 @@ body {
   background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
   text-decoration: none;
 }
+
+.error {
+	border-color: red;
+	border-bottom-width: 6px;
+}

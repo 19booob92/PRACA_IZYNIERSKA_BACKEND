@@ -24,11 +24,12 @@
 			}
 		});
 	}
-
+	
 	$(document).ready(function() {
-			$("#editDialog").dialog({
-				autoOpen : false,
-			});
+
+		$("#editDialog").dialog({
+			autoOpen : true,
+		});
 
 		$("input[type=button]").click(function() {
 			edit($(this).attr("name"));
@@ -41,7 +42,6 @@
 					array.push({
 						id : $(this).attr("name")
 					});
-
 				}
 			});
 
@@ -54,12 +54,23 @@
 
 	});
 
+	$("#btn").click(function() {
+		javascript: self.close();
+		self.close();
+	});
+
+	$(window).load(function() {
+		if ($("#err").val() != "") {
+			$("#editDialog").dialog("open");
+		}
+	});
+	
 	function edit(questId) {
 		$.ajax({
 			url : "/quest/edit/" + questId,
 			type : "GET",
 			success : function(data) {
-				document.getElementById("editDialog").innerHTML=data; 
+				document.getElementById("editDialog").innerHTML = data;
 				$("#editDialog").dialog("open");
 			}
 		});
@@ -67,36 +78,88 @@
 </script>
 </head>
 <body>
-	<div id="editDialog" title="Edytuj"></div>
+	<div height="100px" id="errorDiv" align="right">
+		<p id="err" th:text="${error}" th:value="${error}" style="color: red;"></p>
+	</div>
+
+	<div id="editDialog" title="Edytuj">
+		<form action="#" th:action="@{/quest/edit}" th:object="${questions}"
+			method="post">
+
+			<div th:each="quest : ${questions}" th:field="*{questions}">
+
+				<input type="text" th:name="id" th:value="${quest.id}"
+					style="display: none"></input> Pytanie: <input type="text"
+					th:name="content" th:value="${quest.content}"
+					th:class="${#fields.hasErrors('content')}? 'error'"></input>
+
+				Punkty: <input type="number" th:name="points"
+					th:value="${quest.points}"
+					th:class="${#fields.hasErrors('points')}? 'error'"></input> <input
+					type="text" th:name="answerA" th:value="${quest.answerA}"
+					th:class="${#fields.hasErrors('answerA')}? 'error'"></input> <input
+					type="radio" th:name="correctAnswer" value="answerA"
+					th:checked="${quest.correctAnswer}=='answerA'"></input> <input
+					type="text" th:name="answerB" th:value="${quest.answerB}"
+					th:class="${#fields.hasErrors('answerB')}? 'error'"></input> <input
+					type="radio" th:name="correctAnswer" value="answerB"
+					th:checked="${quest.correctAnswer}=='answerB'"></input> <input
+					type="text" th:name="answerC" th:value="${quest.answerC}"
+					th:class="${#fields.hasErrors('answerC')}? 'error'"></input> <input
+					th:type="radio" th:name="correctAnswer" th:value="answerC"
+					th:checked="${quest.correctAnswer}=='answerC'"></input> <input
+					type="text" th:name="answerD" th:value="${quest.answerD}"
+					th:class="${#fields.hasErrors('answerD')}? 'error'"></input> <input
+					th:type="radio" th:name="correctAnswer" th:value="answerD"
+					th:checked="${quest.correctAnswer}=='answerD'"></input> Przedmiot:
+				<select name="courseGenere">
+
+					<option value="Algebra">Algebra</option>
+					<option value="Analiza">Analiza</option>
+					<option value="Informatyka">Analiza</option>
+					<option value="Fizyka">Analiza</option>
+				</select>
+			</div>
+			<button id="btn" class="button" type="submit">Edytuj</button>
+		</form>
+	</div>
 
 	<form id="testForm" action="#" method="get">
 		<table>
-			<tr th:each="quest : ${questions}">
+			<tr th:each="quest : ${quests}">
 			<tr>
 				<th>Pytanie:</th>
 
 				<td th:text="${quest.content}"></td>
 				<td><input type="checkbox" th:name="${quest.id}"></input></td>
-				<td><input class="editBtn" type="button" th:name="${quest.id}"
+				<td><input class="btn" type="button" th:name="${quest.id}"
 					value="edytuj"></input></td>
 
 			</tr>
 
 			<tr>
 				<td th:text="${quest.answerA}"></td>
-				<td><input th:id="${quest.correctAnswer}" type="radio" th:name="${quest.id}" th:checked="${quest.correctAnswer}=='answerA' ? true : false"/></td>
+				<td><input th:id="${quest.correctAnswer}" disabled="disabled"
+					type="radio" th:name="${quest.id}"
+					th:checked="${quest.correctAnswer}=='answerA' ? true : false" /></td>
 			</tr>
 			<tr>
 				<td th:text="${quest.answerB}"></td>
-				<td><input th:id="${quest.correctAnswer}" type="radio" th:name="${quest.id}" th:checked="${quest.correctAnswer}=='answerB' ? true : false"/></td>
+				<td><input th:id="${quest.correctAnswer}" disabled="disabled"
+					type="radio" th:name="${quest.id}"
+					th:checked="${quest.correctAnswer}=='answerB' ? true : false" /></td>
 			</tr>
 			<tr>
 				<td th:text="${quest.answerC}"></td>
-				<td><input th:id="${quest.correctAnswer}" type="radio" th:name="${quest.id}" th:checked="${quest.correctAnswer}=='answerC' ? true : false"/></td>
+				<td><input th:id="${quest.correctAnswer}" disabled="disabled"
+					type="radio" th:name="${quest.id}"
+					th:checked="${quest.correctAnswer}=='answerC' ? true : false" /></td>
 			</tr>
 			<tr>
 				<td th:text="${quest.answerD}"></td>
-				<td><input th:id="${quest.correctAnswer}" type="radio" th:name="${quest.id}" th:checked="${quest.correctAnswer}=='answerD' ? true : false"/></td>
+				<td><input th:id="${quest.correctAnswer}" disabled="disabled"
+					type="radio" th:name="${quest.id}"
+					th:checked="${quest.correctAnswer}=='answerD' ? true : false" /></td>
 			</tr>
 			</tr>
 		</table>

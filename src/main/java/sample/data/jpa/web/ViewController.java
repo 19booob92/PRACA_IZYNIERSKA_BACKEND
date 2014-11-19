@@ -1,7 +1,10 @@
 package sample.data.jpa.web;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import sample.data.dto.EditQuestionDTO;
 
 @Controller
 public class ViewController {
@@ -12,7 +15,8 @@ public class ViewController {
     }
 
     @RequestMapping(value = "/quest/addQuestion")
-    public String questionView() {
+    public String questionView(Model model) {
+        model.addAttribute("answer", new EditQuestionDTO());
         return "addQuestion";
     }
     

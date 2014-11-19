@@ -3,26 +3,39 @@ package sample.data.dto;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.Range;
 
 
 
 public class EditQuestionDTO {
     private long id;
 
-    private String answerA;
-    private String answerB;
-    private String answerC;
-    private String answerD;
+    @NotEmpty
+    @NotNull
+    private String answerA = "";
+    @NotEmpty
+    @NotNull
+    private String answerB= "";
+    @NotEmpty
+    @NotNull
+    private String answerC= "";
+    @NotEmpty
+    @NotNull
+    private String answerD= "";
     
-    private String courseGenere;
-
-    private String content;
+    private String courseGenere= "Algebra";
 
     @NotEmpty
     @NotNull
-    private String correctAnswer;
+    private String content= "";
+
+    @NotEmpty
+    @NotNull
+    private String correctAnswer= "";
     
-    private int points;
+    @NotNull
+    @Range(min=1, max=8)
+    private Integer points = 0;
 
     
     public long getId() {
@@ -105,12 +118,12 @@ public class EditQuestionDTO {
     }
 
     
-    public int getPoints() {
+    public Integer getPoints() {
         return points;
     }
 
     
-    public void setPoints(int points) {
+    public void setPoints(Integer points) {
         this.points = points;
     }
 }

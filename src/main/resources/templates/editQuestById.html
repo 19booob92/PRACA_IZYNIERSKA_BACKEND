@@ -6,16 +6,15 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" th:href="@{/css/main.css}"
 	href="../../css/main.css" />
-	
-	<script src="../../js/jquery-1.4.1.min.js"></script>
-<script>
-$(document).ready(function() {
-	$("#btn").click(function(){
-		javascript:self.close();
-		self.close();
-	});
-});
 
+<script src="../../js/jquery-1.4.1.min.js"></script>
+<script>
+	$(document).ready(function() {
+		$("#btn").click(function() {
+			javascript: self.close();
+			self.close();
+		});
+	});
 </script>
 </head>
 <body>
@@ -23,29 +22,36 @@ $(document).ready(function() {
 	<form action="#" th:action="@{/quest/edit}" th:object="${questions}"
 		method="post">
 
-		<div th:each="quest : ${editQuest}">
+		<div th:each="quest : ${questions}" th:field="*{questions}">
 
-			<input type="text" th:name="id" th:value="${quest.id}" style="display:none"></input>
-			Pytanie: 
-			<input type="text" th:name="content" th:value="${quest.content}"></input> 
-			<input type="text" th:name="answerA" th:value="${quest.answerA}"></input> 
-			<input type="radio" th:name="correctAnswer" value="answerA" th:checked="${quest.correctAnswer}=='answerA'"></input>
-			<input type="text" th:name="answerB" th:value="${quest.answerB}"></input>
-			<input type="radio" th:name="correctAnswer"	value="answerB" th:checked="${quest.correctAnswer}=='answerB'"></input> 
-			<input type="text" th:name="answerC" th:value="${quest.answerC}"></input>
-			<input th:type="radio" th:name="correctAnswer" th:value="answerC" th:checked="${quest.correctAnswer}=='answerC'"></input>
-			<input type="text" th:name="answerD" th:value="${quest.answerD}"></input>
-			<input th:type="radio" th:name="correctAnswer" th:value="answerD" th:checked="${quest.correctAnswer}=='answerD'"></input> 
-			Przedmiot:
-			<select
+			<input type="text" th:name="id" th:value="${quest.id}"
+				style="display: none"></input> Pytanie: <input type="text"
+				th:name="content" th:value="${quest.content}" th:class="${#fields.hasErrors('content')}? 'error'"></input> 
+				
+				Punkty: <input
+				type="number" th:name="points" th:value="${quest.points}" th:class="${#fields.hasErrors('points')}? 'error'"></input>
+				<input
+				type="text" th:name="answerA" th:value="${quest.answerA}" th:class="${#fields.hasErrors('answerA')}? 'error'"></input> <input
+				type="radio" th:name="correctAnswer" value="answerA"
+				th:checked="${quest.correctAnswer}=='answerA'"></input> <input
+				type="text" th:name="answerB" th:value="${quest.answerB}" th:class="${#fields.hasErrors('answerB')}? 'error'"></input> <input
+				type="radio" th:name="correctAnswer" value="answerB"
+				th:checked="${quest.correctAnswer}=='answerB'"></input> <input
+				type="text" th:name="answerC" th:value="${quest.answerC}" th:class="${#fields.hasErrors('answerC')}? 'error'"></input> <input
+				th:type="radio" th:name="correctAnswer" th:value="answerC"
+				th:checked="${quest.correctAnswer}=='answerC'"></input> <input
+				type="text" th:name="answerD" th:value="${quest.answerD}" th:class="${#fields.hasErrors('answerD')}? 'error'"></input> <input
+				th:type="radio" th:name="correctAnswer" th:value="answerD"
+				th:checked="${quest.correctAnswer}=='answerD'"></input> Przedmiot: <select
 				name="courseGenere">
+				
 				<option value="Algebra">Algebra</option>
 				<option value="Analiza">Analiza</option>
 				<option value="Informatyka">Analiza</option>
 				<option value="Fizyka">Analiza</option>
 			</select>
 		</div>
-		<button id = "btn" class="button"  type="submit" >Edytuj</button>
+		<button id="btn" class="button" type="submit">Edytuj</button>
 	</form>
 </body>
 </html>

@@ -61,7 +61,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public void editQuestion(EditQuestionDTO quest) {
-        Question question = questMapper.convert(quest);
+        Question question = questMapper.EditQuestionDTO2Question(quest);
         questionRepo.save(question);
     }
 

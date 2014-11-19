@@ -18,7 +18,7 @@ public class QuestionMapper {
     @Autowired
     private CourseService courseService;
     
-    public Question convert(EditQuestionDTO quest){
+    public Question EditQuestionDTO2Question(EditQuestionDTO quest){
 
         CourseGenere course = courseService.findCourse(quest.getCourseGenere());
         Question questionModel = questService.getOneQuestion(quest.getId());
@@ -31,5 +31,21 @@ public class QuestionMapper {
         questionModel.setCorrectAnswer(quest.getCorrectAnswer());
         questionModel.setCourseGenere(course);
         return questionModel;
+    }
+
+    public EditQuestionDTO Question2EditQuestionDTO(Question quest){
+
+        EditQuestionDTO questDto = new EditQuestionDTO();
+        
+        questDto.setAnswerA(quest.getAnswerA());
+        questDto.setAnswerB(quest.getAnswerB());
+        questDto.setAnswerC(quest.getAnswerC());
+        questDto.setAnswerD(quest.getAnswerD());
+        questDto.setContent(quest.getContent());
+        questDto.setCorrectAnswer(quest.getCorrectAnswer());
+        questDto.setPoints(quest.getPoints());
+        questDto.setCourseGenere(quest.getCourseGenere().getName());
+        questDto.setId(quest.getId());
+        return questDto;
     }
 }
