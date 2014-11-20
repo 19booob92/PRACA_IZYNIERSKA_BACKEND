@@ -29,7 +29,7 @@
 
 	\author{Mateusz Olczak}
 
-	\title{Webowa aplikacja do przeprowadzania testów - Praca Inżynierska}
+	\title{Webowa aplikacja do przeprowadzania testów -- Praca Inżynierska}
 	
 	\maketitle
 	\newpage
@@ -42,7 +42,7 @@
 	
 
 	\subsection{Cele}
-	Głównym założeniem projektu było stworzenie aplikacji webowej, której zadaniem było umożliwienie tworzenia pytań wyboru oraz generowanie testów z wcześniej utworzonych pytań.
+	Głównym założeniem projektu było stworzenie aplikacji webowej, której zadaniem było umożliwienie tworzenia testów jednokrotnego wyboru oraz generowanie testów z wcześniej utworzonych pytań.
 	Ponadto, dużą uwagę nałożono na bezpieczeństwo oraz responsywność systemu. Aplikacja miała być intuicyjna, aby każdy student mógł rozwiązać test, bez konieczności wcześniejszego wprowadzenia do korzystania z systemu. 
 	\subsection{Zakres pracy}
 	W mojej pracy zawarłem podstawowe informacje o działaniu systemu, opis funkcjonalności, wykorzystanych technologii oraz instrukcję korzystania z systemu.
@@ -52,7 +52,7 @@
 	\subsection{Prawa autorskie}
 	\subsection{Odpowiedzialność dyplomanta}
 	\subsection{Zastosowane algorytmy}
-	Jednym z założeń projektowych było opracowanie metody generowania losowych zestawów pytań, gdzie pytania charakteryzowały się zróżnicowanym poziomem trudności. Dodatkową trudnością było wygenerowanie testów na podstawie pytań o bardzo zróżnicowanej łącznej sumie punktów. Fakt ten uniemożliwiał określenie apriori, jaka powinna być wartość, do której zmierzałby algorytm symulowanego wyżarzania. Aby osiągnąć cel wykorzystałem algorytm symulowanego wyżarzania. Moja implementacja algorytmu opiera się na wyznaczaniu kolejnych zestawów pytań na podstawie losowo wygenerowanego pierwowzoru. Ponieważ pytania podzielone są na grupy kursów jakich dotyczą, należało tak dopasować cały proces generowania pytań, aby uwzględnić w nim wszystkie niżej wymienione założenia:
+	Jednym z założeń projektowych było opracowanie metody generowania losowych zestawów pytań, gdzie pytania charakteryzowały się zróżnicowanym poziomem trudności. Dodatkową trudnością było wygenerowanie testów na podstawie pytań o bardzo zróżnicowanej łącznej sumie punktów. Fakt ten uniemożliwiał określenie apriori, jaka powinna być wartość, do której zmierzałby algorytm symulowanego wyżarzania (który postanowiłem zastosować do rozwiązania problemu). Moja implementacja algorytmu opiera się na wyznaczaniu kolejnych zestawów pytań na podstawie losowo wygenerowanego pierwowzoru. Ponieważ pytania podzielone są na grupy kursów jakich dotyczą, należało tak dopasować cały proces generowania pytań, aby uwzględnić w nim wszystkie niżej wymienione założenia:
 	\begin{itemize}
 	\item Niepowtarzalność pytań w teście.
 	\item Testy składające się z pytań o różnej wartości punktowej (odpowiadającej zróżnicowanemu poziomowi trudności).
@@ -65,8 +65,10 @@ Poniżej znajduje się opis mojego podejścia do rozwiązania problemu:
 
 	\begin{itemize}
 	\item Aby dostosować granicę punktową do jakiej powinien zmierzać algorytm symulowanego wyżarzania, przed rozpoczęciem właściwego działania aplikacji (polegajęcego na serwowaniu studentom zestawów pytań), generowanych jest kilka losowych zestawów pytań, a następnie obliczana jest średnia z maksymalnej ilości punktów, jaką można uzyskać z każdego z nich. Proces powtarzany jest dla każdej grupy pytań
-	\item Obliczenia te dokonywane są za każdym razem, gdy prowadzący wylogowuje się z systemu. Takie rozwiązanie ma na celu zredukowanie obciążenia systemu ciągłymi zapytaniami do bazy danych w celu wygenerowania progów dla poszczególnych grup testów, jednocześnie zapewniając uwzględnienie nowo dodanych pytań i ich wartości punktowych w algorytmie. Innymi rozważanymi przeze mnie rozwiązaniami były:
+	\item Obliczenia te dokonywane są cyklicznie, w zaplanowanych godzinach. Do implementacji tego rozwiązania użyłem biblioteki Quartz. Pozwala ona na planownaie zadań, jakie mają być realizowane na serwerze. Wybrane przeze mnie uznałem za optymalne, ponieważ pozwala ono w prosty sposób, uaktualniać obliczane wartości, a ponad to nie łamie zasad czystego kodu. Jednak podejście to ma niesie za sobą pewne komplikacje, w bazie pojawiają się pytania, które mogą nie być uwzględnione w obliczeniach, ponieważ, zostały utworzone, na krótko przed rozpoczęciem egazminu, przez co nie zostały uwzględnione w procesie obliczania średnich wartości punktowych. W celu rozwiązania tego problemu, rozszeżyłem tabelę przechowującą informacje o pytaniach o dodatkową kolumnę, określającą czy dane pytanie zostało już zweryfikowane. Implikuje to wprowadzenie dodatkowego sprawdzenia przy generowaniu testów, które sprawdzałoby status pytania. 
+\\Innymi rozważanymi przeze mnie rozwiązaniami były:
 		\begin{itemize}
+        \item Dokonywanie obliczeń przy wylogowywaniu prowadzącego z systemu, wadą tego podejścia jest złamanie zasad czystego kodu, ponieważ jedna czynność (wylogownaie) wiązałoby się z dodatkową, ukrytą funkcjonalnością. Do zalet należy niewątpliwie zaliczyć, zapewnienie pewności ponownego przeliczenia wartości punktowych oraz stosunkowo dobra wydajność rozwiązania. 
 		\item Obliczanie średniej wartości punktowej po dodaniu każdego z pytań (wadą takiego rozwiązania byłoby nadmierne obciążenie systemu, natomiast zaletą, pewność, że wartości będą zaktualizowane)
 		\item Aktualizacja wartości wywoływana manualnie przez użytkownika(zalety: najmniejsze obciążenie dla systemu, wady: duże prawdopodobieństwo niedokonania aktualizacji, spowodowane czynnikiem ludzkim (prowadzący mógłby zapomnieć zaktualizować średnie wartości))
 		\end{itemize}
@@ -75,7 +77,27 @@ Poniżej znajduje się opis mojego podejścia do rozwiązania problemu:
 		\item Metoda realizująca algorytm parametryzowana jest przez dwa argumenty: ilość pytań (określoną wcześniej) oraz wartość punktów, do której powinien zmierzać algorytm (wartość ta określana jest na podstawie wcześniej wygenerowanych sum punktów oraz kategorii pytań jaką wybrał student.
 		\item Po każdorazowym dodaniu pytania wytypowanego przez algorytm, dokonuje się sprawdzenia, czy pytanie to nie jest już zawarte w aktualnie przygotowywanym zestawie
 		\item Ostatnim krokiem, jest wysłanie do studenta listy pytań
+        \subsection{Szczegółowy opis implementacji algorytmu symulowanego wyżarzania}
+        \subsection{Aspekt bezpieczeństwa}
+        W celu spełnieniu kolejnego z głównych założeń projektu - zapewnienia bezpieczeństwa w aplikacji, zastosowałem moduł wchodzący w skład projektu Spring, mowa tu o module "Spring Security". Wykorzystałem możliwości wyżej wymienionego modułu, do powiązania procesu logowania i rejestrowania użytkowników z bazą danych. 
+        \\ Konto każdego z użytkowników, tworzone jest przez administratorów, z założenia jest unikatowe (podczas tworzenia nowego użytkownika, dokonywane jest sprawdzenie, czy użytkownik o danym loginie istnieje już w bazie danych. Podczas tworzenia konta, użytkownik otrzymuje jedną spośród trzech roli:
+        \begin{itemize}
+        \item Prowadzący
+        \item Administrator
+        \item Student
+        \end{itemize}
+        Opis roli przedstawiony jest w punkcie ****** w mojej pracy.
+        \\ Każdy użytkownik otrzymuje hasło, które jest wprowadzane przez administratora, hasło to jest zapisywane w bazie danych w postaci zakodowanej algorytmeme md5. W przyszłośći, hasła mogą być przydzielane w inny, bardziej zaawansowany sposób. Opis takiego rozwiązania można znaleźć w punkcie ***** w tej pracy.
 		\end{itemize}
+        
+        \subsection{Motywacja wykorzystania danego sposobu zabezpieczenia aplikacji oraz porównanie z innymi możliwymi rozwązaniami}
 	\end{itemize}
+    
+    
+    \section{Baza danych}
+    \subsection{Wykorzystany}
+    \subsection{Schemat bazy danych}
+    
+    
 \end{document}
 
