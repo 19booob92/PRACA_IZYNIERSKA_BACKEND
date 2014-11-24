@@ -11,7 +11,8 @@
 
 <script src="../../js/jquery-1.4.1.min.js"></script>
 <script src="../../js/jquery-ui.min.js"></script>
-<script>
+
+<script type="text/javascript" th:inline="javascript">
 	function send(data) {
 
 		$.ajax({
@@ -26,10 +27,16 @@
 	}
 	
 	$(document).ready(function() {
-
-		$("#editDialog").dialog({
-			autoOpen : true,
-		});
+		var myObject = [[${questions}]];
+		if (myObject != null) {
+			$("#editDialog").dialog({
+				autoOpen : true,
+			});
+		} else {
+			$("#editDialog").dialog({
+				autoOpen : false,
+			});
+		}
 
 		$("input[type=button]").click(function() {
 			edit($(this).attr("name"));
@@ -59,12 +66,6 @@
 		self.close();
 	});
 
-	$(window).load(function() {
-		if ($("#err").val() != "") {
-			$("#editDialog").dialog("open");
-		}
-	});
-	
 	function edit(questId) {
 		$.ajax({
 			url : "/quest/edit/" + questId,
@@ -76,6 +77,7 @@
 		});
 	}
 </script>
+
 </head>
 <body>
 	<div height="100px" id="errorDiv" align="right">
@@ -86,7 +88,7 @@
 		<form action="#" th:action="@{/quest/edit}" th:object="${questions}"
 			method="post">
 
-			<div th:each="quest : ${questions}" th:field="*{questions}">
+			<div th:each="quest : ${questions}" th:field="*{questions}" >
 
 				<input type="text" th:name="id" th:value="${quest.id}"
 					style="display: none"></input> Pytanie: <input type="text"
@@ -123,7 +125,7 @@
 			<button id="btn" class="button" type="submit">Edytuj</button>
 		</form>
 	</div>
-
+	
 	<form id="testForm" action="#" method="get">
 		<table>
 			<tr th:each="quest : ${quests}">
@@ -167,5 +169,7 @@
 
 	</form>
 	<a href="/logout" th:href="@{/logout}"><div class="button">Wyloguj</div></a>
+
 </body>
+
 </html>
