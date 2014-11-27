@@ -1,0 +1,702 @@
+\documentclass[a4paper, titlepage]{article}
+
+\usepackage{polski}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{listings}
+\usepackage{indentfirst}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{url}
+\usepackage{dirtree}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{changepage}
+
+\DeclareCaptionFont{white}{\color{white}}
+\DeclareCaptionFormat{listing}{%
+\parbox{\textwidth}{\colorbox{gray}{\parbox{\textwidth}{#1#2#3}}\vskip-4pt}}
+\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white}
+\lstset{frame=lrb,xleftmargin=\fboxsep,xrightmargin=-\fboxsep}
+\setcounter{page}{0}
+
+\title{Webowa aplikacja do przeprowadzania testów -- Praca Inżynierska}
+\author{Mateusz Olczak 194225}
+
+\begin{document}
+\maketitle
+
+\newpage
+\tableofcontents
+
+\newpage
+\section{Wstęp}
+
+\subsection{Proces przygotowania egzaminu}
+Zadaniem każdego z pedagogów, czy też prowadzących zajęcia na uczelniach wyższych jest egzaminowanie studentów oraz uczniów. Proces tworzenia testów jest żmudny i pracochłonny, wymaga wilokrotnego wykonywania czynności, które można zautomatyzować. 
+Również konieczność sprawdzenia poprawności testów oraz wystawienia ocen, jest pracą bardzo monotonną, a do tego wymagającą poświęcenia wielu godzin.
+\\Druga z poruszonych kwestii jest szczególnie ważna, ponieważ niesie ze sobą wiele problemów. 
+Podczas sprawdzania każdego z egzaminów, od prowadzącego zależy jaką ocenę otrzyma dany student, ponieważ nie ma ludzi nieomylnych, występuje spore prawdopodobieństwo popełnia błędu podczas sprawdzania prac. Dlatego, dobrym pomysłem jest wyeliminowanie czynnika ludzkiego z procesu sprawdzania prac, takie rozwiązanie daje większą gwarancję wystawienia odpowiedniej oceny, dzięki czemu, żadna z osób egzaminowanych nie będzie poszkodowana.
+
+\subsubsection{Przygotowanie pytań}
+Osoby układające zestaw pytań, podczas tworzenia nowego testu, często korzystają z wcześniej przygotowanych pytań (na przykład wykorzystywanych w egzaminach z wcześniejszych lat). Istnieje więc potrzeba gromadzenia historycznych pytań w jednym miejscu, gdzie byłyby one pogrupowane, dostęp do nich byłby szybki i łatwy, a same pytnia pogły być edytowane.
+
+\subsubsection{Tworzenie testu}
+Prowadzący często napotykają na problem związany ze stworzeniem testów o podobnym stopniu trudności. Nie jest to łatwe zagadnienie, ponieważ już sama ocena trudności kolejnych pytań jest subiektywna. Stworzenie dużej ilości testów, składających się z różnych pytań, przy jednoczesnym zachowaniu stałego poziomu trudności jest wię, jeszcze trudniejszym zadaniem.
+\\Rozwiązaniem tego problemu byłoby stworzenie generatora, który po wprowadzeniu odpowiednich paramterów, kreowałby test składający się z odpowiedniej ilości pytań, któych poziom trudności utrzymywany byłby na stałym poziomie.
+
+\subsubsection{Wystawianie ocen}
+Jednym z końcowych etapów przeprowadzania testów, jest określenie jaką ocenę, otrzymuje student, aby tego dokonać, należy przede wszystkim określić które z odpowiedzi są poprawne oraz ile punktów zdobyła dana osoba. Następnie konieczne jest każdorazowe sprawdzanie, w jakim przedziale znajduje się wynik studenta oraz ostatecznie wystawienie odpowiedniej oceny.
+\\Jak widać istnieje wiele możliwości popełnienia błedu, czego konsekwencją może być na przykład nie zaliczony egzamnin. Dlatego też wyżej omówiony proces należy zautomatyzować.
+
+\subsection{Statystyki}
+Wielu z prowadzących czy też nauczycieli w szkołach podstawowych i średnich, śledzi statystyki swoich studentów aby sprawdzać czy wiedza jaką przekazują, wykładana jest w odpowiedni sposób oraz czy pytania jakie tworzą nie są nie jasno sprecyzowane, czy też po prostu zbyt trudne dla większej grupy studentów. System który miałbyby wykorzystywany przez prowadzących w celu tworzenia testów oraz egzaminia studentów, powienien więc zawierać moduł pozwalający na generowanie statystyk, prezentujących różnego rodzaju dane, a także (co jest bezpośrenio połączone z prowadzeniem statystyk) pozwalać na gromadzenie danych na temat przeprowadzonych testów.
+
+\subsection{Cel pracy}
+	Głównym założeniem projektu było stworzenie aplikacji webowej, której zadaniem było umożliwienie tworzenia testów jednokrotnego wyboru oraz generowanie testów z wcześniej utworzonych pytań.
+\\	Ponadto, dużą uwagę nałożono na bezpieczeństwo oraz responsywność systemu. Aplikacja miała być intuicyjna, aby każdy student mógł rozwiązać test, bez konieczności wcześniejszego wprowadzenia do korzystania z systemu.
+\\Poza głównymi założeniami, istnieje wiele nie sprecyzowanych celów pobocznych, są to cele związane z jakością tworzonego systemu, do tej grupy należy nie wątpliwie:
+\begin{itemize}
+\item Zapewnienie walidacji wprowadzanych przez użytkowników danych.
+\item Przechwytywanie sytuacji wyjątkowych oraz prób oszukania systemu.
+\item Prezentowanie danych w wygodny dla użytkownika sposób.
+\item Zapewnienie estetycznego interfejsu użytkownika.
+\end{itemize}
+\subsection{Zakres pracy}
+Zakres pracy w ogólnym ujęciu obejmuje:
+\begin{itemize}
+\item Zaprojektowanie architektury systemu
+\item Stworznie projektu bazy danych
+\item Implementacja pierwotnej wersji aplikacji webowej
+\item Przeprowadzniee testów zaimplementowanych funkcjonalności
+\item Sporządzenie dokumentacji projektu
+\end{itemize}
+
+\section{Założenia projektowe dla systemu}
+Aby możliwe było stworzenie systemu realizującego założenia przedstawione w punktcie 1.4 oraz pozwalającego na rozwiązanie problemów omówionych w punktcie 1.1, niezbędne było wprowadzenie pewnych założeń dotyczących budowy systemu:
+\begin{itemize}
+\item Baza kategorii pytań - w systemie musi istnieć lista kategorii na jakie będą podzielone pytania. Dzięki temu, student podejmujący próbę rozwiązania testu będzie mógł zdecydować z jakiego przedmiotu chce rozwiązać test.
+\\Ze strony prowadzącego, podział na kategorie pozwala na łatwiejsze przeglądanie i edytowanie istniejących w bazie pytań oraz pozwala na udostępnianie studentom jedynie testów z danej kategorii.
+\item Baza użytkowników - system zawiera bazę danych użytkowników. Gromadzone informacje obejmują (dla każdej z grup użytkowników):
+	\begin {itemize}
+    	\item Login
+        \item Hasło
+        \item Rolę użytkownika
+    \end{itemize}
+Z perspektywy roli studenta:    
+    \begin {itemize}
+    \item Rozwiązane testy
+    \item Prawa do rozwiązania testów z danej kategorii
+    \item Oceny, jakie otzylamli z kolejnych egzaminów
+    \item Numer indeksu studenta
+    \end{itemize}
+\item Podział użytkowników ze względu na pełnione przez nich role - ze względu na zapewnienie bezpieczeństaw w aplikacji dokonano podziału użytkowników, ze względu na pełnione przez nich role. System wymaga logowania w celu uzyskania funkcjonalności, odpowiendiej dla danej roli.
+\end{itemize}
+\subsection{Wymagania funkcjonalne}
+
+Wymagania Funkcjonalne, jakie powinna spełniać omawiana aplikacja, dotyczą przede wszytskim zarządzania pytaniami, isntnieje jedank kilka funkcjonalności które nie dotyczą bezpośrednio procesów związanych z przeprowadzaniem testów.
+\\Wszystkie funkcjonalności jakie udostępnia aplikacja przedstawione są poniżej:
+\begin{itemize}
+\item Tworzenie kont dla użytkowników
+\item Edycja użytkowników i usuwanie ich kont
+\item Edycja praw do rozwiązywania testów przez użytkowników
+\item Logowanie użytwkoników do systemu
+\item Rozpoznawanie uprawnień użytkowników i dostawrczanie odpowiedniej funkcjonalności
+\item Dodawawnie pytań
+\item Edycja pytań
+\item Prezentacja statystyk
+\item Edycja progów punktowych
+\item Tworzenie nowych kategorii pytań
+\item Generowanie testów
+\item Obliczanie ocen
+\end{itemize}
+
+\subsection{Architektura systemu}
+Po podsumowaniu wymagań postawionych przed omawianym systemem, udało się staworzyć architekturę systemu, która realizowałaby wymienione w punkcie 2.1 funkcjonalności. W kolejnych punktach przedstawione są opisy poszczególnych roli użytkowników i szczegółowy opis funkcjonalności z nimi związanych.
+\subsection{Funkcjonalność modułu administratora}
+	Z założenia w systemie zawsze powinien znajdować się co najmniej jeden użytkownik z uprawnieniami administratora, wymóg ten spowodowany, jest przypisaniem funkcjonalności dodawania i edycji użytkowników, jedynie dla roli administratora. Użytkownik posiadający opisywaną rolę, może również dodawać nowe kategorie pytań.
+
+\begin{figure}[H]
+      \centering
+      \includegraphics[width=0.75\textwidth]{ucAdmin.png}
+      \caption{Diagram przypadków użycia dla roli administratora systemu}
+  \end{figure}
+
+\subsection{Funkcjonalność modułu prowadzącego}
+	Jest to rola najbardziej istotna w aplikacji. Użytkownicy posiadający posiadający tą rolę, mają możliwość dodawania nowych pytań do bazy, usuwania istniejących pytań oraz ich edycji. Ponad to, posiadają dostęp do statystyk prezentująćych dokonania poszczególnych studentów. 
+
+  \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.75\textwidth]{ucProwadzacy.png}
+      \caption{Diagram przypadków użycia dla roli prowadzącego}
+  \end{figure}
+
+\subsection{Funkcjonalność modułu studenta}
+	Użytkownicy którzy posiadają uprawnienia studenta, po zalogowaniu do systemu, mogą wybrać kategorię testu jaką chcą rozwiązywać w danej chwili, domyślnie mają prawo do jednokrotnego podejścia do testu z danej kategorii.
+    
+       \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.75\textwidth]{ucStudent.png}
+      \caption{Diagram przypadków użycia dla roli studenta}
+  \end{figure}
+    
+    
+\subsection{Scenariusz pracy}
+Poniżej przedstawione są przykładowe scenariusze wykorzystania poszczególnych funkcjonalności aplikacji, z perspektywy użytkowników, przypisanych do kolejnych ról.
+
+\subsubsection{Scenariusz pracy dla roli administratora}
+
+\begin{figure}[H]
+      \centering
+      \includegraphics[width=0.75\textwidth]{adminActivity.png}
+      \caption{Diagram aktywności dla roli administratora}
+  \end{figure}
+
+\subsubsection{Scenariusz pracy dla roli prowadzącego}
+
+\begin{figure}[H]
+      \centering
+      \includegraphics[width=0.75\textwidth]{lectorActivity.png}
+      \caption{Diagram aktywności dla roli prowadzącego}
+  \end{figure}
+
+\subsubsection{Scenariusz pracy dla roli studenta}
+
+\begin{figure}[H]
+      \centering
+      \includegraphics[width=0.75\textwidth]{studentActivity.png}
+      \caption{Diagram aktywności dla roli studenta}
+  \end{figure}
+
+\section{Implementacja}
+W dzisiejszych czasach, dzięki nowym technologiom oraz rosnącym przepustowościom pasma internetowego dostępnym dla zwykłego użytkownika, coraz częściej odchodzi się od projektowania aplikacji desktopowych na rzecz aplikacji webowych. Aplikacje webowe są w pełni niezależne od systemu operacyjnego, zazwyczaj cechują się o wiele mniejszymi wymaganiami sprzętowymi (ponieważ przeważająca część logiki, wykonywana jest po stronie serwera). Ponadto, dzięki całej gamie framework' ów pomagających w tworzeniu widokowej wartswy aplikacji, systemy tworzone jako aplikacje webowe są o wiele bardziej estetyczne, ergonomiczne dla użytkownika, a dla twórcy oprogramowania - łatwiejsze do modyfikacji. 
+	Jak widać, istnieje wiele powodów, dla których warto porzucić aplikacje desktopowe na rzecz przenośnych systemów przeglądarkowych. Dlatego też realizowana przeze mnie aplikacja reprezentuje nowy nurt.
+
+\subsection{Technologia}
+	\subsubsection{Java Spring}
+	W celu stworzenia aplikacji webowej, postanowiłem skorzystać z frameworka \textit{Spring Security}, framework ten oferuje wiele modułów pozwalających na łatwą implementację typowych dla aplikacji webowych funkcjonalności. Ponad to, moduły wchodzące w skład frameworka pozwalają na prostą komunikację z bazą danych oraz zabezpieczneie aplikacji. Dzięki wykorzystaniu wielu wzorców projektowych, \textit{Spring} pozwala na tworzenie profesjonalnych, modyfikowalnych i rozszeżalnych aplickaji w stosunkowo łatwy sposób.
+	\\Jednym z ważniejszych modułów wykorzystanych w mojej aplikacji, jest \textit{Spring MVC}, moduł ten pozwala na tworzenie aplikacji wykorzystującej wzorzec projektowy "Model-Widok-Kontroler".
+	\subsubsection{Hibernate}
+	W celu komunikacji z bazą danych, wykorzystałem framework \textit{Hibernate}, pozwala on na mapowanie obiektowo-relacyjne, co w znacznym stopniu przyspiesza i ułatwia korzystanie z zasobów gromadzonych w bazie danych, z poziomu aplikacji. Ponieważ, opisywany projekt, w znacznej mierze opiera się na danych znajdujących się w bazie danych, framework \textit{Hibernate} odniósł znaczącą rolę w implementacji systemu. 
+	\subsubsection{MySQL}
+	Jako system bazodanowy, postanowiłem wyorzystać technologię \textit{MySQL}, jest to prosty i popularny system, będący jednocześnie wystarczającym pod względem wydajności, dla zastosowań jakie miałaby pełnić prezentowana aplikacja.
+	\subsubsection{Apache Tomcat}
+	Wykorzystawanym przeze mnie kontenerem serwletów, jest \textit{Apache Tomcat}, wybrałem to rozwiązanie, ponieważ charakteryzuje się wysoką responsywnością, jest łatwe w obsłudze, a poza tym szeroko rozpowszechnione, przez co kontener ten, posiada bardzo dobre wsparcie ze strony producenta (ma to znaczenie dla bezpieczeństwa całego systemu).
+	\subsubsection{Thymeleaf}
+	\textit{Thymeleaf} jest frameworkiem warstwy widokowej, silnie powiązanym z technologią \textit{Spring}. Umożliwia łatwy dostęp do danych serwowanych przez kontrolerty, a także posiada rozwiązania umożliwiające obsługę walidacji danych.
+	\subsubsection{JQuery}
+	Ponieważ niektóre z rozwiązań proponowanych przez framework \textit{Thymeleaf} uznałem za niewygodne, w niektórych przypadkach, postanowiłem skorzystać z technologii \textit{JQuery}. Podobnie jak wyżej wymioniony framework, \textit{JQuery} pomaga w obsłudze warstwy widokowej aplikacji po stronie użytkownika.
+	\subsubsection{Maven}
+	\textit{Maven} to narzędzie umożliwiające budowanie aplikacji wraz z zależnościami (dodatkowymi bibliotekami) oraz stworzonymi przez nas profilami. Dzięki temu narzędziu możemy również wygenerować plik \textit{war}, w celu instalacji aplikacji na serwerze.
+	\subsubsection{Google MockITo, JUnit, PowerMock}
+	Do testowania aplikacji użyłem popularnych frameworków, pozwalających na testowanie, zarówno jednostkowe jak i funkcjonalne. Dzięki \textit{Google Mockito} możliwe jest testowanie wybranych modułów aplikacji, uniezależniając test od innych modułów, w przypadku testowania złożonych aplikacji, funkcjonalnośc ta jest bardzo przydata.
+	\subsubsection{GIT}
+	Jako system kontroli wersji, postanowiłem wykorzystać \textit{GIT}, funkcjonalny i łatwy w użytkowaniu system. Ponad to narzędzie \textit{GIT} sprzężony jest z webowym serwisem, pomagającym w zarządzaniu projektem i zadaniami jakie należy wykonwać w ramach danego projektu.
+
+\subsection{Model utrwalania danych}
+				\subsection{Omówienie wybranych tabeli}
+				W bazie danych utrwalane są informacje o użytkownikach zarejestrowanych w systemie, pytaniach wprowadzonych do systemu, statystykach rozwiązanych testów, prograch punktowych dla poszczególnych ocen, jak i odpowiedziach udzielonych przez studenta podczas rozwiązywania danego testu. Poniżej przedstawiony jest opis najbardziej znaczących tabeli:
+				\begin{itemize}
+					\item \textbf{result} - tabela zawiera informacje o osiągnięciach studentów. Okreśnona jest w niej ocena studenta, maksymalna ilość punktów jaką można było uzyskać z danego testu, ilość punktów jaką otrzymał student, identyfikator studenta rozwiązującego test oraz numer identyfikujący test
+                    \item \textbf{authorities} - tabla zawiera informacje o rolach przydzielonych do wymienionych w niej użytkowników, tabela ta powiązana jest relacją \textit{jeden do wielu} z tabelą \textbf{users}
+                    \item \textbf{courseGenere} - tutaj zawarte są informacje o przewidzianych kategoriach kursów, do których można przydzielać tworzone pytania, a następnie (z perspektywy roli studenta), wybierać z której kategorii pytań losowane będą pytania w celu utworzenia testu
+                    \item \textbf{mark} - tabela w której przchowywane są informacje o progach punktowych, użytkownicy posiadający rolę prowadzącego, mogą edytować tą tebelę z poziomu interfejsu użytkownika. Przewidzianych jest pięć progów odpowiadającym ocenom:
+                    	\begin{itemize}
+                        \item \textit{celujący}
+                        \item \textit{bardzo dobry}
+                        \item \textit{dobry}
+                        \item \textit{dostateczny}
+                        \item \textit{niedostateczny}
+                        \end{itemize}
+                    Do poprawnego działania aplikacji, wymagane jest wypełnienie tej tabeli, po utworzeniu bazy danych.
+                    	\item \textbf{questions} - tabela która przechowuje informacje o wszystich utworzonych przez użytkowników posiadających rolę \textbf{prowadzący} pytaniach. Kolumny tabeli przechowują informacje o ilośći punktów jakie można uzyskać za dane pytanie, poprawnej odpowiedzi, treści pytania oraz czterech (podanych przez twórcę pytania), możliwych odpowiedziach. 
+\\Ponad to, tabela ta zawiera numer identyfikacyjny testu w jakim zostało wykorzystane dane pytanie oraz kateogri do jakiej zostało ono przypisane.
+\\Aby możliwe było wygenerowanie testu z danej kategorii, zakłada się, że w bazie istnieje conajmniej taka pytań z danej kategorii, która odpowiada określonej wcześniej ilości pytań dla danego testu.
+					\item \textbf{test} - tabela gromadząca informacje o rozwiązanych testach, przechowywane tutaj informacje służą do tworzenia statystyk, dzięki którym będzie możliwe stwierdzenie czy poziom trudności pytań jest odpowiedni, czy treści pytań sformuowane są jasno, jaka kategoria sprawia studentowm najwięcej trudności. W aktualnej fazie projektu informacje z tej tabeli nie są wykorzystywane.
+                    \item \textbf{users} - zawarte w taeli informacje, pozwalają na logowanie użytkowników do systemu. Wpisy do tabeli dokonywać może jedynie administrator systemu (również z poziomu interfejsu użytkownika). W tabeli zapisane jest hasło, w celu zapewnienia bezpieczeństwa, nie jest ono przechowywane w postaci czystego tekstu, a pod postacią hasha, otrzymanego poprzez użycie algorytmu \textit{MD5}
+                \end{itemize}
+
+\subsection{Schemat bazy danych}
+      \begin{figure}[H]
+      \centering
+      \includegraphics[width=1.5\textwidth, angle=90]{Database.png}
+      \caption{Schemat bazy danych oraz relacji między poszczególnymi tabelami}
+  \end{figure}
+
+\subsection{Drzewo projektu}
+
+Poniżej przedstawiono ogólne drzewo projektu:
+
+      \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.7\textwidth]{drzewo.png}
+      \caption{Ogólna struktura katalogów projektu}
+  \end{figure}
+
+Opis ważniejszych katalogów oraz plików, związanych z uruchamianiem apliakcji na serwerze oraz budowaniem:
+
+\begin{itemize}
+\item Katalog \textit{target} - katalog zawiera pobrane przez program \textit{Maven} pakiety, potrzebne do budowania aplikacji
+\item Plik \textit{quizzer.war} - plik znajdujący się w katalogu \textit{target}, zawiera zbudowaną aplikację wraz z potrzebnymi zależnościami, plik gotowy jest do skopiowania na serwer i uruchomienia.
+\item Plik pom.xml - zawiera informacje o zależnościach potrzebnych w projekcie, a także konfigurację procesu budowania projektu.
+\end{itemize}
+
+\subsubsection{Konfiguracja aplikacji}
+\label{sec:KONFIGURACJA}
+
+\begin{lstlisting}[language = JAVA, label=some-code,caption=Plik MainConfiguration.java, linewidth=15.4cm]
+@Configuration
+@ComponentScan({ "com.pwr.quizzer" })
+@EnableAutoConfiguration
+@EnableAspectJAutoProxy
+@PropertySource({ "classpath:application.properties" })
+@EnableJpaRepositories("com.pwr.quizzer.repository")
+public class MainConfiguration extends WebMvcConfigurerAdapter {
+
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer
+    propertySourcesPlaceholderConfigurer() {
+        return new PropertySourcesPlaceholderConfigurer();
+    }
+
+    @Value("${db.driver}")
+    private String driverName;
+
+    @Value("${db.url}")
+    private String url;
+
+    @Value("${db.username}")
+    private String login;
+
+    @Value("${db.password}")
+    private String pass;
+
+    @Value("${hibernate.show_sql}")
+    private String showSql;
+
+    @Value("${hibernate.dialect}")
+    private String dialect;
+
+    @Bean
+    public DataSource dataSource() {
+        BasicDataSource dataSource = new BasicDataSource();
+        dataSource.setDriverClassName(driverName);
+        dataSource.setUrl(url);
+        dataSource.setUsername(login);
+        dataSource.setPassword(pass);
+        return dataSource;
+    }
+
+    @Bean
+    public LocalContainerEntityManagerFactoryBean 
+    					entityManagerFactory() {
+        LocalContainerEntityManagerFactoryBean lef =
+        new LocalContainerEntityManagerFactoryBean();
+        lef.setDataSource(dataSource());
+        lef.setJpaVendorAdapter(jpaVendorAdapter());
+        lef.setPackagesToScan("com.pwr.quizzer.model");
+        return lef;
+    }
+
+    @Bean
+    public JpaVendorAdapter jpaVendorAdapter() {
+        HibernateJpaVendorAdapter hibernateJpaVendorAdapter =
+        			new HibernateJpaVendorAdapter();
+        hibernateJpaVendorAdapter.setShowSql(false);
+        hibernateJpaVendorAdapter.setGenerateDdl(true);
+        hibernateJpaVendorAdapter.setDatabase(Database.MYSQL);
+        hibernateJpaVendorAdapter.
+        	setDatabasePlatform("org.hibernate.
+            			dialect.MySQL5Dialect");
+        return hibernateJpaVendorAdapter;
+    }
+
+    @Bean
+    public PlatformTransactionManager transactionManager() {
+        return new JpaTransactionManager();
+    }
+
+    public static void main(String[] args) throws Exception {
+        SpringApplication.run(MainConfiguration.class, args);
+    }
+
+    @Bean
+    ViewResolver viewResolver() {
+        ClassLoaderTemplateResolver templateResolver =
+        			new ClassLoaderTemplateResolver();
+        templateResolver.setTemplateMode("HTML");
+        templateResolver.setPrefix("templates/");
+        templateResolver.setSuffix(".xhtml");
+        SpringTemplateEngine engine = 
+        		new SpringTemplateEngine();
+        engine.setTemplateResolver(templateResolver);
+        engine.addDialect(new PagesDialect());
+        ThymeleafViewResolver viewResolver =
+        		new ThymeleafViewResolver();
+        viewResolver.setTemplateEngine(engine);
+        return viewResolver;
+    }
+\end{lstlisting}
+
+Klasa opatrzona jest adnotacjami, które powodują, że jest ona rozpoznawana przez program \textit{Maven} jako klasa konfiguracyjna aplikacji.
+\\Adnotacja \textit{ComponentScan} jako parametr przyjmuje listę ścieżek, do pakietów, które zawierają klasy objęte skanowaniem przez kontener frameworka \textit{Spring}.
+\\Adnotacja \textit{PropertySource} jako argument, przyjmuej listę plików zawierających parametry systemu.
+\\Kolejna adnotacja, \textit{EnableJpaRepositories}, przyjmuje ścieżkę do pakietu, gdzie znajdują się repozytoria, reprezentujące encje bazodanowe.
+
+W klasie tej, zawarta jest również konfiguracja połączenia z bazą danych, parametry połączenia dostarczane są z odpowiedniego pliku.
+\\Oprócz konfiguracji połączenia z bazą danych, klasa zawiera opis serwletu dostarczającego widoki oraz wywołanie klasy uruchamiającej aplikację.
+\\Poza tym w klasa \textit{MainConfiguration.java} zawiera opisy ziaren współtworzących połączenie z bazą danych oraz dostarczających manager transakcji bazodanowych.
+
+\begin{lstlisting}[language = JAVA, label=some-code,caption=Plik SpringSecurity.java, linewidth=15.4cm]
+
+@Configuration
+@EnableWebMvcSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+public class SpringSecurity extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    DataSource dataSource;
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+                .authorizeRequests()
+                .antMatchers("/css/*", "/logout", "/login", "/users/role").permitAll()
+                .antMatchers("/test/**").access("hasRole('" + Authorities.STUDENT + "')")
+                .antMatchers("/test/courseName/").access("hasRole('" + Authorities.LECTOR + "')")
+                .antMatchers("/users/**").access("hasRole('" + Authorities.ADMIN + "')")
+                .antMatchers("/quest/**").access("hasRole('" + Authorities.LECTOR + "')")
+                .antMatchers("/stats/**").access("hasRole('" + Authorities.LECTOR + "')")
+                .anyRequest().authenticated()
+                .and()
+                .exceptionHandling().accessDeniedPage("/login");
+        http
+                .formLogin()
+                .loginPage("/login")
+                .permitAll()
+                .and()
+                .csrf().disable()
+                .logout()
+                .permitAll();
+    }
+
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        JdbcUserDetailsManager userDetailsService = new JdbcUserDetailsManager();
+        userDetailsService.setDataSource(dataSource);
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
+        auth.userDetailsService(userDetailsService).passwordEncoder(encoder);
+        auth.jdbcAuthentication().authoritiesByUsernameQuery(
+                "select username, authority as role from authorities where username=?");
+    }
+
+\end{lstlisting}
+
+Drugi plik konfiguracyjny wykorzystywany w systemie. Gromadzi informacje o konfiguracji modułu \textit{Spring Security}, odpowiedzialnego za zabezpieczenie aplikacji.
+\\Przeładowana metoda \textit{configure} pozwala na określenie adresów URI, jakie mają być zabezpieczone oraz roli jaką powinien mieć użytkownik, podejmujący próbę odwołania do danego URI.
+\\Druga metoda o tej samej nazwie, lecz przyjmująca jako argument obiekt typy \textit{AuthenticationManagerBuilder}, pozwala na określenie z jakiej encji pobierane będą dane o loginie i haśle użytkownika. W metodzie tej określamy również zapytanie, jakie będzie używane do pobierania inforamcji na temat uprawnień użytkowników.
+
+\subsection{Hierarchia pakietów}
+Poniższy rysunek przestawia drzewo pakietów wchodzących w skład aplikacji.
+
+      \begin{figure}[H]
+      \centering
+      \includegraphics[width=1.5\textwidth]{pakiety.png}
+      \caption{Pakiety wchodzące w skład aplikacji.}
+  \end{figure}
+
+\begin{itemize}
+\item \textbf{com.pwr.quizzer} - zawiera klasy konfiguracyjne aplikacji
+\item \textbf{com.pwr.quizzer.builder} - pakiet przechowujący klasy reprezentujące wzorzec \textbf{budowniczy}, dla wybranych klas modeli.
+\item \textbf{com.pwr.quizzer.core} - tutaj umieszczone są klasy, które przechowują logikę losowania pytań. Klasa odpowiwdzialna za realizację algorytmu symulowanego wyżarzania, również znajduje się w tym pakiecie.
+\item \textbf{com.pwr.quizzer.dto} - pakiet zawierający klasy pełniące rolę obiektów transferowych dla wybranych klas modeli.
+\item \textbf{com.pwr.quizzer.mappers} - klasy odpowiedzialne za mapowanie modeli na obiekty transferowe oraz odwrotne operacje. Konwersje przeprowadzane przez te klasy są niezbędne podczas zapisywania w bazie danych, obiektów przekazanych z warstwy widoku do kontrolerów.
+\item \textbf{com.pwr.quizzer.model} - reprezentacje encji bazodanowych
+\item \textbf{com.pwr.quizzer.repository} - repozytoria, pozwalające na wykonywanie podstawowych operacji na danych w bazie. Interfejsy te są wymagane przez moduł \textit{Spring Data}, wymogiem jest aby rozszeżały one interfejs \textit{JpaRepository}, \textit{CrudRepository} lub podobne.
+\item \textbf{com.pwr.quizzer.service} - serwisy wraz z implementacjami. Każdy z modeli posiada odpowiedni dla niego serwis, udostępniający metody pozwalające na wykonywanie operacji wywoływanych przez repozytorium.
+\item \textbf{com.pwr.quizzer.utils} - klasy oraz interfejsy dodatkowe, pełniące funkcje pomocnicze, jak na przykład, generowanie kolejnych numerów id czy obliczanie średnich sum punktów, niezbędnych do prawidłowego funkcjonowania algorytmu symulowanego wyżarzania.
+\item \textbf{com.pwr.quizzer.web} - kontrolery, udostępniające API systemu.
+
+\end{itemize}
+
+\section{Opis API (Interfejs programistyczny\\ aplikacji)}				
+	Ponieważ aplikacja napisana jest według idei apliakcji typu REST, udostepnia ona programistyczny interfejs, dzięki któremu, za pomocą odpowiednich odwołań (URI) możemy komunikować się z serwerem, wysyłając do niego dane oraz rządania, których wynikiem są porcje danych, dostarczanych w określonej formie (na przykład jako pliki w konwencji JSON (Java Script Object  Notation), lub XML.
+    \\W aktualnej wersji systemu interfejs wykorzystywany jest jedynie w celu komunikacji aplikacji webowej z serwerem, jednak uniwersalna architektura, jaką charakteryzują się aplikacje serwerowe napisane w konwencji REST, pozwala na korzystanie z zasobów udostępnianych przez API, dla dowolnego typu urządzeń, a także platform, czy systemów operacyjnych. 
+    \\API omawianego systemy, podzielone jest na dwie głowne części:
+    \begin{itemize}
+    \item API związane z wyświetlaniem widoków
+    \item API służące do pobieranie danych, aktualizacji oraz prezentowania widoków wypełnionych odpowiednimi danymi.
+    \end{itemize}
+    
+    Poza głownym podziałem, można wyróżnić podział na encje jakich dotyczą kolejne kontrolery. Każdy z kontrolerów opatrzony jest narzędnym prefiksem, który określa na jakiej encji operuje dany kontroler. 
+    			\subsection{Zapytania}
+
+\begin{table}[!p]
+\begin{adjustwidth}{-3cm}{}
+\begin{tabular}{lllll}
+\hline
+\textbf{URI}              & \textbf{Funkcja}                                                                                & \textbf{\begin{tabular}[c]{@{}l@{}}Typ \\ zapytania\end{tabular}} & \textbf{\begin{tabular}[c]{@{}l@{}}Typ danych \\ wejściowych\end{tabular}} & \textbf{\begin{tabular}[c]{@{}l@{}}Typ danych \\ wyjściowych\end{tabular}} \\ \hline
+\rowcolor[HTML]{9B9B9B} 
+/courses                  &                                                                                                 &                                                                   &                                                                            &                                                                            \\ \hline
+                          & \begin{tabular}[c]{@{}l@{}}Zwraca stronę \\ z listą kursów\end{tabular}                         & GET                                                               &                                                                            &                                                                            \\ \hline
+\rowcolor[HTML]{9B9B9B} 
+\multicolumn{5}{|l|}{\cellcolor[HTML]{9B9B9B}/mark}                                                                                                                                                                                                                                                                                                       \\ \hline
+                          & \begin{tabular}[c]{@{}l@{}}Zwraca stronę z \\ progami punktowymi\end{tabular}                   & GET                                                               &                                                                            &                                                                            \\ \hline
+                          & \begin{tabular}[c]{@{}l@{}}Uaktualnia progi \\ pnktowe\end{tabular}                             & POST                                                              & Objekt MarkDTO                                                             &                                                                            \\ \hline
+\rowcolor[HTML]{9B9B9B} 
+\multicolumn{4}{|l|}{\cellcolor[HTML]{9B9B9B}/quest}                                                                                                                                                                                                                          &                                                                            \\ \hline
+/get/\{id\}               & \begin{tabular}[c]{@{}l@{}}Zwraca objekt o \\ podanym id\end{tabular}                           & GET                                                               &                                                                            & Objekt Question                                                            \\ \hline
+
+/editQuestion/\{courseName\}               & \begin{tabular}[c]{@{}l@{}}Zwraca listę obiektów z \\ podanej kategorii\end{tabular}                           & GET                                                               &                                                                            & Lista obiektów Question                                                            \\ \hline
+
+/getAll/\{pageNum\}       & \begin{tabular}[c]{@{}l@{}}Zwraca podaną\\ stronę z listą pytań\end{tabular}                    & GET                                                               &                                                                            & \begin{tabular}[c]{@{}l@{}}List obiektów \\ typu Question\end{tabular}     \\ \hline
+/create                   & \begin{tabular}[c]{@{}l@{}}Przesłanie nowego\\  pytania\end{tabular}                            & POST                                                              & \begin{tabular}[c]{@{}l@{}}Objekt typu \\ EditQuestionDTO\end{tabular}     &                                                                            \\ \hline
+/delete/\{id\}            & Usunięcie pytania                                                                               & DELETE                                                            & JSON                                                                       &                                                                            \\ \hline
+/edit/\{id\}              & \begin{tabular}[c]{@{}l@{}}Zwraca stronę\\ z danymi pytania\\ o podanym id\end{tabular}         & GET                                                               &                                                                            &                                                                            \\ \hline
+/edit                     & \begin{tabular}[c]{@{}l@{}}Aktualizuje pytanie\\  o danym id\end{tabular}                       & POST                                                              & EditQuestionDTO                                                            &                                                                            \\ \hline
+\rowcolor[HTML]{9B9B9B} 
+\multicolumn{5}{|l|}{\cellcolor[HTML]{9B9B9B}/stats}                                                                                                                                                                                                                                                                                                      \\ \hline
+/statsForUser/\{pageNum\} & \begin{tabular}[c]{@{}l@{}}Zwraca stronę \\ ze statystykami\end{tabular}                        & GET                                                               & Numer strony                                                               & \begin{tabular}[c]{@{}l@{}}Lista obiektó\\ typu Result\end{tabular}        \\ \hline
+/test/courseName/\{name\} & \begin{tabular}[c]{@{}l@{}}Zwraca stronę \\ z testem z wybranej\\ kategorii\end{tabular}        & GET                                                               & Nazwa kategorii                                                            &                                                                            \\ \hline
+/checkTest                & Zwraca wynik                                                                                    & POST                                                              & Lista odpowiedzi                                                           &                                                                            \\ \hline
+\rowcolor[HTML]{9B9B9B} 
+\multicolumn{5}{|l|}{\cellcolor[HTML]{9B9B9B}/users}                                                                                                                                                                                                                                                                                                      \\ \hline
+/role                     & \begin{tabular}[c]{@{}l@{}}Zwraca rolę, \\ jaką posiada\\ zalogowany \\ użytkownik\end{tabular} & GET                                                               &                                                                            & Typ roli                                                                   \\ \hline
+/delete/\{userName\}      & \begin{tabular}[c]{@{}l@{}}Usuwa użytkownika o\\ podanym loginie\end{tabular}                   & DELETE                                                            & Login użytkownika                                                          &                                                                            \\ \hline
+/delete/\{userName\}      & \begin{tabular}[c]{@{}l@{}}Zwraca dane \\ użytkownika o \\ podanym loginie\end{tabular}         & GET                                                               & Login użytkownika                                                          &                                                                            \\ \hline
+/edit                     & \begin{tabular}[c]{@{}l@{}}Aktualizuje dane \\ użytkownika\end{tabular}                         & POST                                                              & Objekt UserTmp                                                             &                                                                            \\ \hline
+/getAll/\{pageNum\}       & \begin{tabular}[c]{@{}l@{}}Zwraca stronę z listą\\ użytkowników\end{tabular}                    & GET                                                               & Numer strony                                                               & \begin{tabular}[c]{@{}l@{}}Lista obiektów\\ UserDTO\end{tabular}           \\ \hline
+/create                   & Tworzy użytkownika                                                                              & POST                                                              & Objekt User                                                                &                                                                            \\ \hline
+\end{tabular}
+                \end{adjustwidth}
+                \label{tab:Prezentacja API}
+                \caption{tab:Prezentacja API}
+                \end{table}
+                
+
+
+\section{Wykorzystane wzorce projektowe}
+	Duża część wzorców projektowych, wykorzysztanych w aplikacji stanowią te, zaimplementowane we frameworku \textit{Spring}. Dzięki zastosowaniu tych wzorców, aplikacja w łatwy sposób umożliwia dodawanie nowych funkcjonalnościi oraz wprowadzanie zmian. Głównym wzorcem, na którym opiera się podstawowy moduł frameworka, jest \textit{wstrzykiwanie zależności} oraz \textit{Odwrócenie zależności}. Dzięki zastosowaniu tych dwu wzorców, nasze aplikacje charakteryzują się brakiem zależności, pomiędzy poszczególnymi klasami, co powoduje zwiększenie testowalności i ogólną poprawę jakości kodu.
+	\\Poniżej wymienione są wszystkie wzorce wykorzystane w aplikacji, wraz z krótkim opisem:
+	\begin{itemize}
+	\item Objekt transferowy - wzorzec wykorzystywany podczas wykonywania operacji na bazie danych, między innymi podczas przesyłania danych pomiędzy kontrolerm, a widokiem.
+	\item Singleton - wiele z klas będących komponentami zawartymi w kontenerze frameworka \textit{Spring}, posiada cechy singletonu. Dzięki temu obiekty nie są tworzone każdorazowo gdy zachodzi potrzeba skorzystania z nich.
+	\item Budowniczy - używany w celu łatwiejszego budowania obiektów.
+	\item Programowanie aspektowe - pozwala na wyodrębnienie funkcjonalności, charakterystycznej dla wielu klas, do osobnego komponentu, dzięki czemu z poziomu jendej klasy możemy zarządzać kilkoma innymi klasami. W mojej aplikacji ma to zastosowanie między innymi podczas dokonywania transakcji na bazie danych.
+	\item Wstrzykiwanie zależności - pozwala na rozwiązanie ścisłych zależności występujących na przykładmiędzy klasami które delegują zadania do innych, komponentów.
+ 	\item Odwrócenie zależności - implementacja zasady, często stosowanej w programonwaniu obiektowym, według której obiekty nie powinny wykonywać zapytań do innych obiektów, a otrzymywać komunikaty, na przykład o zmianie ich stanu.
+	\item Model-Widok-Kontroler - wzorzec który definiuje role poszczególnych komponentów w aplikacji, rodzielając je na klasy odpowiedzialne za przechowywanie danych (oraz reprezentację tabeli bazodanowych), prezentacje danych oraz transportowaniu danych, pomiędzy warstwą widoku, a warstwą danych.
+	\end{itemize}	
+	\subsection{Zastosowane algorytmy}
+	Jednym z założeń projektowych było opracowanie metody generowania losowych zestawów pytań, gdzie pytania charakteryzowały się zróżnicowanym poziomem trudności. Dodatkową trudnością było wygenerowanie testów na podstawie pytań o bardzo zróżnicowanej łącznej sumie punktów. Fakt ten uniemożliwiał określenie apriori, jaka powinna być wartość, do której zmierzałby algorytm symulowanego wyżarzania (który postanowiłem zastosować do rozwiązania problemu). Moja implementacja algorytmu opiera się na wyznaczaniu kolejnych zestawów pytań na podstawie losowo wygenerowanego pierwowzoru. Ponieważ pytania podzielone są na grupy kursów jakich dotyczą, należało tak dopasować cały proces generowania pytań, aby uwzględnić w nim wszystkie niżej wymienione założenia:
+	\begin{itemize}
+	\item Niepowtarzalność pytań w teście.
+	\item Testy składające się z pytań o różnej wartości punktowej (odpowiadającej zróżnicowanemu poziomowi trudności).
+	\item Testy zawierają pytania jedynie z jednej grupy.
+	\item Każdy ze studentów rozwiązujących test z danej grupy powinien otrzymać zestaw pytań o takiej samej, łącznej ilości punktów.
+	\item Test powinien składać się z około 30 pytań
+	\end{itemize}
+
+	Poniżej znajduje się opis mojego podejścia do rozwiązania problemu:
+
+	\begin{itemize}
+	\item Aby dostosować granicę punktową do jakiej powinien zmierzać algorytm symulowanego wyżarzania, przed rozpoczęciem właściwego działania aplikacji (polegajęcego na serwowaniu studentom zestawów pytań), generowanych jest kilka losowych zestawów pytań, a następnie obliczana jest średnia z maksymalnej ilości punktów, jaką można uzyskać z każdego z nich. Proces powtarzany jest dla każdej grupy pytań
+	\item Obliczenia te dokonywane są cyklicznie, w zaplanowanych godzinach. Do implementacji tego rozwiązania użyłem biblioteki Quartz. Pozwala ona na planownaie zadań, jakie mają być realizowane na serwerze. Wybrane przeze mnie uznałem za optymalne, ponieważ pozwala ono w prosty sposób, uaktualniać obliczane wartości, a ponad to nie łamie zasad czystego kodu. Jednak podejście to ma niesie za sobą pewne komplikacje, w bazie pojawiają się pytania, które mogą nie być uwzględnione w obliczeniach, ponieważ, zostały utworzone, na krótko przed rozpoczęciem egazminu, przez co nie zostały uwzględnione w procesie obliczania średnich wartości punktowych. W celu rozwiązania tego problemu, rozszeżyłem tabelę przechowującą informacje o pytaniach o dodatkową kolumnę, określającą czy dane pytanie zostało już zweryfikowane. Implikuje to wprowadzenie dodatkowego sprawdzenia przy generowaniu testów, które sprawdzałoby status pytania. 
+	\\Innymi rozważanymi przeze mnie rozwiązaniami były:
+	\begin{itemize}
+	\item Dokonywanie obliczeń przy wylogowywaniu prowadzącego z systemu, wadą tego podejścia jest złamanie zasad czystego kodu, ponieważ jedna czynność (wylogownaie) wiązałoby się z dodatkową, ukrytą funkcjonalnością. Do zalet należy niewątpliwie zaliczyć, zapewnienie pewności ponownego przeliczenia wartości punktowych oraz stosunkowo dobra wydajność rozwiązania. 
+	\item Obliczanie średniej wartości punktowej po dodaniu każdego z pytań (wadą takiego rozwiązania byłoby nadmierne obciążenie systemu, natomiast zaletą, pewność, że wartości będą zaktualizowane)
+\item Aktualizacja wartości wywoływana manualnie przez użytkownika(zalety: najmniejsze obciążenie dla systemu, wady: duże prawdopodobieństwo niedokonania aktualizacji, spowodowane czynnikiem ludzkim (prowadzący mógłby zapomnieć zaktualizować średnie wartości))
+	\item Kiedy student, w celu rozwiązania testu, wysyła żądanie do serwera, rozpoczyna się proces wykorzystujący algorytm symulowanego wyżarzania:
+	\begin{itemize}
+	\item Metoda realizująca algorytm parametryzowana jest przez dwa argumenty: ilość pytań (określoną wcześniej) oraz wartość punktów, do której powinien zmierzać algorytm (wartość ta określana jest na podstawie wcześniej wygenerowanych sum punktów oraz kategorii pytań jaką wybrał student.
+			\item Po każdorazowym dodaniu pytania wytypowanego przez algorytm, dokonuje się sprawdzenia, czy pytanie to nie jest już zawarte w aktualnie przygotowywanym zestawie
+			\item Ostatnim krokiem, jest wysłanie do studenta listy pytań
+			\end{itemize}
+			\end{itemize}
+            
+			\subsection{Szczegółowy opis implementacji algorytmu symulowanego wyżarzania}
+            Algorytm symulowanego wyżarzania opiera się w dużej mierze na dwuwzorach, pierwszy z nich określa jak szybko następuje "ochłodzenie", a co za tym idzie, jak szybko algorytm zakończy swoją pracę, drugi ze wzorów określa, z jakim prawdopodobieństwem algorytm będzie uznawał gorsze rozwiązania za potencjalnie lepsze. Wzory te zawierają pewne stałe parametry, od doboru wartości dla tych parametrów zależy, jak będzie pracował algorytm, jak dokładne wyniki otrzymamy, a także w jakim czasie zostanie wygenerowane rozwiązanie problemu. W mojej implementacji zastosowałem wzory z danymi parametrami :
+
+            \begin{center}
+            
+            { $P = e^{- \frac{f(S') - f(S)}{T}}$ }
+            
+            { $G = \alpha T_{k}$ }
+            
+			\end{center}            
+
+\subsection {Wydajność}
+            Aby zapewnić wysoką wydajność aplikacji, postanowiłem skorzystać między innymi ze stronicowania. Dzięki podzieleniu danych pobieranych z bazy danych na mniejsze porcje, osiągnąłem efekt szybszego przesyłania danych pomiędzy serwerem, a komputerem klienta. Poza zwiększeniem wydajności systemu podzielenie danych na mniejsze porcje, poprawiło również przejżystość prezentowanych danych.
+            \\Implementacja stronicowania, przebiega zarówno po stronie serwera jak i po stronie aplikacji webowej. Na serwerze dane dzielone są na paczki, już podczas pobierania ich z bazy danych, dzięki czemu aplikacja, może odwoływać się do kolejnych stron.
+            \\Innym sposobem na zwiększenie wydajności aplikacji jest zastosowanie \textit{leniwego ładowania danych}. Rozwiązanie to dotyczy proceu pobierania obiektów, które zawierają w sobie inne obiekty (również reprezentowane przez encje w bazie danych). Aby uniknąć niepotrzebnego ładowania z bazy dokładnych informacji o zagnieżdżonych obiektach, stosuje się właśnie \textit{leniwe ładowanie danych}, dostęp do szczególowych informacji o obiektach zagnieżdżonych, uzyskiwany jest dopiero w momencie bezpośredniego odwołania do danego obiektu. Taki zabieg powoduje znaczne przyspieszenie ładownaia danych, a co za tym idzie: działania całego systemu.
+            \\kolejnym rozwiązaniem, tym razem, zaimplementowanym wewnątrz frameworka \textit{Hibernate}, jest bufforowanie danych. Metoda ta polega na przechowywaniu danych w bufforze, dzięki czemu podczas pobierania danych danych na które występuje duże zapotrzebowanie, nie są one ładowane bezpośrednio z bazy, a wczytywane z pamięci podręcznej, pełniącej rolę buffora.
+            
+\section{Aspekt bezpieczeństwa}
+			W celu spełnieniu kolejnego z głównych założeń projektu - zapewnienia bezpieczeństwa w aplikacji, zastosowałem moduł wchodzący w skład projektu Spring, mowa tu o module "Spring Security". Wykorzystałem możliwości wyżej wymienionego modułu, do powiązania procesu logowania i rejestrowania użytkowników z bazą danych. 
+			\\ Konto każdego z użytkowników, tworzone jest przez administratorów, z założenia jest unikatowe (podczas tworzenia nowego użytkownika, dokonywane jest sprawdzenie, czy użytkownik o danym loginie istnieje już w bazie danych. Podczas tworzenia konta, użytkownik otrzymuje jedną spośród trzech roli:
+				\begin{itemize}
+				\item Prowadzący
+				\item Administrator
+				\item Student
+				\end{itemize}
+				Opis roli przedstawiony jest w punkcie ****** w mojej pracy.
+				\\ Każdy użytkownik otrzymuje hasło, które jest wprowadzane przez administratora, hasło to jest zapisywane w bazie danych w postaci zakodowanej algorytmeme md5. W przyszłośći, hasła mogą być przydzielane w inny, bardziej zaawansowany sposób. Opis takiego rozwiązania można znaleźć w punkcie ***** w tej pracy.
+
+				\end{itemize}
+				Poza zabezpieczeniem dostępu do poszczególnych funkcjonalności aplikcaji, zadbałem również o odpowiednie zabezpieczneie procesu rozwiązywania testu. Studenci którzy rozwiązali już test z danej kategorii nie mogą ponownie podjąć próby rozwiążania testu, poza tym, po wylogowaniu z systemu, czy powrocie do wyboru kategorii, nie mogą oni ponownie wylosować zestawu pytań, zestaw jaki zostanie wyświetlony, będzie zawierał dokładnie te same pytania, jakie zostały wylosowane po pirwszej próbie rozwiązania testu. Jedynie administrator systemu, może ponownie nadać uprawnienia do rozwiązania testu z danej kategori przez studenta.
+\\Kolejną formą zabezpieczeń jaką wprowadziłem do aplikacji, jest walidacja danych. Walidacja występuje na wszystkich formularzach zawartych w aplikacji. Dzięki takiej formie zabezpieczeń, otrzymujemy gwarancję, wprowadzania do systemu jednynie porządanych danych. Wprowadzenie walidacji, pozwala również określić maksymalną wartość punktów, jaką można zdobyć za kolejne pytania oraz uniemożliwić wystąpienie sytuacji, kiedy student zostanie poszkodowany, ponieważ prowadzący nie oznaczył żadnej z odpowiedzi jako poprawnej, a co za tym idzie, udzielenie poprawnej odpowiedzi z punktu widzienia systemu, byłoby nie możliwe.
+				
+\subsection{Motywacja wykorzystania danego sposobu zabezpieczenia aplikacji oraz porównanie z innymi możliwymi rozwązaniami}
+		Istnieje wiele możliwości zabezpieczenia aplikacji przed nieautoryzowanym dostępem do danych oraz próbami oszukania systemu. Nieodłącznym aspektem, pojawiającym się przy wyborze sposobu zabezpieczenia aplikacji, jest zdecydowanie czy ważniejsza dla nas jest prostota implementacji i wydajność systemu, czy też możliwie jaknajlepsze zabezpieczenie aplikacji.
+		\\Wybór rozwiązania oferowanego przez moduł \textit{Spring Security} został podjęty po rozważeniu wielu aspektów, jakie wiążą się z zabezpieczeniem aplikajci. Najważniejszym argumentem przemawiającym za wykorzystaniem tej technologii jest prostota we wdrażaniu jej do aplikajci wykorzystującej framework \textit{Spring}. Kolejnymi czynnikami przemawiającymi za skorzystaniem z tego rozwiązania, jest duża modyfikowalność konfiguracji zabezpieczenia, w tym wybór hashowania haseł oraz określenie gdzie przechowywane będą informacje o poszczególnych użytkownikach. Innym ważnym czynnikiem dla którego wybrałem tą implementację zabezpieczenia aplikacji, jest moja znajomość modułu \textit{Spring Security}, nie można brać odpowiedzialności za aplikację zabezpieczoną przez technologię, której działania nie jesteśmy pewni. Kolejną zaletą wybranego przeze mnie rozwiązania jest stosunkowo małe obciążenie, generowane przez omawiany moduł. 
+		\\Wadą wybranego przez mnie rozwiązania jest jego duża popularność, duża ilość użytkowników, implikuje duże prawdopodobieństwo znaleziania przez nich luk w kodzie aplikacji oraz występowania niespójności, w wyniku których, możliwe jest znalezienie sposobu na złamanie zastosowanych zabezpieczeń. 
+				
+\subsection{Inne możliwości zabezpieczenia aplikacji}
+                Innymi formami zabezpieczenia jakie brałem pod uwagę podczas implementowania systemu, było między innymi wprowadzenie niestandardowego protokołu za pomocą którego aplikacja webowa komunikowałaby się z serwerem. 
+                Poza tym, zamiast zapisywania haseł w bazie danych, moduł \textit{Spring Security} umożliwia zabezpieczenie aplikacji poprzez program LDAP, pomimo faktu iż takie rozwiązanie uzanje się za bezpieczniejsze, pozostałem przy podstawowym sposobie przechowywania haseł, ponieważ posiadam większe doświadczenie w konfiguracji rozwiązania korzystającego z bazy danych, co moim zdaniem, daje większą gwarancję bezpieczeństwa.
+
+\subsection{Prezentacja poszczególnych widoków}
+
+\subsubsection{Logowanie}
+
+Stroną startową aplikacji, jest ekran logowania, do tego ekranu powracamy również kiedy wylogowujemy się z aplikacji.
+\\Na formularz prezentowany na danym widoku, nałożono walidację wprowadzanych danych, poza tym po podaniu nieprawidłowych danych lub po wylogowaniu z aplikacji, nad formularzem pojawia się odpowiedni komunikat.
+
+      \begin{figure}[H]
+      	\centering
+      	\includegraphics[width=0.7\textwidth]{logowanie.png}
+      	\caption{Logowanie do systemu}
+	   \end{figure}
+
+\subsubsection{Zarządzanie użytkownikami (rola \textbf{administrator})}
+
+Widok prezentujący opcje dostępne dla administratora systemu po zalogowaniu i przejściu do zakładki \textit{Użytkownicy}.
+
+      \begin{figure}[H]
+      	\centering
+      	\includegraphics[width=0.7\textwidth]{adminUserMng.png}
+      	\caption{Zarządzanie użytkownikami}
+	   \end{figure}
+
+\subsubsection{Tworzenie użytkowników (rola \textbf{administrator})}
+
+Formularz służacy do wprowadzania danych nowego użytkonika, podobnie jak w przypadku innych formularzy nałożono tutaj walidację wprowadzonych danych.
+
+	   \begin{figure}[H]
+      	\centering
+      	\includegraphics[width=0.7\textwidth]{adminAddUsr.png}
+      	\caption{Tworzenie użytkowników}
+	   \end{figure}
+
+\subsection{Wyświetlanie listy użytkowników (rola \textbf{administrator})}
+	
+Widok zawierający listę użytkowników, wyświetloną w formie tabeli zawierającej najbardziej istotne dane dotyczące użytkowników. Dane podzielone są na strony dzięki czemu pobieranie ich z bazy danych zabiera mniej czasu.
+    
+      \begin{figure}[H]
+      	\centering
+      	\includegraphics[width=0.7\textwidth]{adminUsrList.png}
+      	\caption{Prezentacja listy użytkowników}
+	   \end{figure}
+
+\subsubsection{Edycja użytkownika (rola \textbf{administrator})}
+
+Edycja użytkowników, odbywa się poprzez wprowadzenie nowych danych do okna dialogowego. Na to okno również nałożna jest walidacja, po wprowadzniu nieodpowiednich dla danego pola danych, wyświetlana jest adekwatna informacja, lub pole z nieprawidłowymi danymi jest podświetlane na kolor czerwony. Poprzednio wpisane do okna dane, nie są z niego usuwane, co poprawia komfort korzystania z aplikacji.
+
+	   \begin{figure}[H]
+      	\centering
+      	\includegraphics[width=0.7\textwidth]{adminUsrEdit.png}
+      	\caption{Logowanie do systemu}
+	   \end{figure}
+
+\subsubsection{Prezentacja statysyk użytkowników (rola \textbf{prowadzący})}
+
+Widok z tabelą, zawierającą statystyki użytkowników.
+
+	   \begin{figure}[H]
+      	\centering
+      	\includegraphics[width=0.7\textwidth]{lecStats.png}
+      	\caption{Statystyki użytkowników}
+	   \end{figure}
+
+
+\section{Tworzenie pytań (rola \textbf{prowadzący})}}
+
+	   \begin{figure}[H]
+      	\centering
+      	\includegraphics[width=0.7\textwidth]{lecQadd.png}
+      	\caption{Dodawnie pytań}
+	   \end{figure}
+
+\section{Edycja progów punktowych (rola \textbf{prowadzący})}}
+
+	   \begin{figure}[H]
+      	\centering
+      	\includegraphics[width=0.7\textwidth]{lecTres.png}
+      	\caption{Edycja progów punktowych}
+	   \end{figure}
+
+\section{Lista pytań zapisanych w bazie danych (rola \textbf{prowadzący})}
+
+	   \begin{figure}[H]
+      	\centering
+      	\includegraphics[width=0.7\textwidth]{lecQuestList.png}
+      	\caption{Lista pytań}
+	   \end{figure}
+
+
+\section{Edycja pytań (rola \textbf{prowadzący})}}
+
+	   \begin{figure}[H]
+      	\centering
+      	\includegraphics[width=0.7\textwidth]{lecQuestEdit.png}
+      	\caption{Edytowanie pytań}
+	   \end{figure}
+
+\subsection{Wdrożenie}
+
+                Korzystanie z aplikacji, wymaga przeprowazdenia pewnych czynności, mających na celu przygotowanie śrowiska uruchomieniowego dla aplikacji webowej. Ponieważ użyte technologie są popularnymi rozwiązaniami wykorzystywanymi w wielu systemach informatycznych, w dokumencie tym zawieram jedynie spis wymaganych aplikacji, opis danych jakie powinna zawierać baza danych oraz podstawowe informacje dotyczące konfiguracji systemu jak i wymaganych, wcześniej zainstalowanych programów.
+                \subsection{Instalacja wymaganego oprogramowania}
+                \subsubsection{Kontener serwletów}
+                Jako kontener serwletów, postanowiłem wykorzystać rozwiązanie \textit{Apache Tomcat} jest to proste oraz bardzo popularne rozwiązanie, dzięki czemu w przypadku wystąpienia problemów nie ma problemów ze znalezieniem rozwiązania. W przypadku prezentowanej aplikacji, nie było potrzeby korzystania z bardziej zaawansowanego serwera aplikacji. Wersja 6.0 jest najstarszą zalecaną wersją, na której aplikacja została przetestowana.
+                \subsubsection{Baza danych}
+                Do utrwalania danych, wykorzystywany jest mySQL, popularna baza danych, która w zupełności spełnia wymagania jakie niesie za sobą przechowywanie danych w ilościach, jaie będą generowane prezez działanie systemu, w przyszłości, rozwiązanie to można zastąpić bazą danych postgreSql. Zalecana wersja aplikacji to 14.14.
+                
+			\subsection{Przygotowanie bazy danych}
+			Aby aplikacja działa poprawnie zaleca się, aby przed udostępnieniem aplikacji dp ogólnego dostępu, niektóre z tabeli bazy danych powinny być  wypełnione odpowiednimi danymi, dokładne informacje o wymaganych danych zawarte są w punkcji ********. 
+
+\section{Podsumowanie}
+
+Projekt został zakończony całkowitym sukcesem, udało się nie tylko zaimplementować wymagane, niezbędne funkcje ale również niektóre z dodatkowych, przewidzianych na późniejszy okres realizacji. Jesteśmy zadowoleni z osiągniętych rezultatów i widzimy szerokie możliwości rozwojowe dla prezentowanej aplikacji.
+
+\subsection{Możliwości rozbudowy}
+
+\subsubsection{Zwiększenie responsywności}
+            W przypadku wykorzystania aplikacji na większą skalę, aby przeprowadzić egzamin na większej liczbie studentów w tym samym czasie, możliwe jest rozpropagowanie pytań w formie plików tekstowych na klastrze serwerów, dzięki takiemu rozwiązaniu oraz wprowadzeniu loadbalancera, można uzyskać o wiele lepsza wydajność systemu i zapewnić wyższą responsywność aplikacji. Proponowanym przezemnie rozwiązaniem jest aplikacja przygotowana przez firmę \textit{Apache}, mowa tu o programie \textit{Zookepper}. Interfejs udostęoniony przez wyżej wymieniony system, pozwala na propagowanie plików na klastrze serwerów, zarządzanie utworzonymi węzłami oraz wybranie jaki algorytm powinien być stosowany w danym przypadku.
+           
+           \subsubsection{Generowanie zaawansowanych statysyk} 
+            Jedną z planowanych dodatkowych funkcjonalności aplikacji jest tworzenie statystyk na podstawie gromadzonych danych, dotyczących testów rozwiązanych przez użytkowników. W celu przygotowania aplikacji do takiego zastosowania, w bazie danych stworzona została tabela, przechowująca potrzebne informacje. 
+
+
+\newpage
+\section{Bibliografia}
+\begin{enumerate}
+\item Dokumentacja związana z językiem JAVA: \url{http://docs.oracle.com/javase/7/docs/api/}
+\item Dokumentacja związana z framework'iem Hibernate: \url{http://hibernate.org/orm/documentation/}
+\item Dokumentacja związana z framework'iem Spring i jego modułami: \url{http://spring.io/docs}.
+\item Dokumentacja związana z bazami danych \url{http://www.postgresql.org/docs/}
+\item Dokumentacja związana ze wzorcem MVC: \url{http://docs.spring.io/spring/docs/current/spring-framework-reference/html/mvc.html}
+\item Informacje związane z larpem Fantazjada: \url{http://www.fantazjada.pl/}
+\item Dokumentacja związana z silnikiem szablonów Freemarker: \url{http://freemarker.org/docs/}
+\item Dokumentacja związana z biblioteką Sitemesh: \url{http://wiki.sitemesh.org/wiki/display/sitemesh/Home}
+\end{enumerate}
+
+
+\newpage
+\listoffigures
+
+
+\end{document}
+

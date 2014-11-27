@@ -30,7 +30,7 @@
 	\author{Mateusz Olczak}
 
 	\title{Webowa aplikacja do przeprowadzania testów -- Praca Inżynierska}
-	
+
 	\maketitle
 	\newpage
 
@@ -39,18 +39,50 @@
 
 	W dzisiejszych czasach, dzięki nowym technologiom oraz rosnącym przepustowościom pasma internetowego dostępnym dla zwykłego użytkownika, coraz częściej odchodzi się od projektowania aplikacji desktopowych na rzecz aplikacji webowych. Aplikacje webowe są w pełni niezależne od systemu operacyjnego, zazwyczaj cechują się o wiele mniejszymi wymaganiami sprzętowymi (ponieważ przeważająca część logiki, wykonywana jest po stronie serwera). Ponadto, dzięki całej gamie framework' ów pomagających w tworzeniu widokowej wartswy aplikacji, systemy tworzone jako aplikacje webowe są o wiele bardziej estetyczne, ergonomiczne dla użytkownika, a dla twórcy oprogramowania - łatwiejsze do modyfikacji. 
 	Jak widać, istnieje wiele powodów, dla których warto porzucić aplikacje desktopowe na rzecz przenośnych systemów przeglądarkowych. Dlatego też realizowana przeze mnie aplikacja reprezentuje nowy nurt.
-	
 
 	\subsection{Cele}
 	Głównym założeniem projektu było stworzenie aplikacji webowej, której zadaniem było umożliwienie tworzenia testów jednokrotnego wyboru oraz generowanie testów z wcześniej utworzonych pytań.
 	Ponadto, dużą uwagę nałożono na bezpieczeństwo oraz responsywność systemu. Aplikacja miała być intuicyjna, aby każdy student mógł rozwiązać test, bez konieczności wcześniejszego wprowadzenia do korzystania z systemu. 
 	\subsection{Zakres pracy}
-	W mojej pracy zawarłem podstawowe informacje o działaniu systemu, opis funkcjonalności, wykorzystanych technologii oraz instrukcję korzystania z systemu.
-	
+	W mojej pracy zawarłem podstawowe informacje o działaniu systemu, opis funkcjonalności, wykorzystanych technologii oraz instrukcję korzystania z systemu. W końcowej częsci, zamieszczona jest instrukcja obsługi aplikacji wraz z opisem instalacji na serwerze produkcyjnym.
+
 	\section{\textbf{Teoria}}
 	\subsection{Spis treści}
 	\subsection{Prawa autorskie}
 	\subsection{Odpowiedzialność dyplomanta}
+	\subsection{Opis wykorzystanych technologii}
+	\subsubsection{Java Spring}
+	W celu stworzenia aplikacji webowej, postanowiłem skorzystać z frameworka \textit{Spring Security}, framework ten oferuje wiele modułów pozwalających na łatwą implementację typowych dla aplikacji webowych funkcjonalności. Ponad to, moduły wchodzące w skład frameworka pozwalają na prostą komunikację z bazą danych oraz zabezpieczneie aplikacji. Dzięki wykorzystaniu wielu wzorców projektowych, \textit{Spring} pozwala na tworzenie profesjonalnych, modyfikowalnych i rozszeżalnych aplickaji w stosunkowo łatwy sposób.
+	\\Jednym z ważniejszych modułów wykorzystanych w mojej aplikacji, jest \textit{Spring MVC}, moduł ten pozwala na tworzenie aplikacji wykorzystującej wzorzec projektowy "Model-Widok-Kontroler".
+	\subsubsection{Hibernate}
+	W celu komunikacji z bazą danych, wykorzystałem framework \textit{Hibernate}, pozwala on na mapowanie obiektowo-relacyjne, co w znacznym stopniu przyspiesza i ułatwia korzystanie z zasobów gromadzonych w bazie danych, z poziomu aplikacji. Ponieważ, opisywany projekt, w znacznej mierze opiera się na danych znajdujących się w bazie danych, framework \textit{Hibernate} odniósł znaczącą rolę w implementacji systemu. 
+	\subsubsection{MySQL}
+	Jako system bazodanowy, postanowiłem wyorzystać technologię \textit{MySQL}, jest to prosty i popularny system, będący jednocześnie wystarczającym pod względem wydajności, dla zastosowań jakie miałaby pełnić prezentowana aplikacja.
+	\subsubsection{Apache Tomcat}
+	Wykorzystawanym przeze mnie kontenerem serwletów, jest \textit{Apache Tomcat}, wybrałem to rozwiązanie, ponieważ charakteryzuje się wysoką responsywnością, jest łatwe w obsłudze, a poza tym szeroko rozpowszechnione, przez co kontener ten, posiada bardzo dobre wsparcie ze strony producenta (ma to znaczenie dla bezpieczeństwa całego systemu).
+	\subsubsection{Thymeleaf}
+	\textit{Thymeleaf} jest frameworkiem warstwy widokowej, silnie powiązanym z technologią \textit{Spring}. Umożliwia łatwy dostęp do danych serwowanych przez kontrolerty, a także posiada rozwiązania umożliwiające obsługę walidacji danych.
+	\subsubsection{JQuery}
+	Ponieważ niektóre z rozwiązań proponowanych przez framework \textit{Thymeleaf} uznałem za niewygodne, w niektórych przypadkach, postanowiłem skorzystać z technologii \textit{JQuery}. Podobnie jak wyżej wymioniony framework, \textit{JQuery} pomaga w obsłudze warstwy widokowej aplikacji po stronie użytkownika.
+	\subsubsection{Maven}
+	\textit{Maven} to narzędzie umożliwiające budowanie aplikacji wraz z zależnościami (dodatkowymi bibliotekami) oraz stworzonymi przez nas profilami. Dzięki temu narzędziu możemy również wygenerować plik \textit{war}, w celu instalacji aplikacji na serwerze.
+	\subsubsection{Google MockITo, JUnit, PowerMock}
+	Do testowania aplikacji użyłem popularnych frameworków, pozwalających na testowanie, zarówno jednostkowe jak i funkcjonalne. Dzięki \textit{Google Mockito} możliwe jest testowanie wybranych modułów aplikacji, uniezależniając test od innych modułów, w przypadku testowania złożonych aplikacji, funkcjonalnośc ta jest bardzo przydata.
+	\subsubsection{GIT}
+	Jako system kontroli wersji, postanowiłem wykorzystać \textit{GIT}, funkcjonalny i łatwy w użytkowaniu system. Ponad to narzędzie \textit{GIT} sprzężony jest z webowym serwisem, pomagającym w zarządzaniu projektem i zadaniami jakie należy wykonwać w ramach danego projektu.
+
+	\section{Wykorzystane wzorce projektowe}
+	Duża część wzorców projektowych, wykorzysztanych w aplikacji stanowią te, zaimplementowane we frameworku \textit{Spring}. Dzięki zastosowaniu tych wzorców, aplikacja w łatwy sposób umożliwia dodawanie nowych funkcjonalnościi oraz wprowadzanie zmian. Głównym wzorcem, na którym opiera się podstawowy moduł frameworka, jest \textit{wstrzykiwanie zależności} oraz \textit{Odwrócenie zależności}. Dzięki zastosowaniu tych dwu wzorców, nasze aplikacje charakteryzują się brakiem zależności, pomiędzy poszczególnymi klasami, co powoduje zwiększenie testowalności i ogólną poprawę jakości kodu.
+	\\Poniżej wymienione są wszystkie wzorce wykorzystane w aplikacji, wraz z krótkim opisem:
+	\begin{itemize}
+	\item Objekt transferowy - wzorzec wykorzystywany podczas wykonywania operacji na bazie danych, między innymi podczas przesyłania danych pomiędzy kontrolerm, a widokiem.
+	\item Singleton - wiele z klas będących komponentami zawartymi w kontenerze frameworka \textit{Spring}, posiada cechy singletonu. Dzięki temu obiekty nie są tworzone każdorazowo gdy zachodzi potrzeba skorzystania z nich.
+	\item Budowniczy - używany w celu łatwiejszego budowania obiektów.
+	\item Programowanie aspektowe - pozwala na wyodrębnienie funkcjonalności, charakterystycznej dla wielu klas, do osobnego komponentu, dzięki czemu z poziomu jendej klasy możemy zarządzać kilkoma innymi klasami. W mojej aplikacji ma to zastosowanie między innymi podczas dokonywania transakcji na bazie danych.
+	\item Wstrzykiwanie zależności - pozwala na rozwiązanie ścisłych zależności występujących na przykładmiędzy klasami które delegują zadania do innych, komponentów.
+ 	\item Odwrócenie zależności - implementacja zasady, często stosowanej w programonwaniu obiektowym, według której obiekty nie powinny wykonywać zapytań do innych obiektów, a otrzymywać komunikaty, na przykład o zmianie ich stanu.
+	\item Model-Widok-Kontroler - wzorzec który definiuje role poszczególnych komponentów w aplikacji, rodzielając je na klasy odpowiedzialne za przechowywanie danych (oraz reprezentację tabeli bazodanowych), prezentacje danych oraz transportowaniu danych, pomiędzy warstwą widoku, a warstwą danych.
+	\end{itemize}	
 	\subsection{Zastosowane algorytmy}
 	Jednym z założeń projektowych było opracowanie metody generowania losowych zestawów pytań, gdzie pytania charakteryzowały się zróżnicowanym poziomem trudności. Dodatkową trudnością było wygenerowanie testów na podstawie pytań o bardzo zróżnicowanej łącznej sumie punktów. Fakt ten uniemożliwiał określenie apriori, jaka powinna być wartość, do której zmierzałby algorytm symulowanego wyżarzania (który postanowiłem zastosować do rozwiązania problemu). Moja implementacja algorytmu opiera się na wyznaczaniu kolejnych zestawów pytań na podstawie losowo wygenerowanego pierwowzoru. Ponieważ pytania podzielone są na grupy kursów jakich dotyczą, należało tak dopasować cały proces generowania pytań, aby uwzględnić w nim wszystkie niżej wymienione założenia:
 	\begin{itemize}
@@ -60,44 +92,64 @@
 	\item Każdy ze studentów rozwiązujących test z danej grupy powinien otrzymać zestaw pytań o takiej samej, łącznej ilości punktów.
 	\item Test powinien składać się z około 30 pytań
 	\end{itemize}
-	
-Poniżej znajduje się opis mojego podejścia do rozwiązania problemu:
+
+	Poniżej znajduje się opis mojego podejścia do rozwiązania problemu:
 
 	\begin{itemize}
 	\item Aby dostosować granicę punktową do jakiej powinien zmierzać algorytm symulowanego wyżarzania, przed rozpoczęciem właściwego działania aplikacji (polegajęcego na serwowaniu studentom zestawów pytań), generowanych jest kilka losowych zestawów pytań, a następnie obliczana jest średnia z maksymalnej ilości punktów, jaką można uzyskać z każdego z nich. Proces powtarzany jest dla każdej grupy pytań
 	\item Obliczenia te dokonywane są cyklicznie, w zaplanowanych godzinach. Do implementacji tego rozwiązania użyłem biblioteki Quartz. Pozwala ona na planownaie zadań, jakie mają być realizowane na serwerze. Wybrane przeze mnie uznałem za optymalne, ponieważ pozwala ono w prosty sposób, uaktualniać obliczane wartości, a ponad to nie łamie zasad czystego kodu. Jednak podejście to ma niesie za sobą pewne komplikacje, w bazie pojawiają się pytania, które mogą nie być uwzględnione w obliczeniach, ponieważ, zostały utworzone, na krótko przed rozpoczęciem egazminu, przez co nie zostały uwzględnione w procesie obliczania średnich wartości punktowych. W celu rozwiązania tego problemu, rozszeżyłem tabelę przechowującą informacje o pytaniach o dodatkową kolumnę, określającą czy dane pytanie zostało już zweryfikowane. Implikuje to wprowadzenie dodatkowego sprawdzenia przy generowaniu testów, które sprawdzałoby status pytania. 
-\\Innymi rozważanymi przeze mnie rozwiązaniami były:
-		\begin{itemize}
-        \item Dokonywanie obliczeń przy wylogowywaniu prowadzącego z systemu, wadą tego podejścia jest złamanie zasad czystego kodu, ponieważ jedna czynność (wylogownaie) wiązałoby się z dodatkową, ukrytą funkcjonalnością. Do zalet należy niewątpliwie zaliczyć, zapewnienie pewności ponownego przeliczenia wartości punktowych oraz stosunkowo dobra wydajność rozwiązania. 
-		\item Obliczanie średniej wartości punktowej po dodaniu każdego z pytań (wadą takiego rozwiązania byłoby nadmierne obciążenie systemu, natomiast zaletą, pewność, że wartości będą zaktualizowane)
-		\item Aktualizacja wartości wywoływana manualnie przez użytkownika(zalety: najmniejsze obciążenie dla systemu, wady: duże prawdopodobieństwo niedokonania aktualizacji, spowodowane czynnikiem ludzkim (prowadzący mógłby zapomnieć zaktualizować średnie wartości))
-		\end{itemize}
+	\\Innymi rozważanymi przeze mnie rozwiązaniami były:
+	\begin{itemize}
+	\item Dokonywanie obliczeń przy wylogowywaniu prowadzącego z systemu, wadą tego podejścia jest złamanie zasad czystego kodu, ponieważ jedna czynność (wylogownaie) wiązałoby się z dodatkową, ukrytą funkcjonalnością. Do zalet należy niewątpliwie zaliczyć, zapewnienie pewności ponownego przeliczenia wartości punktowych oraz stosunkowo dobra wydajność rozwiązania. 
+	\item Obliczanie średniej wartości punktowej po dodaniu każdego z pytań (wadą takiego rozwiązania byłoby nadmierne obciążenie systemu, natomiast zaletą, pewność, że wartości będą zaktualizowane)
+\item Aktualizacja wartości wywoływana manualnie przez użytkownika(zalety: najmniejsze obciążenie dla systemu, wady: duże prawdopodobieństwo niedokonania aktualizacji, spowodowane czynnikiem ludzkim (prowadzący mógłby zapomnieć zaktualizować średnie wartości))
 	\item Kiedy student, w celu rozwiązania testu, wysyła żądanie do serwera, rozpoczyna się proces wykorzystujący algorytm symulowanego wyżarzania:
-		\begin{itemize}
-		\item Metoda realizująca algorytm parametryzowana jest przez dwa argumenty: ilość pytań (określoną wcześniej) oraz wartość punktów, do której powinien zmierzać algorytm (wartość ta określana jest na podstawie wcześniej wygenerowanych sum punktów oraz kategorii pytań jaką wybrał student.
-		\item Po każdorazowym dodaniu pytania wytypowanego przez algorytm, dokonuje się sprawdzenia, czy pytanie to nie jest już zawarte w aktualnie przygotowywanym zestawie
-		\item Ostatnim krokiem, jest wysłanie do studenta listy pytań
-        \subsection{Szczegółowy opis implementacji algorytmu symulowanego wyżarzania}
-        \subsection{Aspekt bezpieczeństwa}
-        W celu spełnieniu kolejnego z głównych założeń projektu - zapewnienia bezpieczeństwa w aplikacji, zastosowałem moduł wchodzący w skład projektu Spring, mowa tu o module "Spring Security". Wykorzystałem możliwości wyżej wymienionego modułu, do powiązania procesu logowania i rejestrowania użytkowników z bazą danych. 
-        \\ Konto każdego z użytkowników, tworzone jest przez administratorów, z założenia jest unikatowe (podczas tworzenia nowego użytkownika, dokonywane jest sprawdzenie, czy użytkownik o danym loginie istnieje już w bazie danych. Podczas tworzenia konta, użytkownik otrzymuje jedną spośród trzech roli:
-        \begin{itemize}
-        \item Prowadzący
-        \item Administrator
-        \item Student
-        \end{itemize}
-        Opis roli przedstawiony jest w punkcie ****** w mojej pracy.
-        \\ Każdy użytkownik otrzymuje hasło, które jest wprowadzane przez administratora, hasło to jest zapisywane w bazie danych w postaci zakodowanej algorytmeme md5. W przyszłośći, hasła mogą być przydzielane w inny, bardziej zaawansowany sposób. Opis takiego rozwiązania można znaleźć w punkcie ***** w tej pracy.
-		\end{itemize}
-        
-        \subsection{Motywacja wykorzystania danego sposobu zabezpieczenia aplikacji oraz porównanie z innymi możliwymi rozwązaniami}
-	\end{itemize}
-    
-    
-    \section{Baza danych}
-    \subsection{Wykorzystany}
-    \subsection{Schemat bazy danych}
-    
-    
-\end{document}
+	\begin{itemize}
+	\item Metoda realizująca algorytm parametryzowana jest przez dwa argumenty: ilość pytań (określoną wcześniej) oraz wartość punktów, do której powinien zmierzać algorytm (wartość ta określana jest na podstawie wcześniej wygenerowanych sum punktów oraz kategorii pytań jaką wybrał student.
+			\item Po każdorazowym dodaniu pytania wytypowanego przez algorytm, dokonuje się sprawdzenia, czy pytanie to nie jest już zawarte w aktualnie przygotowywanym zestawie
+			\item Ostatnim krokiem, jest wysłanie do studenta listy pytań
+			\end{itemize}
+			\end{itemize}
+			\subsection{Szczegółowy opis implementacji algorytmu symulowanego wyżarzania}
+			\section{Aspekt bezpieczeństwa}
+			W celu spełnieniu kolejnego z głównych założeń projektu - zapewnienia bezpieczeństwa w aplikacji, zastosowałem moduł wchodzący w skład projektu Spring, mowa tu o module "Spring Security". Wykorzystałem możliwości wyżej wymienionego modułu, do powiązania procesu logowania i rejestrowania użytkowników z bazą danych. 
+			\\ Konto każdego z użytkowników, tworzone jest przez administratorów, z założenia jest unikatowe (podczas tworzenia nowego użytkownika, dokonywane jest sprawdzenie, czy użytkownik o danym loginie istnieje już w bazie danych. Podczas tworzenia konta, użytkownik otrzymuje jedną spośród trzech roli:
+				\begin{itemize}
+				\item Prowadzący
+				\item Administrator
+				\item Student
+				\end{itemize}
+				Opis roli przedstawiony jest w punkcie ****** w mojej pracy.
+				\\ Każdy użytkownik otrzymuje hasło, które jest wprowadzane przez administratora, hasło to jest zapisywane w bazie danych w postaci zakodowanej algorytmeme md5. W przyszłośći, hasła mogą być przydzielane w inny, bardziej zaawansowany sposób. Opis takiego rozwiązania można znaleźć w punkcie ***** w tej pracy.
+
+				\end{itemize}
+
+				\subsection{Motywacja wykorzystania danego sposobu zabezpieczenia aplikacji oraz porównanie z innymi możliwymi rozwązaniami}
+		Istnieje wiele możliwości zabezpieczenia aplikacji przed nieautoryzowanym dostępem do danych oraz próbami oszukania systemu. Nieodłącznym aspektem, pojawiającym się przy wyborze sposobu zabezpieczenia aplikacji, jest zdecydowanie czy ważniejsza dla nas jest prostota implementacji i wydajność systemu, czy też możliwie jaknajlepsze zabezpieczenie aplikacji.
+		\\Wybór rozwiązania oferowanego przez moduł \textit{Spring Security} został podjęty po rozważeniu wielu aspektów, jakie wiążą się z zabezpieczeniem aplikajci. Najważniejszym argumentem przemawiającym za wykorzystaniem tej technologii jest prostota we wdrażaniu jej do aplikajci wykorzystującej framework \textit{Spring}. Kolejnymi czynnikami przemawiającymi za skorzystaniem z tego rozwiązania, jest duża modyfikowalność konfiguracji zabezpieczenia, w tym wybór hashowania haseł oraz określenie gdzie przechowywane będą informacje o poszczególnych użytkownikach. Innym ważnym czynnikiem dla którego wybrałem tą implementację zabezpieczenia aplikacji, jest moja znajomość modułu \textit{Spring Security}, nie można brać odpowiedzialności za aplikację zabezpieczoną przez technologię, której działania nie jesteśmy pewni. Kolejną zaletą wybranego przeze mnie rozwiązania jest stosunkowo małe obciążenie, generowane przez omawiany moduł. 
+		\\Wadą wybranego przez mnie rozwiązania jest jego duża popularność, duża ilość użytkowników, implikuje duże prawdopodobieństwo znaleziania przez nich luk w kodzie aplikacji oraz występowania niespójności, w wyniku których, możliwe jest znalezienie sposobu na złamanie zastosowanych zabezpieczeń. 
+				\subsection{Inne możliwości zabezpieczenia aplikacji}
+				\subsection{Opis roli zawartych w bazie danych}
+				Aby zapewnić dostęp użytkownikom dostęp, jedynie do przypisanym im stanowisku, funkcjonalności, podzieliłem użytkowników na trzy grupy:
+	\begin{itemize}
+	\item Administrator - z założenia w systemie zawsze powinien znajdować się co najmniej jeden użytkownik z uprawnieniami administratora, wymóg ten spowodowany, jest przypisaniem funkcjonalności dodawania i edycji użytkowników, jedynie dla roli administratora. Poza edycją użytkowników, użytkownik posiadający uprawnienia administratora, nie ma dostępu do innych funkcjonalności.
+	\item Prowadzący - jest to rola najbardziej istotna w aplikacji. Użytkownicy posiadający posiadający tą rolę, mają możliwość dodawania nowych pytań do bazy, usuwania istniejących pytań oraz ich edycji. Ponad to, posiadają dostęp do statystyk prezentująćych dokonania poszczególnych studentów. 
+	\item Student - użytkownicy którzy posiadają uprawnienia studenta, po zalogowaniu do systemu, mogą wybrać kategorię testu jaką chcą rozwiązywać w danej chwili, domyślnie mają prawo do jednokrotnego podejścia do testu z danej kategorii.
+    \end{itemize}
+
+				\section{Opis API ()}				
+
+				\section{Baza danych}
+				\subsection{Opis wykorzystanych technologii}
+				\subsection{Schemat bazy danych}
+				\subsection{Omówienie wybranych tabeli}
+				W bazie danych utrwalane są informacje o użytkownikach zarejestrowanych w systemie, pytaniach wprowadzonych do systemu, statystykach rozwiązanych testów, prograch punktowych dla poszczególnych ocen, jak i odpowiedziach udzielonych przez studenta podczas rozwiązywania danego testu. Poniżej przedstawiony jest opis najbardziej znaczących tabeli:
+				\begin{itemize}
+					\item 
+                \end{itemize}
+				\section{Instrukcja instalacji na serwerze}    
+				\subsection{Instalacja wymaganego oprogramowania}
+			\subsection{Przygotowanie bazy danych}
+
+			\end{document}
 
