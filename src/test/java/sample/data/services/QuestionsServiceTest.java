@@ -7,11 +7,12 @@ import java.util.List;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import sample.data.jpa.model.CourseGenere;
-import sample.data.jpa.model.Question;
-import sample.data.jpa.service.CourseService;
-import sample.data.jpa.service.CourseServiceImpl;
-import sample.data.jpa.service.QuestionService;
+import com.pwr.quizzer.model.CourseGenere;
+import com.pwr.quizzer.model.Question;
+import com.pwr.quizzer.service.CourseService;
+import com.pwr.quizzer.service.CourseServiceImpl;
+import com.pwr.quizzer.service.QuestionService;
+
 import sample.data.jpa.utils.IntegrationTest;
 
 
