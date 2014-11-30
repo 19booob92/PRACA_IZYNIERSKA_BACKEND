@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import sample.data.jpa.model.Question;
+import com.pwr.quizzer.model.Question;
 
 
 public class QuestControllerTest {

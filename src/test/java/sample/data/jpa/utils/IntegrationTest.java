@@ -10,7 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import sample.data.jpa.SampleDataJpaApplication;
+import com.pwr.quizzer.SampleDataJpaApplication;
 
 @WebAppConfiguration
 @ContextConfiguration(classes = { SampleDataJpaApplication.class })

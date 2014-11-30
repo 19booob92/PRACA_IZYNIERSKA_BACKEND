@@ -7,8 +7,6 @@
 
 <script src="../../js/jquery-1.4.1.min.js"></script>
 
-<!--  Sprawdzać czy wszystkie odpowiedzi są zaznaczone -->
-
 <script>
 	var questAmount = 0;
 
@@ -76,21 +74,21 @@
 										} else if (radioButtons[3].checked) {
 											ans = 'answerD';
 										}
-										array.push({
-											id : $(this).attr("id"),
-											tick : ans
-										});
+										if (ans != '') {
+											array.push({
+												id : $(this).attr("id"),
+												tick : ans
+											});
+										}
 									});
-							console.log(array);
 							if (array.length === questAmount) {
-								console.log(array.length + "  " + questAmount);
 								send(array);
 								avoidRefresh();
+								$(this).hide();
 							} else {
 								alert("Nie odpoweidziałeś na wszystkie pytania");
 							}
 
-							$(this).hide();
 						});
 			});
 </script>
@@ -106,7 +104,11 @@
 				<div class="formDiv" th:id="${quest.id}">
 					<tr>
 						<th>Pytanie:</th>
-						<td th:text="${quest.content}"></td>
+						<b><td  th:text="${quest.content}"></td></b>
+					</tr>
+					<tr>
+						<th>Punkty:</th>
+						<td th:text="${quest.points}"></td>
 					</tr>
 					<tr>
 						<td th:text="${quest.answerA}"></td>

@@ -18,11 +18,11 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import sample.data.jpa.model.Question;
-import sample.data.jpa.service.QuestionService;
 import sample.data.jpa.utils.IntegrationTest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pwr.quizzer.model.Question;
+import com.pwr.quizzer.service.QuestionService;
  
 
 public class JpaTest extends IntegrationTest {

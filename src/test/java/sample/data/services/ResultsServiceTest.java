@@ -5,9 +5,10 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import sample.data.jpa.model.CourseGenere;
-import sample.data.jpa.service.CourseService;
-import sample.data.jpa.service.CourseServiceImpl;
+import com.pwr.quizzer.model.CourseGenere;
+import com.pwr.quizzer.service.CourseService;
+import com.pwr.quizzer.service.CourseServiceImpl;
+
 import sample.data.jpa.utils.IntegrationTest;
 
 
