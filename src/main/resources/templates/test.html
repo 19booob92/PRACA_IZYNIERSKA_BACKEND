@@ -103,12 +103,12 @@
 			<tr th:each="quest : ${test}">
 				<div class="formDiv" th:id="${quest.id}">
 					<tr>
-						<th>Pytanie:</th>
-						<b><td  th:text="${quest.content}"></td></b>
+						<th>Pytanie: <b><td  th:text="${quest.content}"></td></b>
+						<td style="font-size: 20px" th:text="${quest.points}"></td>
+						</th>
+						
 					</tr>
 					<tr>
-						<th>Punkty:</th>
-						<td th:text="${quest.points}"></td>
 					</tr>
 					<tr>
 						<td th:text="${quest.answerA}"></td>

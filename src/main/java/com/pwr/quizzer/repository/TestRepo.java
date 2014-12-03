@@ -10,5 +10,7 @@ import com.pwr.quizzer.model.Test;
 public interface TestRepo extends CrudRepository<Test, Long> {
     
     List<Test> findByCourseGenere(String courseGenere);
+
+    List<Test> findTestByUser(String username);
 }
 

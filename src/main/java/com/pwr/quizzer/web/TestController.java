@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
-import org.assertj.core.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -53,16 +52,30 @@ public class TestController {
     @Autowired
     private UsersService usersService;
 
+    Gson gson = new Gson();
+    
     @RequestMapping(value = "/test/courseName/{name}", method = RequestMethod.GET)
     public String generateTest(@PathVariable String name, Model model, Authentication auth, HttpSession session) {
-        
+
         try {
             if (usersService.isAble(auth.getName(), name)) {
-                Test generatedTest = testCreator.createTest(name);
-                testService.saveTest(generatedTest);
-                model.addAttribute("test", generatedTest.getQuestions());
-                model.addAttribute("testId", generatedTest.getId());
-                return "test";
+                if (testService.getTestsByUsername(auth.getName(), name) != null
+                        && testService.getTestsByUsername(auth.getName(), name).getUser() != null) {
+                    Test tmpTest = testService.getTestsByUsername(auth.getName(), name);
+                    
+                    model.addAttribute("test", tmpTest.getQuestions());
+                    model.addAttribute("testId", tmpTest.getId());
+                    return "test";
+                } else {
+                    Test generatedTest = testCreator.createTest(name);
+                    generatedTest.setUser(auth.getName());
+                    generatedTest.setCourseGenere(name);
+                    
+                    testService.saveTest(generatedTest);
+                    model.addAttribute("test", generatedTest.getQuestions());
+                    model.addAttribute("testId", generatedTest.getId());
+                    return "test";
+                }
             } else {
                 session.setAttribute("errorTxt", "Już rozwiązałeś test !");
                 return "errorPage";
@@ -86,8 +99,8 @@ public class TestController {
         String user = authentication.getName();
 
         usersService.disableUser(user, courseGroup);
-        
-        testService.completeTestData(courseGroup, testResult.getPoints(), user, questions);
+
+        testService.completeTestData(testResult.getPoints(), questions);
 
         Gson gson = new Gson();
         return gson.toJson(testResult);
@@ -100,12 +113,12 @@ public class TestController {
         result.setStudentId(authentication.getName());
         result.setMark(testResult.getMark());
         result.setMaxPoints(testResult.getMaxPoints());
-        
+
         long actualTime = System.currentTimeMillis();
         Date date = new Date(actualTime);
-        
+
         result.setDate(date);
-        
+
         resultsService.addResult(result);
     }
 

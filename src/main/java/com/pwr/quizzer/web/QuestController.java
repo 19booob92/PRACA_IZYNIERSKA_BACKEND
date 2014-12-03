@@ -2,31 +2,30 @@ package com.pwr.quizzer.web;
 
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.pwr.quizzer.dto.EditQuestionDTO;
-import com.pwr.quizzer.dto.QuestionDTO;
 import com.pwr.quizzer.mappers.QuestionMapper;
 import com.pwr.quizzer.model.Question;
 import com.pwr.quizzer.service.QuestionService;
-
 
 @Controller
 @RequestMapping(value = "/quest")
 public class QuestController {
 
+    private static final int FIRST_PAGE = 1;
+    
     @Autowired
     QuestionService questService;
 
@@ -38,10 +37,10 @@ public class QuestController {
         return questService.getOneQuestion(id);
     }
 
-    @RequestMapping(value = "/getAll", method = RequestMethod.GET)
-    public String getAllQuestions(Model model) {
-        model.addAttribute("quests", questService.getAllQuestions());
-        return "editQuestion";
+    @RequestMapping(value = "/getAll/{courseName}/{pageNum}", method = RequestMethod.GET)
+    public @ResponseBody List<Question> getAllQuestions(@PathVariable Integer pageNum, @PathVariable String courseName) {
+        Page<Question> questsPages = questService.getAllQuestions(courseName, pageNum);
+        return questsPages.getContent();
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
@@ -64,11 +63,9 @@ public class QuestController {
         return "addQuestion";
     }
 
-    @RequestMapping(value = "/delete", method = RequestMethod.POST, consumes = "application/json")
-    public String deleteMsg(@RequestBody List<QuestionDTO> ids) {
-        for (QuestionDTO questId : ids) {
-            questService.deleteQuestion(questId.getId());
-        }
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+    public String deleteMsg(@PathVariable int id) {
+            questService.deleteQuestion(id);
         return "editQuestion";
     }
 
@@ -78,7 +75,13 @@ public class QuestController {
         model.addAttribute("questions", quest);
         return "editQuestById";
     }
-
+    
+    @RequestMapping(value = "/editQuestion/{courseName}")
+    public String editQuestionPage(Model model, @PathVariable String courseName) {
+        model.addAttribute("courseName", courseName);
+        return "editQuestion";
+    }
+    
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public String quests(@Valid @ModelAttribute("questions") EditQuestionDTO quest, BindingResult result, Model model) {
         String errorTxt = "";
@@ -88,6 +91,7 @@ public class QuestController {
             } else {
                 errorTxt = "Nie wypełniono wszystkich pól";
             }
+            
             if (result.getFieldError("correctAnswer") != null) {
                 errorTxt += "Nie zaznaczyłeś poprawnej odpowiedzi ! \n";
             } else {
@@ -96,12 +100,12 @@ public class QuestController {
             
             model.addAttribute("error", errorTxt);
             model.addAttribute("questions", quest);
-            model.addAttribute("quests", questService.getAllQuestions());
+            model.addAttribute("quests", questService.getAllQuestions(quest.getCourseGenere(), FIRST_PAGE));
             return "editQuestion";
         }
         model.addAttribute("answer", new EditQuestionDTO());
         questService.editQuestion(quest);
         return "redirect:/quest/getAll";
     }
-
+    
 }

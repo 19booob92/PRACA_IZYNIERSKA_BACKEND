@@ -1,9 +1,13 @@
 package com.pwr.quizzer.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import org.assertj.core.util.Lists;
+import org.apache.activemq.filter.function.splitFunction;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,11 +23,13 @@ import com.pwr.quizzer.repository.QuestionRepo;
 @Service
 public class QuestionServiceImpl implements QuestionService {
 
+    private static final int ENTRIES_PER_PAGE = 5;
+
     private final static int ANY_QUEST = 0;
 
     @Autowired
     private CourseService courseService;
-    
+
     @Autowired
     private QuestionRepo questionRepo;
 
@@ -41,8 +47,12 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public List<Question> getAllQuestions() {
-        return Lists.newArrayList(questionRepo.findAll());
+    public Page<Question> getAllQuestions(String courseName, Integer page) {
+        PageRequest request =
+                new PageRequest(page - 1, ENTRIES_PER_PAGE);
+
+        Page<Question> quests = questionRepo.findByCourseGenereName(courseName, request);
+        return quests;
     }
 
     @Override

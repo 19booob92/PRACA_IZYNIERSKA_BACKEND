@@ -25,10 +25,10 @@ public class Annealing {
 
     private String courseGroup;
 
-    private final static float MIN_TEMP = 0.09f;
-
+    private final static float MIN_TEMP = 0.05f;
+    
     public Test findTestsWithSamePointsAmount(List<Question> questsFromGroup, String courseGenere) {
-        double temp = 50;
+        double temp = 100;
         this.courseGroup = courseGenere;
         allQuestionsFromGroup = questsFromGroup;
         random = new Random(System.nanoTime());
@@ -61,7 +61,7 @@ public class Annealing {
     }
 
     private double cooling(double temp) {
-        return temp * 0.55;
+        return temp * 0.4;
     }
 
     private List<Question> splitQuestionList() {

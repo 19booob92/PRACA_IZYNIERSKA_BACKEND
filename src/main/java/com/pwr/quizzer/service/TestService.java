@@ -12,7 +12,11 @@ public interface TestService {
     
     List<Test> getTestsByCourseGenere(String courseGenere);
     
+    Test getTestById(long id);
+    
     void saveTest(Test test);
 
-    void completeTestData(String courseGroup, int points, String user, AnswerDTO questions);
+    void completeTestData(int points, AnswerDTO questions);
+
+    Test getTestsByUsername(String username, String courseGenere);
 }

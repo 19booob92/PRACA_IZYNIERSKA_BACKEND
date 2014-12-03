@@ -1,14 +1,13 @@
 package com.pwr.quizzer.repository;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import org.springframework.data.repository.CrudRepository;
-
-import com.pwr.quizzer.model.CourseGenere;
 import com.pwr.quizzer.model.Question;
 
 
-public interface QuestionRepo extends CrudRepository<Question, Long> {
-    
+public interface QuestionRepo extends JpaRepository<Question, Long> {
+    Page<Question> findByCourseGenereName(String courseGenere, Pageable pageable);
 }
 

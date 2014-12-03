@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.pwr.quizzer.dto.EditQuestionDTO;
+import com.pwr.quizzer.model.Users;
 
 @Controller
 public class ViewController {
@@ -25,14 +26,9 @@ public class ViewController {
         return "login";
     }
 
-    @RequestMapping(value = "/editQuestion")
-    public String editQuestionPage() {
-        return "redirect:/quest/getAll";
-    }
-
     @RequestMapping(value = "/userCreation")
-    public String usersCreate() {
-        return "userCreation";
+    public String usersCreate(Users user) {
+        return "addUser";
     }
 
     @RequestMapping(value = "/users/usersMng")

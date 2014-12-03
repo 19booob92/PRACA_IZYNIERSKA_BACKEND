@@ -1,18 +1,25 @@
 package com.pwr.quizzer.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 
 @Entity
 @Table(name = "questions")
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
 public class Question implements Serializable {
 
     private static final long serialVersionUID = 6429316483965915569L;
@@ -21,7 +28,7 @@ public class Question implements Serializable {
     @GeneratedValue
     private long id;
 
-    
+
     private String answerA;
     private String answerB;
     private String answerC;
@@ -37,10 +44,10 @@ public class Question implements Serializable {
 
     private int points;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "test")
-    private Test test;
-    
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "questions")
+    private List<Test> tests;
+
     public String getContent() {
         return content;
     }
@@ -131,5 +138,15 @@ public class Question implements Serializable {
     public void setCourseGenere(CourseGenere courseGenere) {
         this.courseGenere = courseGenere;
     }
-    
+
+    @JsonIgnore
+    public List<Test> getTests() {
+        return tests;
+    }
+
+    @JsonIgnore
+    public void setTests(List<Test> tests) {
+        this.tests = tests;
+    }
+
 }

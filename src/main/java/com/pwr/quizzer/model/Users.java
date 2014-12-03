@@ -1,13 +1,13 @@
 package com.pwr.quizzer.model;
 
-import java.io.Serializable;
+import org.hibernate.validator.constraints.NotEmpty;
 
 
-public class Users implements Serializable {
+public class Users {
 
-    private static final long serialVersionUID = 8132520270490715635L;
-
+    @NotEmpty
     private String userName;
+    @NotEmpty
     private String password;
     private Boolean enabled;
     private String auth;

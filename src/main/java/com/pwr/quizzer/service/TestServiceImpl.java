@@ -37,13 +37,11 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public void completeTestData(String courseGroup, int points, String user, AnswerDTO questions) {
+    public void completeTestData(int points, AnswerDTO questions) {
 
         Test uncompleatedTest = testRepo.findOne(questions.getTestId());
         Gson gson = new Gson();
-        uncompleatedTest.setCourseGenere(courseGroup);
         uncompleatedTest.setGainedPoints(points);
-        uncompleatedTest.setUser(user);
         uncompleatedTest.setUsersAnswer(gson.toJson(questions.getQuestions()));
         
         long actualTime = System.currentTimeMillis();
@@ -52,6 +50,22 @@ public class TestServiceImpl implements TestService {
         uncompleatedTest.setFinishTime(date);
         
         testRepo.save(uncompleatedTest);
+    }
+
+    @Override
+    public Test getTestById(long id) {
+        return testRepo.findOne(id);
+    }
+
+    @Override
+    public Test getTestsByUsername(String username, String courseGenere) {
+        List<Test> tests = Lists.newArrayList(testRepo.findTestByUser(username));
+        for (Test test : tests) {
+            if (test != null && test.getCourseGenere() != null && test.getCourseGenere().equals(courseGenere)) {
+                return test; 
+            }
+        }
+        return null;
     }
 
 }

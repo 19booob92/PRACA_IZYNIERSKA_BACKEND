@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pwr.quizzer.utils.Courses;
 
 
@@ -27,6 +28,7 @@ public class CourseGenere implements Serializable {
     @Column(name = "name")
     private String name;
 
+    @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "courseGenere")
     private List<Question> questions;
 
@@ -40,11 +42,12 @@ public class CourseGenere implements Serializable {
     }
 
 
+    @JsonIgnore
     public List<Question> getQuestions() {
         return questions;
     }
 
-
+    @JsonIgnore
     public void setQuestions(List<Question> questions) {
         this.questions = questions;
     }
@@ -67,6 +70,5 @@ public class CourseGenere implements Serializable {
         }
         return false;
     }
-
 
 }

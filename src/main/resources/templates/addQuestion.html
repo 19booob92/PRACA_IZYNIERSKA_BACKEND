@@ -3,7 +3,6 @@
 <head>
 <title>Webowa Aplikacja Do Przeprowadzania Testow</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-
 <script src="../../js/jquery-1.4.1.min.js"></script>
 
 <script>
@@ -22,9 +21,7 @@
 <body>
 
 	<div height="100px" id="errorDiv" align="right">
-		<p id="err"
-			th:text="${error}"
-			style="color: red;"></p>
+		<p id="err" th:text="${error}" style="color: red;"></p>
 	</div>
 
 	<form action="#" th:action="@{/quest/create}" th:object="${answer}"
@@ -33,19 +30,26 @@
 			th:value="${answer.content}"
 			th:class="${#fields.hasErrors('content')}? 'error'" /><br /> <br />
 		Ilość punktów: <input type="number" name="points"
-			th:value="${answer.points}" /><br th:class="${#fields.hasErrors('points')}? 'error'" /> <br /> Odp. A <input
-			type="text" name="answerA" th:value="${answer.answerA}" th:class="${#fields.hasErrors('answerA')}? 'error'" /><input
+			th:value="${answer.points}" /><br
+			th:class="${#fields.hasErrors('points')}? 'error'" /> <br /> Odp. A
+		<input type="text" name="answerA" th:value="${answer.answerA}"
+			th:class="${#fields.hasErrors('answerA')}? 'error'" /><input
 			type="radio" name="correctAnswer" /><br /> Odp. B <input
-			type="text" name="answerB" th:value="${answer.answerB}" th:class="${#fields.hasErrors('answerB')}? 'error'" /><input
+			type="text" name="answerB" th:value="${answer.answerB}"
+			th:class="${#fields.hasErrors('answerB')}? 'error'" /><input
 			type="radio" name="correctAnswer" value="" /><br /> Odp. C <input
-			type="text" name="answerC" th:value="${answer.answerC}" th:class="${#fields.hasErrors('answerC')}? 'error'"/><input
+			type="text" name="answerC" th:value="${answer.answerC}"
+			th:class="${#fields.hasErrors('answerC')}? 'error'" /><input
 			type="radio" name="correctAnswer" value="" /><br /> Odp. D <input
-			type="text" name="answerD" th:value="${answer.answerD}" th:class="${#fields.hasErrors('answerD')}? 'error'"/><input
+			type="text" name="answerD" th:value="${answer.answerD}"
+			th:class="${#fields.hasErrors('answerD')}? 'error'" /><input
 			type="radio" name="correctAnswer" value="" /><br /> Przedmiot: <select
 			name="courseGenere">
 			<option th:selected="${answer.courseGenere} == 'Algebra'"
 				value="Algebra">Algebra</option>
 			<option th:selected="${answer.courseGenere}  == 'Analiza'"
+				value="Analiza">Analiza</option>
+			<option th:selected="${answer.courseGenere}  == 'Fizyka'"
 				value="Analiza">Analiza</option>
 		</select> <input class="btn" type="submit" value="Dodaj" />
 	</form>
