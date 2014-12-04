@@ -22,17 +22,10 @@
 	</div>
 
 
-	<form action="#" th:action="@{/users/create}" th:object="${users}"
+	<form action="#" th:action="@{/courses/create}" th:object="${courseGenere}"
 		method="post">
-		Login: <input type="text" th:field="*{userName}"
-			th:class="${#fields.hasErrors('userName')}? 'error'" /><br /> Hasło:
-		<input type="text" th:field="*{password}"
-			th:class="${#fields.hasErrors('password')}? 'error'" /><br /> Rola:
-		<select name="auth">
-			<option value="STUDENT">Student</option>
-			<option value="LECTOR">Prowadzący</option>
-			<option value="ADMIN">Administrator</option>
-		</select>
+		Nazwa kursu: <input type="text" name = "name" th:field="${courseGenere.name}" 
+			th:class="${#fields.hasErrors('name')}? 'error'"/><br/>
 		<button class="button" type="submit">Dodaj</button>
 		<br />
 	</form>

@@ -20,6 +20,7 @@
 				$('#genTest').show();
 			} else if (data === "ADMIN") {
 				$("#usersMng").show();
+				$("#courseMng").show();
 			} else if (data === "LECTOR") {
 				$("#treshold").show();
 				$("#stats").show();
@@ -30,6 +31,7 @@
 </script>
 
 <body>
+	<a style="float:right" href="/logout" th:href="@{/logout}"><div class="button">Wyloguj</div></a><br/>
 	<a class="hide" id="genTest" href="/courses" th:href="@{/courses}"><div
 			class="button">Kategoria</div></a>
 	<a class="hide" id="stats" href="/stats/userStat" th:href="@{/stats/userStat}"
@@ -40,6 +42,7 @@
 		th:href="@{/users/usersMng}"><div class="button">Użytkownicy</div></a>
 	<a id="treshold" class="hide" href="/mark" th:href="@{/mark}"><div
 			class="button">Progi</div></a>
-	<a href="/logout" th:href="@{/logout}"><div class="button">Wyloguj</div></a>
+	<a id="courseMng" class="hide" href="/courseMng" th:href="@{/courseMng}"><div
+			class="button">Kursy</div></a>
 </body>
 </html>

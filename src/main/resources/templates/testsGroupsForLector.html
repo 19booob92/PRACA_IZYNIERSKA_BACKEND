@@ -30,12 +30,18 @@
 </script>
 
 <body>
+	<a style="float: left" id="genTest" href="/quest/questMng" th:href="@{/quest/questMng}"><div
+			class="button">Powrót</div></a>
+
+	<a style="float: right" href="/logout" th:href="@{/logout}"><div
+			class="button">Wyloguj</div></a>
+	<br />
+	<br />
 	<table>
 		<tr th:each="group : ${groups}" style="text-align: center">
 			<td><input class="buttonList" type="button"
 				th:value="${group.name}" /></td>
 		</tr>
 	</table>
-	<a href="/logout" th:href="@{/logout}"><div class="button">Wyloguj</div></a>
 </body>
 </html>

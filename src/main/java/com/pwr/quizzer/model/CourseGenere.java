@@ -11,8 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.pwr.quizzer.utils.Courses;
 
 
 @Entity
@@ -25,6 +26,7 @@ public class CourseGenere implements Serializable {
     @GeneratedValue
     private long id;
 
+    @NotEmpty
     @Column(name = "name")
     private String name;
 
@@ -69,6 +71,16 @@ public class CourseGenere implements Serializable {
             return true;
         }
         return false;
+    }
+
+    
+    public long getId() {
+        return id;
+    }
+
+    
+    public void setId(long id) {
+        this.id = id;
     }
 
 }

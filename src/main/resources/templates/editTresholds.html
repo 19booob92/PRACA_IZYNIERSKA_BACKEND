@@ -9,24 +9,29 @@
 	href="../../css/main.css" />
 </head>
 <body>
+	<a style="float: left" id="genTest" href="/" th:href="@{/}"><div
+			class="button">Powrót</div></a>
+
+	<a style="float: right" href="/logout" th:href="@{/logout}"><div
+			class="button">Wyloguj</div></a>
+	<br />
+	<br />
 	<form action="#" th:action="@{/mark}" th:object="${markTresholds}"
 		method="post">
-				
+
 		<div th:each="mark : ${marks}">
-				
-		Celujący: <input type="text" th:name="tresholdA" th:value = "${mark.tresholdA}"/><br /> 
-		Bardzo dobry: <input
-			type="text" th:name="tresholdB" th:value = "${mark.tresholdB}"/><br /> 
-		Dobry: <input
-			type="text" th:name="tresholdC" th:value = "${mark.tresholdC}"/><br /> 
-		Dostateczny: <input
-			type="text" th:name="tresholdD" th:value = "${mark.tresholdD}"/><br /> 
-		Niedopuszczajacy: <input
-			type="text" th:name="tresholdE" th:value = "${mark.tresholdE}"/><br /> 
+
+			Celujący: <input type="text" th:name="tresholdA"
+				th:value="${mark.tresholdA}" /><br /> Bardzo dobry: <input
+				type="text" th:name="tresholdB" th:value="${mark.tresholdB}" /><br />
+			Dobry: <input type="text" th:name="tresholdC"
+				th:value="${mark.tresholdC}" /><br /> Dostateczny: <input
+				type="text" th:name="tresholdD" th:value="${mark.tresholdD}" /><br />
+			Niedopuszczajacy: <input type="text" th:name="tresholdE"
+				th:value="${mark.tresholdE}" /><br />
 		</div>
 
 		<button class="button" type="submit">Aktualizuj</button>
 	</form>
-	<a href="/logout" th:href="@{/logout}"><div class="button">Wyloguj</div></a>
 </body>
 </html>

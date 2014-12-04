@@ -65,6 +65,7 @@ public class QuestionServiceImpl implements QuestionService {
         questionModel.setAnswerD(quest.getAnswerD());
         questionModel.setContent(quest.getContent());
         questionModel.setCorrectAnswer(quest.getCorrectAnswer());
+        questionModel.setPoints(quest.getPoints());
         questionModel.setCourseGenere(course);
         questionRepo.save(questionModel);
     }

@@ -23,7 +23,9 @@ public class EditQuestionDTO {
     @NotNull
     private String answerD= "";
     
-    private String courseGenere= "Algebra";
+    @NotEmpty
+    @NotNull
+    private String courseGenere;
 
     @NotEmpty
     @NotNull
@@ -35,7 +37,7 @@ public class EditQuestionDTO {
     
     @NotNull
     @Range(min=1, max=8)
-    private Integer points = 0;
+    private Integer points;
 
     
     public long getId() {

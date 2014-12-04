@@ -97,8 +97,18 @@
 <link rel="stylesheet" type="text/css" media="all"
 	href="../../views/style.css" th:href="@{/views/style.css}" />
 </head>
+
+<a style="float: left" id="genTest" href="/courses" th:href="@{/courses}"><div
+			class="button">Powrót</div></a>
+
+	<a style="float: right" href="/logout" th:href="@{/logout}"><div
+			class="button">Wyloguj</div></a>
+	<br />
+	<br />
+
 <body>
 	<form id="testForm" action="#" method="post">
+	<button class="button" id="send" type="button">Wyślij</button>
 		<table th:id = "${testId}">
 			<tr th:each="quest : ${test}">
 				<div class="formDiv" th:id="${quest.id}">
@@ -136,6 +146,5 @@
 	<p id="percent"></p>
 	<p id="mark"></p>
 
-	<a href="/logout" th:href="@{/logout}"><div class="button">Wyloguj</div></a>
 </body>
 </html>

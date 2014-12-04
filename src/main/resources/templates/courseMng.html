@@ -8,18 +8,13 @@
 	href="../../css/main.css" />
 </head>
 <body>
-	<a style="float: left" id="genTest" href="/" th:href="@{/}"><div
+	<a style="float:left" id="genTest" href="/" th:href="@{/}"><div
 			class="button">Powrót</div></a>
 
-	<a style="float: right" href="/logout" th:href="@{/logout}"><div
-			class="button">Wyloguj</div></a>
-	<br />
-	<br />
-	<a id="questAdd" href="/quest/addQuestion"
-		th:href="@{/quest/addQuestion}"><div class="button">Stwórz
-			pytanie</div></a>
-	<a id="editQuest" href="/courses/courseGenereForLector"
-		th:href="@{/courses/courseGenereForLector}"><div class="button">Edytuj
-			pytania</div></a>
+	<a style="float:right" href="/logout" th:href="@{/logout}"><div class="button">Wyloguj</div></a>
+	<br/>
+	<br/>
+		<a href="/addCourse" th:href="@{/addCourse}"><div
+			class="button">Stwórz</div></a>
 </body>
 </html>

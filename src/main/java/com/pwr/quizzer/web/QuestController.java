@@ -54,6 +54,9 @@ public class QuestController {
             if (result.getFieldError("correctAnswer") != null) {
                 errorTxt += "Nie zaznaczyłeś poprawnej odpowiedzi ! \n";
             }
+            if (result.getFieldError("courseGenere") != null) {
+                errorTxt += "Nie wybrałeś grupy ! \n";
+            }
             model.addAttribute("error", errorTxt);
             model.addAttribute("answer", question);
             return "addQuestion";

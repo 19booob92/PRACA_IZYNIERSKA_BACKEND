@@ -6,20 +6,39 @@
 <script src="../../js/jquery-1.4.1.min.js"></script>
 
 <script>
-	$(document).ready(function() {
-		$('input:radio').change(function() {
-			$(this).val($(this).prev().attr('name'));
-		});
+	$(document).ready(
+			function() {
+				$('input:radio').change(function() {
+					$(this).val($(this).prev().attr('name'));
+				});
 
-		$("input[name=" + $("#err").val() + "]").css('border-color', 'red');
+//				$("input[name=" + $("#err").val() + "]").css('border-color',
+//						'red');
 
-	});
+				$.ajax({
+					url : "/courses/allCourses/",
+					type : "GET",
+					success : function(data) {
+						$.each(data, function(i) {
+							$("#courseList").append(
+									new Option(data[i].name, data[i].name));
+						});
+					}
+				});
+
+			});
 </script>
 <link rel="stylesheet" th:href="@{/css/main.css}"
 	href="../../css/main.css" />
 </head>
 <body>
+	<a style="float: left" id="genTest" href="/quest/questMng"
+		th:href="@{/quest/questMng}"><div class="button">Powrót</div></a>
 
+	<a style="float: right" href="/logout" th:href="@{/logout}"><div
+			class="button">Wyloguj</div></a>
+	<br />
+	<br />
 	<div height="100px" id="errorDiv" align="right">
 		<p id="err" th:text="${error}" style="color: red;"></p>
 	</div>
@@ -44,15 +63,8 @@
 			type="text" name="answerD" th:value="${answer.answerD}"
 			th:class="${#fields.hasErrors('answerD')}? 'error'" /><input
 			type="radio" name="correctAnswer" value="" /><br /> Przedmiot: <select
-			name="courseGenere">
-			<option th:selected="${answer.courseGenere} == 'Algebra'"
-				value="Algebra">Algebra</option>
-			<option th:selected="${answer.courseGenere}  == 'Analiza'"
-				value="Analiza">Analiza</option>
-			<option th:selected="${answer.courseGenere}  == 'Fizyka'"
-				value="Analiza">Analiza</option>
+			id="courseList" name="courseGenere">
 		</select> <input class="btn" type="submit" value="Dodaj" />
 	</form>
-	<a href="/logout" th:href="@{/logout}"><div class="button">Wyloguj</div></a>
 </body>
 </html>

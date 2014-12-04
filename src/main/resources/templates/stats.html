@@ -26,8 +26,10 @@
 				$.each(result, function(i) {
 					if (result[i].date != null) {
 						var date = new Date(result[i].date);
-						var dateString = date.getDate() + "-" + date.getMonth() + "-" + date.getFullYear() +
-						date.getHours()+ ":"  +date.getMinutes() + ":"  +date.getSeconds();
+						var dateString = date.getDate() + "-" + date.getMonth()
+								+ "-" + date.getFullYear() + date.getHours()
+								+ ":" + date.getMinutes() + ":"
+								+ date.getSeconds();
 					} else {
 						dateString = "Brak Daty";
 					}
@@ -63,7 +65,14 @@
 
 </head>
 <body>
+	<a style="float: left" id="genTest" href="/"
+		th:href="@{/}"><div class="button">Powrót</div></a>
 
+	<a style="float: right" href="/logout" th:href="@{/logout}"><div
+			class="button">Wyloguj</div></a>
+	<br />
+	<br />
+	
 	<table id="paginatedTable" class="table">
 		<thead>
 			<tr>
@@ -83,7 +92,5 @@
 	<div id="page-content"></div>
 	<ul id="pagination-demo" class="pagination-sm pagination">
 	</ul>
-
-	<a href="/logout" th:href="@{/logout}"><div class="button">Wyloguj</div></a>
 </body>
 </html>

@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.pwr.quizzer.dto.EditQuestionDTO;
+import com.pwr.quizzer.model.CourseGenere;
 import com.pwr.quizzer.model.Users;
 
 @Controller
@@ -35,6 +36,11 @@ public class ViewController {
     public String usersManage() {
         return "usersMng";
     }
+    
+    @RequestMapping(value = "/courseMng")
+    public String courseManager() {
+        return "courseMng";
+    }
 
     @RequestMapping(value = "/quest/questMng")
     public String questManage() {
@@ -51,4 +57,9 @@ public class ViewController {
         return "editUser";
     }
 
+    @RequestMapping(value = "/addCourse")
+    public String addCourse(CourseGenere courseGenere) {
+        return "addCourse";
+    }
+    
 }

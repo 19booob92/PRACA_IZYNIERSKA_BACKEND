@@ -118,6 +118,14 @@
 
 </head>
 <body>
+
+	<a style="float: left" id="genTest" href="/courses/courseGenereForLector"
+		th:href="@{/courses/courseGenereForLector}"><div class="button">Powrót</div></a>
+
+	<a style="float: right" href="/logout" th:href="@{/logout}"><div
+			class="button">Wyloguj</div></a>
+	<br />
+	<br />
 	<div height="100px" id="errorDiv" align="right">
 		<p id="err" th:text="${error}" th:value="${error}" style="color: red;"></p>
 	</div>
@@ -181,8 +189,6 @@
 	<div id="page-content"></div>
 	<ul id="pagination-demo" class="pagination-sm pagination">
 	</ul>
-
-	<a href="/logout" th:href="@{/logout}"><div class="button">Wyloguj</div></a>
 </body>
 
 </html>

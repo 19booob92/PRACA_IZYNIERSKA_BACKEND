@@ -14,6 +14,17 @@
 			javascript: self.close();
 			self.close();
 		});
+		
+		$.ajax({
+			url : "/courses/allCourses/",
+			type : "GET",
+			success : function(data) {
+				$.each(data, function(i) {
+					$("#courseList").append(
+							new Option(data[i].name, data[i].name));
+				});
+			}
+		});
 	});
 </script>
 </head>
@@ -42,13 +53,10 @@
 				th:checked="${quest.correctAnswer}=='answerC'"></input> <input
 				type="text" th:name="answerD" th:value="${quest.answerD}" th:class="${#fields.hasErrors('answerD')}? 'error'"></input> <input
 				th:type="radio" th:name="correctAnswer" th:value="answerD"
-				th:checked="${quest.correctAnswer}=='answerD'"></input> Przedmiot: <select
+				th:checked="${quest.correctAnswer}=='answerD'"></input> Przedmiot: <select id="courseList"
 				name="courseGenere">
 				
-				<option value="Algebra">Algebra</option>
-				<option value="Analiza">Analiza</option>
-				<option value="Informatyka">Analiza</option>
-				<option value="Fizyka">Analiza</option>
+				
 			</select>
 		</div>
 		<button id="btn" class="button" type="submit">Edytuj</button>

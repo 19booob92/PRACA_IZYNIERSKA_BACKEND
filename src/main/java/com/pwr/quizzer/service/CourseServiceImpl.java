@@ -28,4 +28,9 @@ public class CourseServiceImpl implements CourseService {
         return Lists.newArrayList(courseRepo.findAll());
     }
 
+    @Override
+    public void save(CourseGenere course) {
+        courseRepo.save(course);
+    }
+
 }
