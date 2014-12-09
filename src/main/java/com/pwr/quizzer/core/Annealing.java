@@ -15,9 +15,9 @@ import com.pwr.quizzer.web.TestController;
 
 public class Annealing {
 
-    private List<Question> testToServe = new ArrayList<>();
+    private List<Question> testToServe = new ArrayList<Question>();
 
-    private List<Question> allQuestionsFromGroup = new ArrayList<>();
+    private List<Question> allQuestionsFromGroup = new ArrayList<Question>();
 
     private static final double E = 2.71828152;
 

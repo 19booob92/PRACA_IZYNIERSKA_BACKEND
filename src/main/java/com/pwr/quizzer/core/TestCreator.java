@@ -47,7 +47,7 @@ public class TestCreator {
     public static List<Question> addWithoutDuplicates(List<Question> inputList) {
         Question actualItem;
         List<Question> temp = Lists.newArrayList(inputList);
-        List<Question> outputList = new ArrayList<>();
+        List<Question> outputList = new ArrayList<Question>();
         for (int i = 0; i < TestController.QUEST_AMOUNT; i++) {
             actualItem = randomQuestion(temp);
 

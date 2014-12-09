@@ -28,7 +28,7 @@ public class UserMapper {
     }
     
     public List<UserDTO> mapUsersList(Page<UserTmp> userList) {
-        List<UserDTO> usersDtoList = new ArrayList<>();
+        List<UserDTO> usersDtoList = new ArrayList<UserDTO>();
         for (UserTmp user : userList) {
             if (!user.getUsername().equals("admin")) {
                 usersDtoList.add(mapUser(user));

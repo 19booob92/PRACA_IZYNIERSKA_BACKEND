@@ -99,7 +99,7 @@ public class UsersServiceImpl implements UsersService {
 
         Page<UserTmp> usersFromDB = usersRepo.findAll(request);
         List<UserDTO> mappedUsers = userMapper.mapUsersList(usersFromDB);
-        Page<UserDTO> usersPages = new PageImpl<>(mappedUsers);
+        Page<UserDTO> usersPages = new PageImpl<UserDTO>(mappedUsers);
         return usersPages;
     }
 

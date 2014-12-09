@@ -10,7 +10,7 @@ import com.pwr.quizzer.model.Question;
 
 public class PointsAvg {
 
-    public static Map<String, Float> avgOfPointsAmount = new HashMap<>();
+    public static Map<String, Float> avgOfPointsAmount = new HashMap<String, Float>();
 
     private static final int NUMBER_OF_PROBES = 5;
 
