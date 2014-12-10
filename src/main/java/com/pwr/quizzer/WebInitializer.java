@@ -1,6 +1,9 @@
 package com.pwr.quizzer;
 
+import static com.pwr.quizzer.utils.PointsAvg.evaluateValues;
+
 import java.sql.Date;
+import java.util.List;
 
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;
@@ -10,7 +13,9 @@ import org.quartz.impl.StdSchedulerFactory;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 
-import com.pwr.quizzer.core.AnnealingTresholds;
+import com.pwr.quizzer.model.CourseGenere;
+import com.pwr.quizzer.service.CourseService;
+import com.pwr.quizzer.service.CourseServiceImpl;
 
 
 public class WebInitializer extends SpringBootServletInitializer {
@@ -18,26 +23,6 @@ public class WebInitializer extends SpringBootServletInitializer {
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
         
-        try {
-            setScheduler();
-        } catch (SchedulerException e) {
-            e.printStackTrace();
-        }
         return application.sources(MainConfiguration.class);
-    }
-
-    private void setScheduler() throws SchedulerException {
-        JobDetail job = new JobDetail();
-        job.setName("dummyJobName");
-        job.setJobClass(AnnealingTresholds.class);
-
-        SimpleTrigger trigger = new SimpleTrigger();
-        trigger.setStartTime(new Date(System.currentTimeMillis() + 1000));
-        trigger.setRepeatCount(SimpleTrigger.REPEAT_INDEFINITELY);
-        trigger.setRepeatInterval(30000);
-
-        Scheduler scheduler = new StdSchedulerFactory().getScheduler();
-        scheduler.start();
-        scheduler.scheduleJob(job, trigger);
     }
 }

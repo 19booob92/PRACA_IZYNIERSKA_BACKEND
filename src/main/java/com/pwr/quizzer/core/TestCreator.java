@@ -33,9 +33,6 @@ public class TestCreator {
     }
 
     public Test createTest(String courseGroup) throws IllegalArgumentException {
-        List<CourseGenere> courses = courseService.findAll();
-        evaluateValues(courses);
-
         List<Question> questsForCourse = courseService.findCourse(courseGroup).getQuestions();
 
         if (TestController.QUEST_AMOUNT > questsForCourse.size()) {

@@ -1,5 +1,7 @@
 package com.pwr.quizzer.web;
 
+import static com.pwr.quizzer.utils.PointsAvg.evaluateValues;
+
 import java.util.List;
 
 import javax.validation.Valid;
@@ -18,8 +20,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.pwr.quizzer.dto.UserDTO;
+import com.pwr.quizzer.model.CourseGenere;
 import com.pwr.quizzer.model.UserTmp;
 import com.pwr.quizzer.model.Users;
+import com.pwr.quizzer.service.CourseService;
 import com.pwr.quizzer.service.UsersService;
 
 
@@ -29,6 +33,9 @@ public class UserController {
 
     @Autowired
     UsersService usersService;
+
+    @Autowired
+    CourseService courseService;
 
     @RequestMapping(value = "/role", method = RequestMethod.GET)
     public @ResponseBody String getUserRole(Authentication authentication) {
@@ -65,6 +72,9 @@ public class UserController {
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String checkPersonInfo(@Valid Users users, BindingResult bindingResult) {
+        List<CourseGenere> courses = courseService.findAll();
+        evaluateValues(courses);
+        
         if (bindingResult.hasErrors()) {
             return "addUser";
         } else {
