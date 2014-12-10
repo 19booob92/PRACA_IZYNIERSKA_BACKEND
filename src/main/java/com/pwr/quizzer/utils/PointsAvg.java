@@ -10,7 +10,7 @@ import com.pwr.quizzer.model.Question;
 
 public class PointsAvg {
 
-    public static Map<String, Float> avgOfPointsAmount = new HashMap<>();
+    public static Map<String, Float> avgOfPointsAmount = new HashMap<String, Float>();
 
     private static final int NUMBER_OF_PROBES = 5;
 
@@ -37,7 +37,7 @@ public class PointsAvg {
         }
         return pointsSum;
     }
-
+    
     public static boolean isCloser(List<Question> before, List<Question> after, String courseGenere) {
         int beforePoints = getPointsFromTest(before);
         int afterPoints = getPointsFromTest(after);
@@ -46,9 +46,9 @@ public class PointsAvg {
         }
         return false;
     }
-
+    
     public static float accuracy(float value, String courseGenere) {
-        return Math.abs(PointsAvg.avgOfPointsAmount.get(courseGenere) - value);
+        return Math.abs(PointsAvg.avgOfPointsAmount.get(courseGenere) / 2 - value);
     }
 
 }

@@ -3,7 +3,7 @@
 <head>
 <title>Webowa Aplikacja Do Przeprowadzania Testow</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<script src="../../js/jquery-1.4.1.min.js"></script>
+<script th:src="@{/js/jquery-1.4.1.min.js}" src="../../js/jquery-1.4.1.min.js"></script>
 
 <script>
 	$(document).ready(
@@ -20,7 +20,7 @@
 					type : "GET",
 					success : function(data) {
 						$.each(data, function(i) {
-							$("#courseList").append(
+							$("#courseLista").append(
 									new Option(data[i].name, data[i].name));
 						});
 					}
@@ -63,7 +63,7 @@
 			type="text" name="answerD" th:value="${answer.answerD}"
 			th:class="${#fields.hasErrors('answerD')}? 'error'" /><input
 			type="radio" name="correctAnswer" value="" /><br /> Przedmiot: <select
-			id="courseList" name="courseGenere">
+			id="courseLista" name="courseGenere">
 		</select> <input class="btn" type="submit" value="Dodaj" />
 	</form>
 </body>

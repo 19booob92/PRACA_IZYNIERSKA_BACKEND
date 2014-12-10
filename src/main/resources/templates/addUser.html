@@ -7,7 +7,7 @@
 <link rel="stylesheet" th:href="@{/css/main.css}"
 	href="../../css/main.css" />
 
-<script src="../../js/jquery-1.4.1.min.js"></script>
+<script th:src="@{/js/jquery-1.4.1.min.js}" src="../../js/jquery-1.4.1.min.js"></script>
 </head>
 <body>
 	<a style="float: left" id="genTest" href="/users/usersMng" th:href="@{/users/usersMng}"><div
@@ -27,7 +27,9 @@
 		Login: <input type="text" th:field="*{userName}"
 			th:class="${#fields.hasErrors('userName')}? 'error'" /><br /> Hasło:
 		<input type="text" th:field="*{password}"
-			th:class="${#fields.hasErrors('password')}? 'error'" /><br /> Rola:
+			th:class="${#fields.hasErrors('password')}? 'error'" /><br />
+		Numer indexu: <input type="text" th:field="*{indexNo}"
+			th:class="${#fields.hasErrors('indexNo')}? 'error'" /><br /> Rola:
 		<select name="auth">
 			<option value="STUDENT">Student</option>
 			<option value="LECTOR">Prowadzący</option>

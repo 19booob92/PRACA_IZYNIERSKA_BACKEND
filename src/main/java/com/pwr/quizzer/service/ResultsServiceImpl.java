@@ -54,13 +54,17 @@ public class ResultsServiceImpl implements ResultsService {
         Mark mark = service.getModel(); 
         final float PERCENT = (float) (100. * ((float)points / (float)maxPoints));
 
-        if (PERCENT < mark.getTresholdE()) {
+        if (PERCENT <= mark.getTresholdF()) {
             return Mark.NIEDOPUSZCZAJACY;
-        } else if (PERCENT < mark.getTresholdD()) {
+        } else if (PERCENT <= mark.getTresholdE()) {
             return Mark.DOSTATECZNY;
-        } else if (PERCENT < mark.getTresholdC()) {
+        } else if (PERCENT <= mark.getTresholdD()) {
+            return Mark.DOSTATECZNY_PLUS;
+        } else if (PERCENT <= mark.getTresholdC()) {
             return Mark.DOBRY;
-        } else if (PERCENT < mark.getTresholdB()) {
+        } else if (PERCENT <= mark.getTresholdB()) {
+            return Mark.DOBRY_PLUS;
+        } else if (PERCENT <= mark.getTresholdA()) {
             return Mark.BARDZO_DOBRY;
         } else {
             return Mark.CELUJACY;

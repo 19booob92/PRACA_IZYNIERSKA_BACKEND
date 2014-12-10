@@ -34,7 +34,7 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 @EnableAspectJAutoProxy
 @PropertySource({ "classpath:application.properties" })
 @EnableJpaRepositories("com.pwr.quizzer.repository")
-public class SampleDataJpaApplication extends WebMvcConfigurerAdapter {
+public class MainConfiguration extends WebMvcConfigurerAdapter {
 
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
@@ -94,7 +94,7 @@ public class SampleDataJpaApplication extends WebMvcConfigurerAdapter {
     }
 
     public static void main(String[] args) throws Exception {
-        SpringApplication.run(SampleDataJpaApplication.class, args);
+        SpringApplication.run(MainConfiguration.class, args);
     }
 
     @Bean

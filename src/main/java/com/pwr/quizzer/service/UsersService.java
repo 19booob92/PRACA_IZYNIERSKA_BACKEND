@@ -17,7 +17,7 @@ public interface UsersService {
     
     UserTmp getUser(String userName);
     
-    boolean isAble(String userName, String courseGroup);
+    boolean isAbleToResolveTest(String userName, String courseGroup);
 
     Page<UserDTO> getAllUsers(Integer pageNum);
 

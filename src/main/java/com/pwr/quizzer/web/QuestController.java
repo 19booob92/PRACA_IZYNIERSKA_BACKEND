@@ -108,7 +108,7 @@ public class QuestController {
         }
         model.addAttribute("answer", new EditQuestionDTO());
         questService.editQuestion(quest);
-        return "redirect:/quest/getAll";
+        return "editQuestion";
     }
     
 }

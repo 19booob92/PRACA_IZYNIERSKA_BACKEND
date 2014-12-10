@@ -6,6 +6,8 @@ public class UserDTO {
     private String username;
 
     private boolean enabled = true;
+    
+    private int indexNo;
 
     private String able = "";
 
@@ -49,6 +51,18 @@ public class UserDTO {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+
+    
+    public int getIndexNo() {
+        return indexNo;
+    }
+
+
+    
+    public void setIndexNo(int indexNo) {
+        this.indexNo = indexNo;
     }
 
 }

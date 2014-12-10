@@ -11,7 +11,8 @@ public class Users {
     private String password;
     private Boolean enabled;
     private String auth;
-
+    private Integer indexNo;
+    
     public String getUserName() {
         return userName;
     }
@@ -44,6 +45,16 @@ public class Users {
 
     public void setAuth(String auth) {
         this.auth = auth;
+    }
+
+    
+    public Integer getIndexNo() {
+        return indexNo;
+    }
+
+    
+    public void setIndexNo(Integer indexNo) {
+        this.indexNo = indexNo;
     }
 
 

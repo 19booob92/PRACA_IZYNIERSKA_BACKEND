@@ -4,10 +4,12 @@
 <title>Edyjca pytan</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
-<script src="../../js/jquery-1.4.1.min.js"></script>
-<script src="../../js/jquery-ui.min.js"></script>
-<script src="../../js/jquery.twbsPagination.min.js"></script>
-<script src="../../js/bootstrap.min.js"></script>
+<script th:src="@{/js/jquery-1.4.1.min.js}"
+	src="../../js/jquery-1.4.1.min.js"></script>
+<script th:src="@{/js/jquery-ui.min.js}" src="../../js/jquery-ui.min.js"></script>
+<script th:src="@{/js/jquery.twbsPagination.min.js}"
+	src="../../js/jquery.twbsPagination.min.js"></script>
+<script th:src="@{/js/bootstrap.min.js}" src="../../js/bootstrap.min.js"></script>
 
 <link rel="stylesheet" th:href="@{/js/jquery-ui.min.css}"
 	href="../../ja/jquery-ui.min.css" />
@@ -55,12 +57,27 @@
 																	+ '<td>'
 																	+ result[i].points
 																	+ '</td>'
-																	+ '<td><input class="btn" type="button" value="delete" id="' +result[i].id + '"/>'
-																	+ '<input class="btn" type="button" value="edit" id="' + result[i].id + '"/></td>'
+																	+ '<td><input class="smallbtn" type="button" value="delete" id="' +result[i].id + '"/>'
+																	+ '<input class="smallbtn" type="button" value="edit" id="' + result[i].id + '"/></td>'
 																	+ '</tr>');
 										});
 					}
 				});
+	}
+	
+	function getAllCoursesIntoList() {
+		
+		$.ajax({
+			url : "/courses/allCourses/",
+			type : "GET",
+			success : function(data) {
+				$.each(data, function(i) {
+					$("#courseLista").append(
+							new Option(data[i].name, data[i].name));
+				});
+			}
+		});
+		
 	}
 
 	function edit(questId) {
@@ -69,6 +86,7 @@
 			type : "GET",
 			success : function(data) {
 				document.getElementById("editDialog").innerHTML = data;
+				getAllCoursesIntoList();
 				$("#editDialog").dialog("open");
 			}
 		});
@@ -80,6 +98,7 @@
 
 		var myObject = [[${questions}]];
 		if (myObject != null) {
+			getAllCoursesIntoList();
 		$("#editDialog").dialog({
 		autoOpen : true,
 		});
@@ -113,13 +132,15 @@
 				edit($(this).attr("id"));
 			}
 		});
+		
 	});
 </script>
 
 </head>
 <body>
 
-	<a style="float: left" id="genTest" href="/courses/courseGenereForLector"
+	<a style="float: left" id="genTest"
+		href="/courses/courseGenereForLector"
 		th:href="@{/courses/courseGenereForLector}"><div class="button">Powrót</div></a>
 
 	<a style="float: right" href="/logout" th:href="@{/logout}"><div
@@ -160,13 +181,7 @@
 					th:class="${#fields.hasErrors('answerD')}? 'error'"></input> <input
 					th:type="radio" th:name="correctAnswer" th:value="answerD"
 					th:checked="${quest.correctAnswer}=='answerD'"></input> Przedmiot:
-				<select name="courseGenere">
-
-					<option value="Algebra">Algebra</option>
-					<option value="Analiza">Analiza</option>
-					<option value="Informatyka">Informatyka</option>
-					<option value="Fizyka">Fizyka</option>
-				</select>
+				<select id="courseLista" name="courseGenere"></select>
 			</div>
 			<button id="btn" class="button" type="submit">Edytuj</button>
 		</form>

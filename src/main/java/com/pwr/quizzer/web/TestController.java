@@ -54,22 +54,22 @@ public class TestController {
 
     Gson gson = new Gson();
     
-    @RequestMapping(value = "/test/courseName/{name}", method = RequestMethod.GET)
-    public String generateTest(@PathVariable String name, Model model, Authentication auth, HttpSession session) {
+    @RequestMapping(value = "/test/courseName/{courseName}", method = RequestMethod.GET)
+    public String generateTest(@PathVariable String courseName, Model model, Authentication auth, HttpSession session) {
 
         try {
-            if (usersService.isAble(auth.getName(), name)) {
-                if (testService.getTestsByUsername(auth.getName(), name) != null
-                        && testService.getTestsByUsername(auth.getName(), name).getUser() != null) {
-                    Test tmpTest = testService.getTestsByUsername(auth.getName(), name);
+            if (usersService.isAbleToResolveTest(auth.getName(), courseName)) {
+                if (testService.getTestsByUsername(auth.getName(), courseName) != null
+                        && testService.getTestsByUsername(auth.getName(), courseName).getUser() != null) {
+                    Test tmpTest = testService.getTestsByUsername(auth.getName(), courseName);
                     
                     model.addAttribute("test", tmpTest.getQuestions());
                     model.addAttribute("testId", tmpTest.getId());
                     return "test";
                 } else {
-                    Test generatedTest = testCreator.createTest(name);
+                    Test generatedTest = testCreator.createTest(courseName);
                     generatedTest.setUser(auth.getName());
-                    generatedTest.setCourseGenere(name);
+                    generatedTest.setCourseGenere(courseName);
                     
                     testService.saveTest(generatedTest);
                     model.addAttribute("test", generatedTest.getQuestions());

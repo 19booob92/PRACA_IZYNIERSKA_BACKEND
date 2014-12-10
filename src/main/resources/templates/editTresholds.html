@@ -19,16 +19,23 @@
 	<form action="#" th:action="@{/mark}" th:object="${markTresholds}"
 		method="post">
 
-		<div th:each="mark : ${marks}">
+		<div style="width:600px" th:each="mark : ${marks}">
 
-			Celujący: <input type="text" th:name="tresholdA"
-				th:value="${mark.tresholdA}" /><br /> Bardzo dobry: <input
-				type="text" th:name="tresholdB" th:value="${mark.tresholdB}" /><br />
-			Dobry: <input type="text" th:name="tresholdC"
-				th:value="${mark.tresholdC}" /><br /> Dostateczny: <input
-				type="text" th:name="tresholdD" th:value="${mark.tresholdD}" /><br />
-			Niedopuszczajacy: <input type="text" th:name="tresholdE"
-				th:value="${mark.tresholdE}" /><br />
+			<p class="tresholdParagraph">Celujący:</p><input class="formInput" type="text" th:name="tresholdA"
+				th:value="${mark.tresholdA}" />
+			<p class="tresholdParagraph">Bardzo dobry:</p><input class="formInput"
+				type="text" th:name="tresholdB" th:value="${mark.tresholdB}" />
+			<p class="tresholdParagraph">Dobry +:</p><input class="formInput"
+				type="text" th:name="tresholdC" th:value="${mark.tresholdC}" />
+			<p class="tresholdParagraph">Dobry:</p> <input class="formInput" type="text" th:name="tresholdD"
+				th:value="${mark.tresholdD}" />
+			<p class="tresholdParagraph">Dostateczny +:</p> <input class="formInput"
+				type="text" th:name="tresholdE" th:value="${mark.tresholdE}" />
+			<p class="tresholdParagraph">Dostateczny: </p><input class="formInput"
+				type="text" th:name="tresholdF" th:value="${mark.tresholdF}" />
+			<p class="tresholdParagraph">Niedopuszczajacy: </p>	<input class="formInput" type="text" th:name="tresholdG"
+				th:value="${mark.tresholdG}" /><br />
+				<br />
 		</div>
 
 		<button class="button" type="submit">Aktualizuj</button>

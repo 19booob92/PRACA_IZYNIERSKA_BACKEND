@@ -10,10 +10,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import com.pwr.quizzer.SampleDataJpaApplication;
+import com.pwr.quizzer.MainConfiguration;
 
 @WebAppConfiguration
-@ContextConfiguration(classes = { SampleDataJpaApplication.class })
+@ContextConfiguration(classes = { MainConfiguration.class })
 @Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
 @PropertySource({ "classpath:application.properties" })

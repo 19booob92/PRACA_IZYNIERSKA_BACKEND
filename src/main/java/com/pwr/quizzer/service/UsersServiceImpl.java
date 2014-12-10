@@ -62,6 +62,11 @@ public class UsersServiceImpl implements UsersService {
             authorities.add(new SimpleGrantedAuthority(user.getAuth()));
             User userDetails = new User(user.getUserName(), encoder.encode(user.getPassword()), authorities);
             userDetailsService.createUser(userDetails);
+            
+            UserTmp userTmp = getUser(user.getUserName());
+            userTmp.setIndexNo(user.getIndexNo());
+            usersRepo.save(userTmp);
+            
         }
     }
 
@@ -84,7 +89,10 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public boolean isAble(String userName, String courseGroup) {
+    public boolean isAbleToResolveTest(String userName, String courseGroup) {
+        if (getUser(userName).getAble() == null) {
+            return true;
+        }
         List<String> solvedTestByCourseGroup = Lists.newArrayList(getUser(userName).getAble().split("\\,"));
         if (solvedTestByCourseGroup.contains(courseGroup) && !solvedTestByCourseGroup.isEmpty()) {
             return false;
@@ -99,7 +107,7 @@ public class UsersServiceImpl implements UsersService {
 
         Page<UserTmp> usersFromDB = usersRepo.findAll(request);
         List<UserDTO> mappedUsers = userMapper.mapUsersList(usersFromDB);
-        Page<UserDTO> usersPages = new PageImpl<>(mappedUsers);
+        Page<UserDTO> usersPages = new PageImpl<UserDTO>(mappedUsers);
         return usersPages;
     }
 

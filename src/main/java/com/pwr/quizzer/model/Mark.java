@@ -16,7 +16,9 @@ public class Mark implements Serializable {
 
     public static final String CELUJACY = "CELUJACY";
     public static final String BARDZO_DOBRY = "BARDZO DOBRY";
+    public static final String DOBRY_PLUS = "DOBRY +";
     public static final String DOBRY = "DOBRY";
+    public static final String DOSTATECZNY_PLUS = "DOSTATECZNY +";
     public static final String DOSTATECZNY = "DOSTATECZNY";
     public static final String NIEDOPUSZCZAJACY = "NIEDOPUSZCZAJACY";
 
@@ -29,6 +31,8 @@ public class Mark implements Serializable {
     private int tresholdC;
     private int tresholdD;
     private int tresholdE;
+    private int tresholdF;
+    private int tresholdG;
     
     public int getTresholdA() {
         return tresholdA;
@@ -76,6 +80,26 @@ public class Mark implements Serializable {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    
+    public int getTresholdF() {
+        return tresholdF;
+    }
+
+    
+    public void setTresholdF(int tresholdF) {
+        this.tresholdF = tresholdF;
+    }
+
+    
+    public int getTresholdG() {
+        return tresholdG;
+    }
+
+    
+    public void setTresholdG(int tresholdG) {
+        this.tresholdG = tresholdG;
     }
     
 }

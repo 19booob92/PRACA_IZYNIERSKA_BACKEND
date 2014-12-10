@@ -15,10 +15,12 @@ import com.pwr.quizzer.web.TestController;
 
 public class Annealing {
 
-    private List<Question> testToServe = new ArrayList<>();
+    private List<Question> testToServe = new ArrayList<Question>();
 
-    private List<Question> allQuestionsFromGroup = new ArrayList<>();
+    private List<Question> allQuestionsFromGroup = new ArrayList<Question>();
 
+    private List<Question> bestSolution;
+    
     private static final double E = 2.71828152;
 
     private Random random;
@@ -26,30 +28,48 @@ public class Annealing {
     private String courseGroup;
 
     private final static float MIN_TEMP = 0.05f;
+    private static double ACTUAL_TEMP = 100;
+
     
     public Test findTestsWithSamePointsAmount(List<Question> questsFromGroup, String courseGenere) {
-        double temp = 100;
         this.courseGroup = courseGenere;
         allQuestionsFromGroup = questsFromGroup;
         random = new Random(System.nanoTime());
         testToServe = splitQuestionList();
-
-        while (temp > MIN_TEMP) {
+        bestSolution = testToServe;
+        
+        
+        while (ACTUAL_TEMP > MIN_TEMP) {
             List<Question> beforeSwap = Lists.newArrayList(testToServe);
             List<Question> beforeSwapOtherQuest = Lists.newArrayList(allQuestionsFromGroup);
+
+            int bef = PointsAvg.getPointsFromTest(testToServe);
+
             swap();
+
+            int aft = PointsAvg.getPointsFromTest(testToServe);
+
             List<Question> afterSwap = Lists.newArrayList(testToServe);
-            if (PointsAvg.isCloser(beforeSwap, afterSwap, courseGenere)) {
-                testToServe = beforeSwap;
-                allQuestionsFromGroup = beforeSwapOtherQuest;
-            } else if (random.nextFloat() * 1.0 < probality(temp, beforeSwap, afterSwap)) {
-                testToServe = beforeSwap;
+
+            if (PointsAvg.isCloser(afterSwap, beforeSwap, courseGenere)) {
+                if (random.nextFloat() * 1.0 < probality(ACTUAL_TEMP, beforeSwap, afterSwap)) {
+                    testToServe = afterSwap;
+                    allQuestionsFromGroup = beforeSwapOtherQuest;
+                } else {
+                    testToServe = beforeSwap;
+                    allQuestionsFromGroup = beforeSwapOtherQuest;
+                }
             }
-            temp = cooling(temp);
+            else if (PointsAvg.isCloser(afterSwap, bestSolution, courseGenere)){
+                bestSolution = afterSwap;
+            }
+            
+            ACTUAL_TEMP = cooling(ACTUAL_TEMP);
         }
         Test test = new Test();
         test.setId(IdGenerator.getNextTestId());
-        test.setQuestions(testToServe);
+        test.setQuestions(bestSolution);
+        
         return test;
     }
 
@@ -57,11 +77,12 @@ public class Annealing {
         int beforePoints = PointsAvg.getPointsFromTest(beforeList);
         int afterPoints = PointsAvg.getPointsFromTest(afterList);
 
-          return Math.pow(E, -(PointsAvg.accuracy(afterPoints, this.courseGroup) - PointsAvg.accuracy(beforePoints, this.courseGroup)));
+        return Math.pow(E, -(PointsAvg.accuracy(afterPoints, this.courseGroup) - PointsAvg.accuracy(beforePoints, this.courseGroup))
+                / (ACTUAL_TEMP));
     }
 
     private double cooling(double temp) {
-        return temp * 0.4;
+        return temp * 0.97;
     }
 
     private List<Question> splitQuestionList() {
@@ -80,10 +101,10 @@ public class Annealing {
     }
 
     private void swap() {
-        
-        int range = (testToServe.size() - 1) > 0 ? testToServe.size() - 1 : 1;
+
+        int range = 10;// (testToServe.size() - 1) > 0 ? testToServe.size(): 1;
         int indexToSwap = random.nextInt(range);
-        range = (allQuestionsFromGroup.size() - 1) > 0 ? allQuestionsFromGroup.size() - 1 : 1;
+        range = (allQuestionsFromGroup.size() - 1) > 0 ? allQuestionsFromGroup.size() : 1;
         int indexToSwapWhith = random.nextInt(range);
 
         Question questToSwap = testToServe.remove(indexToSwap);
