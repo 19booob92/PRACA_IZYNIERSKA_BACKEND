@@ -5,6 +5,6 @@ import com.pwr.quizzer.model.Mark;
 
 public interface MarkService {
 
-    void updateMark(int tresholdA, int tresholdB, int tresholdC, int tresholdD, int tresholdE);
+    void updateMark(int tresholdA, int tresholdB, int tresholdC, int tresholdD, int tresholdE, int tresholdF, int tresholdG);
     Mark getModel();
 }

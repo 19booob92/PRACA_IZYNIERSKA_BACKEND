@@ -28,7 +28,7 @@ public class MarkController {
     @RequestMapping(value = "", method = RequestMethod.POST)
     public String updateTresholds(@ModelAttribute("markTresholds") MarkDTO markTresholds, BindingResult result, Model model) {
         markService.updateMark(markTresholds.getTresholdA(), markTresholds.getTresholdB(), markTresholds.getTresholdC(),
-                markTresholds.getTresholdD(), markTresholds.getTresholdE());
+                markTresholds.getTresholdD(), markTresholds.getTresholdE(), markTresholds.getTresholdF(), markTresholds.getTresholdG());
         return "redirect:/mark";
     }
 }

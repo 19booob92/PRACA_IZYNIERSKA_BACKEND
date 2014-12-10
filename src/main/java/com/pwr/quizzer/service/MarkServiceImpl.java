@@ -17,7 +17,7 @@ public class MarkServiceImpl implements MarkService {
     MarkRepo markRepo;
     
     @Override
-    public void updateMark(int tresholdA, int tresholdB, int tresholdC, int tresholdD, int tresholdE) {
+    public void updateMark(int tresholdA, int tresholdB, int tresholdC, int tresholdD, int tresholdE, int tresholdF, int tresholdG) {
         Mark mark = Lists.newArrayList(markRepo.findAll()).get(0);
         
         Mark markToEdit = new Mark();
@@ -27,6 +27,8 @@ public class MarkServiceImpl implements MarkService {
         markToEdit.setTresholdC(tresholdC);
         markToEdit.setTresholdD(tresholdD);
         markToEdit.setTresholdE(tresholdE);
+        markToEdit.setTresholdF(tresholdF);
+        markToEdit.setTresholdG(tresholdG);
         
         markRepo.save(markToEdit);
     }

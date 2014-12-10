@@ -53,10 +53,10 @@
 	}
 	
 	$(document).ready(
-			
 			function() {
 				$("#send").click(
 						function() {
+							questAmount = 0;
 							var array = [];
 							$('div.formDiv').each(
 									function() {
@@ -88,7 +88,6 @@
 							} else {
 								alert("Nie odpoweidziałeś na wszystkie pytania");
 							}
-
 						});
 			});
 </script>
@@ -115,7 +114,6 @@
 						<th>Pytanie: <b><td  th:text="${quest.content}"></td></b>
 						<td style="font-size: 20px" th:text="${quest.points}"></td>
 						</th>
-						
 					</tr>
 					<tr>
 					</tr>

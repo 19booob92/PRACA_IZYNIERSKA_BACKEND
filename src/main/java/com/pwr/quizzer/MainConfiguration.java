@@ -1,16 +1,10 @@
 package com.pwr.quizzer;
 
-import static com.pwr.quizzer.utils.PointsAvg.evaluateValues;
-
-import java.util.List;
-
-import javax.inject.Inject;
 import javax.sql.DataSource;
 
 import net.sourceforge.pagesdialect.PagesDialect;
 
 import org.apache.commons.dbcp.BasicDataSource;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -27,17 +21,12 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
-
-import com.pwr.quizzer.model.CourseGenere;
-import com.pwr.quizzer.service.CourseService;
-
 
 @Configuration
 @ComponentScan({ "com.pwr.quizzer" })
@@ -48,20 +37,11 @@ import com.pwr.quizzer.service.CourseService;
 @EnableScheduling
 public class MainConfiguration extends WebMvcConfigurerAdapter {
 
-    @Inject
-    CourseService courseService;
-    
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
         return new PropertySourcesPlaceholderConfigurer();
     }
 
-    @Scheduled(fixedRate = 21600000)
-    public void reportCurrentTime() {
-        List<CourseGenere> courses = courseService.findAll();
-        evaluateValues(courses);
-    }
-    
     @Value("${db.driver}")
     private String driverName;
 

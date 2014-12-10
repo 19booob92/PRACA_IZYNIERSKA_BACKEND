@@ -1,6 +1,7 @@
 package com.pwr.quizzer.core;
 
-import java.util.ArrayList;
+import static com.pwr.quizzer.utils.PointsAvg.evaluateValues;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -14,9 +15,6 @@ import com.pwr.quizzer.model.Question;
 import com.pwr.quizzer.model.Test;
 import com.pwr.quizzer.service.CourseService;
 import com.pwr.quizzer.web.TestController;
-
-import static com.pwr.quizzer.utils.PointsAvg.*;
-
 
 @Component
 public class TestCreator {
@@ -35,6 +33,9 @@ public class TestCreator {
     public Test createTest(String courseGroup) throws IllegalArgumentException {
         List<Question> questsForCourse = courseService.findCourse(courseGroup).getQuestions();
 
+        List<CourseGenere> courses = courseService.findAll();
+        evaluateValues(courses);
+        
         if (TestController.QUEST_AMOUNT > questsForCourse.size()) {
             throw new IllegalArgumentException(String.valueOf(questsForCourse.size()));
         }
@@ -49,5 +50,4 @@ public class TestCreator {
 
         return temp.subList(0, 10);
     }
-
 }

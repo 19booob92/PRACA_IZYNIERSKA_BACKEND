@@ -12,6 +12,8 @@ public class MarkDTO implements Serializable {
     private int tresholdC;
     private int tresholdD;
     private int tresholdE;
+    private int tresholdF;
+    private int tresholdG;
 
     public int getTresholdA() {
         return tresholdA;
@@ -51,5 +53,25 @@ public class MarkDTO implements Serializable {
 
     public void setTresholdE(int tresholdE) {
         this.tresholdE = tresholdE;
+    }
+
+    
+    public int getTresholdF() {
+        return tresholdF;
+    }
+
+    
+    public void setTresholdF(int tresholdF) {
+        this.tresholdF = tresholdF;
+    }
+
+    
+    public int getTresholdG() {
+        return tresholdG;
+    }
+
+    
+    public void setTresholdG(int tresholdG) {
+        this.tresholdG = tresholdG;
     }
 }
